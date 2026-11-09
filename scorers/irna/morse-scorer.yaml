@@ -1,0 +1,119 @@
+schema_version: 2
+id: irna
+name: Interfering RNA (scanMiR)
+version: 1.0.0
+description: >-
+  Expression-aware canonical miRNA binding-risk scorer for human or mouse
+  vaccine sequences using scanMiR affinity models and the core_975 panel.
+runtime:
+  type: container
+  image: ghcr.io/shpakb/morse-irna:1.0.0
+  dockerfile: Dockerfile
+  timeout_seconds: 300
+  env:
+    IRNA_SPECIES: human
+    IRNA_WORKERS: "4"
+    IRNA_PANEL_ROOT: /app/panels/2026-08-21
+    IRNA_MAX_LOG_KD: "-1.0"
+    IRNA_ORF_MAX_LOG_KD: "-1.5"
+scope:
+  configurable: true
+  allowed_parts: [five_prime_utr, start_codon, cds, stop_codon, three_prime_utr, poly_a]
+  allow_slices: true
+  allow_window: true
+  default:
+    type: full_sequence
+outputs:
+  irna_max_profile_risk:
+    type: float
+    unit: expression-weighted repression index
+    value_range: "[0, ∞)"
+    description: Maximum expression-weighted predicted repression risk across target profiles.
+    default_policy: {role: objective, direction: min}
+  irna_mean_profile_risk:
+    type: float
+    unit: expression-weighted repression index
+    value_range: "[0, ∞)"
+    description: Mean expression-weighted predicted repression risk across target profiles.
+    default_policy: {role: log}
+  irna_site_count:
+    type: int
+    unit: canonical sites
+    value_range: "integer >= 0"
+    description: Number of retained canonical scanMiR binding sites.
+    default_policy: {role: log}
+  irna_8mer_site_count:
+    type: int
+    unit: canonical sites
+    value_range: "integer >= 0"
+    description: Number of retained canonical 8mer sites.
+    default_policy: {role: log}
+  irna_7mer_site_count:
+    type: int
+    unit: canonical sites
+    value_range: "integer >= 0"
+    description: Number of retained canonical 7mer sites.
+    default_policy: {role: log}
+  irna_6mer_site_count:
+    type: int
+    unit: canonical sites
+    value_range: "integer >= 0"
+    description: Number of retained canonical 6mer sites.
+    default_policy: {role: log}
+  irna_strongest_log_kd:
+    type: float
+    unit: ln(Kd)
+    value_range: "(-∞, 0]"
+    description: Strongest retained affinity as the minimum natural logarithm of Kd; zero means no site.
+    default_policy: {role: log}
+  irna_max_profile:
+    type: string
+    value_range: bundled biological profile identifier
+    description: Target profile with the largest expression-weighted risk.
+    default_policy: {role: log}
+  irna_top_mirna:
+    type: string
+    value_range: scanMiR model identifier or empty string
+    description: Largest single miRNA contribution in the maximum-risk profile.
+    default_policy: {role: log}
+  irna_species:
+    type: string
+    value_range: human or mouse
+    description: Species panel used for scoring.
+    default_policy: {role: log}
+  irna_panel_id:
+    type: string
+    value_range: versioned panel identifier
+    description: Versioned expression panel used for scoring.
+    default_policy: {role: log}
+  irna_model_count:
+    type: int
+    unit: unique mature miRNA models
+    value_range: "integer > 0"
+    description: Number of unique scanMiR affinity models in the selected panel.
+    default_policy: {role: log}
+parameters:
+  species:
+    type: string
+    default: human
+    choices: [human, mouse]
+    env: IRNA_SPECIES
+    description: Human or mouse core_975 expression panel and scanMiR model collection.
+self_test:
+  sequence: AAAATAAGCTAAAAAAACGTACGT
+  sequence_context:
+    part_ranges:
+      - {part: three_prime_utr, start: 0, end: 24, part_start: 0, part_end: 24}
+  expected_outputs:
+    - irna_max_profile_risk
+    - irna_mean_profile_risk
+    - irna_site_count
+    - irna_8mer_site_count
+    - irna_7mer_site_count
+    - irna_6mer_site_count
+    - irna_strongest_log_kd
+    - irna_max_profile
+    - irna_top_mirna
+    - irna_species
+    - irna_panel_id
+    - irna_model_count

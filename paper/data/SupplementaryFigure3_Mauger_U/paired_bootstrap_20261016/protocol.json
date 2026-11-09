@@ -1,0 +1,78 @@
+{
+  "date": "2026-10-16",
+  "analysis": "Point 20: dependent Spearman differences, paired reconstructing bootstrap",
+  "n_constructs": 39,
+  "bootstrap_resamples": 200000,
+  "random_seed": 20261016,
+  "rng": "NumPy default_rng PCG64; indices generated as uint8",
+  "pairing": "One shared row-index sample for experimental output and all scorer outputs, and all 12 contrasts.",
+  "statistic": "Within each resample, recompute average component ranks, rank/size normalisation, exact twice-rank products for AR/AT and average ranks of each composite; calculate Spearman as Pearson correlation of average ranks.",
+  "model_predictions": "Fixed archived oriented values; no retraining or inference.",
+  "composite_membership": "Fixed, outcome-independent membership as in source protocol.",
+  "family": [
+    {
+      "composite": "AR",
+      "component": "ribonn"
+    },
+    {
+      "composite": "AR",
+      "component": "te"
+    },
+    {
+      "composite": "AR",
+      "component": "ribodecode"
+    },
+    {
+      "composite": "AR",
+      "component": "half_life"
+    },
+    {
+      "composite": "AR",
+      "component": "csi"
+    },
+    {
+      "composite": "AR",
+      "component": "cai_ld"
+    },
+    {
+      "composite": "AR",
+      "component": "mfe_body"
+    },
+    {
+      "composite": "AR",
+      "component": "mfe_cds"
+    },
+    {
+      "composite": "AR",
+      "component": "gc"
+    },
+    {
+      "composite": "AT",
+      "component": "ribonn"
+    },
+    {
+      "composite": "AT",
+      "component": "te"
+    },
+    {
+      "composite": "AT",
+      "component": "ribodecode"
+    }
+  ],
+  "interval_method": "Two-sided bias-corrected and accelerated (BCa) bootstrap",
+  "confidence_level_unadjusted": 0.95,
+  "confidence_level_bonferroni_marginal": 0.9958333333333333,
+  "nominal_familywise_confidence_level": 0.95,
+  "multiplicity": "One family of 12 contrasts; Bonferroni alpha=.05/12.",
+  "jackknife": "39 delete-one samples, each with 38 constructs and reconstructed component ranks/composites.",
+  "bias_correction": "midrank: (# bootstrap statistics below observed + 0.5 # equal) / B",
+  "quantile_method": "NumPy linear interpolation",
+  "primary_conclusion": "Corrected BCa lower confidence bound > 0; no use of bootstrap sign fractions as p-values.",
+  "diagnostics": "Finite bias correction and acceleration; ordered finite transformed probabilities, positive BCa denominators; report tail support and decisions in two disjoint 100000-draw halves.",
+  "scope": "Construct-level resampling conditional on this experimental readout and fixed model predictions. Assay, digitization and model-training errors not resampled.",
+  "analysis_source": "analyze.py",
+  "method_references": [
+    "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.bootstrap.html",
+    "https://www.itl.nist.gov/div898/handbook/prc/section4/prc473.htm"
+  ]
+}

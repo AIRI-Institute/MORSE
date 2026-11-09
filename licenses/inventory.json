@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-11-05",
+  "items": [
+    {
+      "component": "first-party",
+      "paths": [
+        "core",
+        "warm-starter",
+        "scorers/* except preserved third-party code"
+      ],
+      "license": "MIT",
+      "status": "rights_holder_confirmation_required"
+    },
+    {
+      "component": "RiboNN",
+      "paths": [
+        "scorers/ribonn/third_party/ribonn"
+      ],
+      "license": "LicenseRef-Sanofi-Academic-Noncommercial",
+      "status": "restricted",
+      "notices": [
+        "scorers/ribonn/third_party/ribonn/LICENSE",
+        "scorers/ribonn/third_party/ribonn/MODEL WEIGHTS LICENSE.txt"
+      ],
+      "source": "https://github.com/Sanofi-Public/RiboNN"
+    },
+    {
+      "component": "MultiMolecule / converted RiNALMo",
+      "paths": [
+        "scorers/immunogenicity external runtime"
+      ],
+      "license": "AGPL-3.0-or-later",
+      "status": "corresponding_source_and_weight_terms_review_required",
+      "source": "https://huggingface.co/multimolecule/rinalmo-mega"
+    },
+    {
+      "component": "scanMiR / scanMiRData",
+      "paths": [
+        "scorers/irna external runtime"
+      ],
+      "license": "GPL-3 (upstream package metadata; retain exact package license)",
+      "status": "retain_dependency_licenses_and_corresponding_source",
+      "source": "https://bioconductor.org/packages/release/bioc/html/scanMiR.html"
+    },
+    {
+      "component": "ViennaRNA",
+      "paths": [
+        "scorers/viennarna external runtime"
+      ],
+      "license": "LicenseRef-ViennaRNA",
+      "status": "retain_upstream_conditions",
+      "source": "https://github.com/ViennaRNA/ViennaRNA/blob/master/COPYING"
+    },
+    {
+      "component": "Orthrus",
+      "paths": [
+        "external asset orthrus-backbone"
+      ],
+      "license": "MIT model card",
+      "status": "preserve_upstream_notice",
+      "source": "https://huggingface.co/quietflamingo/orthrus-large-6-track/tree/c17ac0db4611c95248001d6fb4bcd95e3293cec4"
+    },
+    {
+      "component": "RiboDecode TranslationModel",
+      "paths": [
+        "external asset ribodecode-translationmodel"
+      ],
+      "license": "SSPL-1.0",
+      "status": "SSPL_source_service_and_redistribution_obligations_require_review",
+      "source": "https://github.com/wangfanfff/RiboDecode",
+      "notices": [
+        "licenses/TranslationModel-1.1.0-SSPL-1.0.txt"
+      ],
+      "license_notice_sha256": "42baafb5997a6f54e6eb8dc186416e386cd178793d85e089d403e59f926bcd20",
+      "source_wheel_sha256": "22d4b398a399878f7573074fd1c381b2f3894bd3a62ede9cd27989dc47ac276a",
+      "source_license_member": "TranslationModel-1.1.0.dist-info/LICENSE.txt"
+    },
+    {
+      "component": "LinearDesign",
+      "paths": [
+        "external benchmark dependency"
+      ],
+      "license": "LicenseRef-LinearDesign-Restricted",
+      "status": "no_redistribution_without_written_permission",
+      "source": "https://github.com/LinearDesignSoftware/LinearDesign/blob/main/license.txt"
+    },
+    {
+      "component": "biological profiles, UTR libraries, panels",
+      "paths": [
+        "scorers/cai/profiles",
+        "scorers/csi/profiles",
+        "scorers/irna/panels",
+        "utr-library-pipeline/releases"
+      ],
+      "license": "source-dependent",
+      "status": "data_license_inventory_pending"
+    }
+  ]
+}

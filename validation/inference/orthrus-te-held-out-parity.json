@@ -1,0 +1,196 @@
+{
+  "model": "orthrus-te-held-out",
+  "comparison": "current-source overlay versus archived paper raw observations",
+  "image": "sha256:0c8c9f08840a602ac208f7fe371572b28b250e52bd5628b18c9739ea14f4c1ea",
+  "tolerance": {
+    "kind": "absolute",
+    "value": 0.0001
+  },
+  "batch_size": 4,
+  "gpu_index": 0,
+  "timeout_seconds": 240,
+  "request_mode": "baseline-and-candidates",
+  "request_boundary_note": "Core evaluates its reference construct alone before search (optimizer.py score_constructs([original_construct])). Combined and individual modes are explicit batch-shape diagnostics; no model or encoding is modified.",
+  "source_overlay": true,
+  "portable_fullfit_encoder_used": false,
+  "passed": true,
+  "numerical_note": "Different batch shapes, GPU kernels and BF16 arithmetic can change scores; discrepancies remain recorded and never cause automatic tolerance relaxation.",
+  "request_sha256": "7c52603145429e9f9d5f8f22edddc0b0b8672638ed44eeb8356d82c4b8c3c022",
+  "sequences": 3,
+  "archived_run_id": "F4_morse_s7",
+  "checkpoint_sha256": "70913fc29ba9c073100913b56f59542520ec18a473fae358ff19bd57ecddd604",
+  "verified_backbone_files": [
+    {
+      "path": "config.json",
+      "sha256": "a8b513b3d73356e7ac8a59516ebbf51bc03f635e6329ad32350c289f84c8a288",
+      "bytes": 375
+    },
+    {
+      "path": "orthrus_hf.py",
+      "sha256": "35fb82d090003c9bf91be1820d5cc0e22c1092d28d9805951d3f284d728cdbe4",
+      "bytes": 6543
+    },
+    {
+      "path": "pytorch_model.bin",
+      "sha256": "a188c974493679d9eb5d18b5ecc3148f3634cd785e20f8303d6f313f62f00c08",
+      "bytes": 40737856
+    }
+  ],
+  "source_sha256": {
+    "server_heldout.py": "206d30fd5e4bc21be43b31c9e62d40399256bd8347e5afc67ba2c02f2a3adb55",
+    "heldout_encoding.py": "f0cb462b4ef434806af2d1c69d3dd368d03a0cdd6cdb344c9ac9015a2d3d478d",
+    "model.py": "33db77db8583dba3a8b9ce3397b92c6e504ba80330f485ce40eaa00512eec8b4"
+  },
+  "source_revision": "5f4b62ee18e7b486961fb035c3632fd10c78b934",
+  "resolved_image_id": "sha256:0c8c9f08840a602ac208f7fe371572b28b250e52bd5628b18c9739ea14f4c1ea",
+  "status": "completed",
+  "current": {
+    "elapsed_seconds": 8.307980190962553,
+    "response": {
+      "request_id": "morse-ready-model-parity",
+      "outputs": [
+        {
+          "translation_efficiency_score": 0.8299789428710938
+        },
+        {
+          "translation_efficiency_score": 1.6688400506973267
+        },
+        {
+          "translation_efficiency_score": 2.326981782913208
+        }
+      ]
+    },
+    "raw_responses": [
+      {
+        "request_id": "morse-ready-model-parity::baseline-and-candidates::0",
+        "outputs": [
+          {
+            "translation_efficiency_score": 0.8299789428710938
+          }
+        ]
+      },
+      {
+        "request_id": "morse-ready-model-parity::baseline-and-candidates::1",
+        "outputs": [
+          {
+            "translation_efficiency_score": 1.6688400506973267
+          },
+          {
+            "translation_efficiency_score": 2.326981782913208
+          }
+        ]
+      }
+    ],
+    "request_mode": "baseline-and-candidates",
+    "physical_requests": [
+      {
+        "request_id": "morse-ready-model-parity::baseline-and-candidates::0",
+        "fixture_indices": [
+          0
+        ],
+        "adapter_batches": [
+          {
+            "fixture_indices": [
+              0
+            ],
+            "sequence_lengths": [
+              449
+            ],
+            "collated_tensor_shape": [
+              1,
+              449,
+              6
+            ],
+            "right_padding_nt": [
+              0
+            ]
+          }
+        ]
+      },
+      {
+        "request_id": "morse-ready-model-parity::baseline-and-candidates::1",
+        "fixture_indices": [
+          1,
+          2
+        ],
+        "adapter_batches": [
+          {
+            "fixture_indices": [
+              1,
+              2
+            ],
+            "sequence_lengths": [
+              481,
+              481
+            ],
+            "collated_tensor_shape": [
+              2,
+              481,
+              6
+            ],
+            "right_padding_nt": [
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    ],
+    "shape_provenance": "Inferred from the frozen adapter's contiguous batching and zero-padding collate contract; not a GPU profiler trace",
+    "container_name": "morse-heldout-check-a614f3fc93f3",
+    "adapter": "/app/server_heldout.py",
+    "runtime_env": {
+      "OMP_NUM_THREADS": "2",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "2",
+      "HF_HUB_OFFLINE": "1",
+      "TRANSFORMERS_OFFLINE": "1",
+      "PYTHONUNBUFFERED": "1",
+      "ORTHRUS_CHECKPOINT": "/models/best.pt",
+      "ORTHRUS_MODEL_SOURCE": "/backbone",
+      "ORTHRUS_DEVICE": "cuda",
+      "ORTHRUS_BATCH_SIZE": "4",
+      "ORTHRUS_PORTABLE": "0",
+      "MORSE_EXPECTED_CHECKPOINT_SHA256": "70913fc29ba9c073100913b56f59542520ec18a473fae358ff19bd57ecddd604"
+    }
+  },
+  "differences": [
+    {
+      "index": 0,
+      "candidate_id": "cand_000001",
+      "sequence_sha256": "0b1963eea99bafb87aef6e715bca2b591a011479e60e2b15da8d67366b0cb154",
+      "field": "translation_efficiency_score",
+      "archived_value": 0.8299789428710938,
+      "current_value": 0.8299789428710938,
+      "signed_difference": 0.0,
+      "absolute_difference": 0.0,
+      "relative_difference": 0.0,
+      "within_absolute_tolerance": true
+    },
+    {
+      "index": 1,
+      "candidate_id": "cand_016686",
+      "sequence_sha256": "4ff2bb860c30e7b1a363591487c8a5d67dd12fafb7d1959b00a12818505fdc97",
+      "field": "translation_efficiency_score",
+      "archived_value": 1.6688400506973267,
+      "current_value": 1.6688400506973267,
+      "signed_difference": 0.0,
+      "absolute_difference": 0.0,
+      "relative_difference": 0.0,
+      "within_absolute_tolerance": true
+    },
+    {
+      "index": 2,
+      "candidate_id": "cand_017712",
+      "sequence_sha256": "b2c94f4a2e658785ce25fa82fed96f98efb6ad3ae851f8e886baec378a1be697",
+      "field": "translation_efficiency_score",
+      "archived_value": 2.326981782913208,
+      "current_value": 2.326981782913208,
+      "signed_difference": 0.0,
+      "absolute_difference": 0.0,
+      "relative_difference": 0.0,
+      "within_absolute_tolerance": true
+    }
+  ],
+  "maximum_absolute_difference": 0.0
+}

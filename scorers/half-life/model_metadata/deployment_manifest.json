@@ -1,0 +1,26 @@
+{
+  "task": "half_life",
+  "checkpoint": "model_final.pt",
+  "checkpoint_sha256": "fe4f816572626d127f54e64d4a724923bd5a080b4898f225898f69f91f28a40e",
+  "backbone": "quietflamingo/orthrus-large-6-track",
+  "backbone_revision": "c17ac0db4611c95248001d6fb4bcd95e3293cec4",
+  "backbone_code_sha256": "35fb82d090003c9bf91be1820d5cc0e22c1092d28d9805951d3f284d728cdbe4",
+  "training_data_size": 12939,
+  "epochs": 5,
+  "cv_reference": {
+    "best_epochs": [
+      4,
+      5,
+      5,
+      4
+    ],
+    "oof": {
+      "mae": 0.6079066298448196,
+      "rmse": 0.7799330711179173,
+      "pearson": 0.6421163971310426,
+      "spearman": 0.6349539621408323,
+      "bias": -0.06165137793961479
+    },
+    "source_run_id_sha256": "ad86ccb1d0755c2f094879469608e036d91ebd7efc59734cf2b0554aae108441"
+  }
+}

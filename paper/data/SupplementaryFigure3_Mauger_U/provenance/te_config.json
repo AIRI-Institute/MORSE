@@ -1,0 +1,62 @@
+{
+  "args": {
+    "output": "/run/results/te_seed13",
+    "backbone": "/backbone",
+    "epochs": 20,
+    "patience": 5,
+    "seed": 13,
+    "smoke": false
+  },
+  "split_counts": {
+    "test": 560,
+    "train": 8822,
+    "validation": 966
+  },
+  "split_manifest_sha256": "05aafaf94cf9bd8b18528185b4704faa1d10299a0d2eb01fe873205fdc2b59a5",
+  "backbone": "quietflamingo/orthrus-large-6-track",
+  "revision": "c17ac0db4611c95248001d6fb4bcd95e3293cec4",
+  "backbone_files": {
+    ".gitattributes": "11ad7efa24975ee4b0c3c3a38ed18737f0658a5f75a0a96787b576a78a023361",
+    "README.md": "e8057884d968bbe0a30251124bebd2945601655835e758ef817969a60b954af4",
+    "config.json": "a8b513b3d73356e7ac8a59516ebbf51bc03f635e6329ad32350c289f84c8a288",
+    "orthrus_hf.py": "35fb82d090003c9bf91be1820d5cc0e22c1092d28d9805951d3f284d728cdbe4",
+    "pytorch_model.bin": "a188c974493679d9eb5d18b5ecc3148f3634cd785e20f8303d6f313f62f00c08"
+  },
+  "initialization": "original pretrained backbone, never the all-data TE checkpoint",
+  "target_mean": 0.24466440813676898,
+  "target_std": 0.6905093891643985,
+  "cds_track": "continuous full annotated CDS, as original TE training",
+  "splice_track": "zero",
+  "optimizer": {
+    "backbone_lr": 0.0001,
+    "head_lr": 0.0005,
+    "weight_decay": 0.0001
+  },
+  "loss": "SmoothL1 beta=0.5",
+  "batch": {
+    "max_tokens": 32000,
+    "max_size": 8,
+    "gradient_accumulation": 8
+  },
+  "precision": "BF16",
+  "early_stopping": {
+    "metric": "validation Spearman",
+    "min_epochs": 4,
+    "patience": 5,
+    "min_delta": 0.001
+  },
+  "torch": "2.2.0",
+  "gpu": "NVIDIA A100 80GB PCIe",
+  "test_access": "only after checkpoint selection",
+  "source_hashes": {
+    "scripts/pipeline.py": "104a8a267127c6d657759d24ea11ebac9ed1f2e846c385a5cd605a18d116c6b6",
+    "scripts/score_tie.py": "de60593974e681118da7e2ac519979f3cb75e9af9027e3849eca4bfd02f6e668",
+    "scripts/score_rd.py": "824f3678ca8c3a5e76099052bec54f80365e338b6a3435f5c646e67f791e93b1",
+    "scripts/prepare.py": "a6fe45f66dabc483287fb1a90f1a582323b976214d3f7be8574b3fcf24febd1e",
+    "scripts/launch.py": "d83c13034c8d5233d635e314194a694c93e0279e3866436f4bf2f01ef0d3e750",
+    "scripts/analyze.py": "857604083607a91d0a993a4b53fa46620f48ca30cad761c02042f284e4971df8",
+    "scripts/train_te.py": "4168801f9e4b6b84e7506bd3f0d668623d77e5601ed624cbf7ff5fee3d3aeb14",
+    "source/te_model.py": "0bb1f1139149628ff8ed94f1cb0d35a59c7bfb93e66916404958867078941371",
+    "source/original_te_training.py": "0b31f4d3c65e1eea79046ce54a0be7a064e1e00a6fded964bf8635f0f8f2ae5d"
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "date": "2026-11-05",
+  "status": "pass",
+  "packages": [
+    "morse-research",
+    "morse-core",
+    "morse-warm-starter",
+    "morse-manufacturability-scorer"
+  ],
+  "legacy_command_aliases": false,
+  "local_cpu": {
+    "discovered_tests": 344,
+    "passed_tests": 339,
+    "optional_runtime_skips": 5,
+    "all_suites_passed": true,
+    "test_log_sha256": "212603886bb7a63df1ca21e7e0f1dbe2fbe70b9038017b3da853fd73b1efe09d"
+  },
+  "unit_test_sources": "Retained locally, excluded from the public Git tree and paper bundle manifest.",
+  "paper_numeric_values_unchanged": true,
+  "raw_source_files_original_bytes_and_sha256_preserved": 155,
+  "normalized_raw_paths": 6,
+  "paper_figures_all_8_pdf_hashes_unchanged": true,
+  "figure1_reference_pdf_sha256": "13a3e4852eda922e23a5c79e35293247e17d1181fdd1843785a2109a178b6df3",
+  "renamed_predictor_inference": "branding-inference/summary.json",
+  "presentation": {
+    "scorer_colors": "Ordinal configuration order, shared between scope and result figures; each output inherits its scorer color.",
+    "same_color_profiles": "Distinct line styles retain separability for several outputs of one scorer.",
+    "radar_geometry": "Semicircle with shared axes for initial construct and existing selected candidates.",
+    "radar_scale": "Direction-aware final-Pareto-plus-initial min-max desirability, 0-100.",
+    "unchanged_numeric_helper_AST": {
+      "_metric_winner_radar_data": true,
+      "_normalize_radar_score": true
+    },
+    "plot_formats": [
+      "PNG",
+      "PDF"
+    ],
+    "palette_source_sha256": "c966dd04f5c59f981d4fffe36ca35e521a1cdb6ab0bb493d7ace3702b38e9c27"
+  },
+  "publication": false
+}

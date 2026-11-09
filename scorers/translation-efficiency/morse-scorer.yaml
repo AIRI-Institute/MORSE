@@ -1,0 +1,132 @@
+schema_version: 2
+id: translation-efficiency
+name: Orthrus Translation Efficiency
+version: 2.2.1
+description: >-
+  Orthrus translation-efficiency regression scorer for full-length mRNA
+  excluding poly(A). Higher model scores are considered better. Non-AUG starts
+  may be outside the model's training distribution.
+runtime:
+  type: container
+  image: ghcr.io/shpakb/morse-translation-efficiency:2.2.1
+  dockerfile: Dockerfile
+  build_contexts:
+    checkpoint: ${MORSE_ASSETS_DIR}/orthrus-te-full-fit
+    backbone: ${MORSE_ASSETS_DIR}/orthrus-backbone
+  timeout_seconds: 1800
+  gpus: all
+  env:
+    ORTHRUS_CHECKPOINT: /models/model_final.pt
+    MORSE_EXPECTED_CHECKPOINT_SHA256: c380316fe282640d563b9254e9ab8031e129f9e768c9ce04c0c7955bb0ac6bab
+    ORTHRUS_MODEL_SOURCE: /backbone
+    HF_HUB_OFFLINE: "1"
+    TRANSFORMERS_OFFLINE: "1"
+    PYTORCH_CUDA_ALLOC_CONF: expandable_segments:True
+portable_runtime:
+  type: venv
+  entrypoint: [python, server.py]
+  timeout_seconds: 3600
+  system_site_packages: true
+  env:
+    ORTHRUS_PORTABLE: "1"
+    MORSE_EXPECTED_CHECKPOINT_SHA256: c380316fe282640d563b9254e9ab8031e129f9e768c9ce04c0c7955bb0ac6bab
+portable_parameters:
+  checkpoint_path:
+    type: path
+    configurable_by: backend
+    backend_env: MORSE_TE_CHECKPOINT_PATH
+    required: true
+    default: ${MORSE_ASSETS_DIR}/orthrus-te-full-fit/model_final.pt
+    env: ORTHRUS_CHECKPOINT
+    description: Local deployment checkpoint used by the portable PyTorch runtime.
+  device:
+    type: string
+    default: auto
+    choices: [auto, cpu, cuda]
+    env: ORTHRUS_DEVICE
+    description: Device used by the portable pure-PyTorch inference runtime.
+  batch_size:
+    type: int
+    default: 2
+    min: 1
+    max: 64
+    env: ORTHRUS_BATCH_SIZE
+    description: Maximum number of candidates in one portable inference batch.
+scope:
+  configurable: false
+  allowed_parts: [five_prime_utr, start_codon, cds, stop_codon, three_prime_utr]
+  allow_slices: false
+  allow_window: false
+  default:
+    type: parts
+    spans:
+      - part: five_prime_utr
+      - part: start_codon
+      - part: cds
+      - part: stop_codon
+      - part: three_prime_utr
+outputs:
+  translation_efficiency_score:
+    type: float
+    unit: model_score
+    value_range: model-dependent real value
+    description: Normalized Orthrus translation-efficiency regression score.
+    default_policy: {role: objective, direction: max}
+parameters:
+  backbone_dir:
+    type: path
+    configurable_by: backend
+    backend_env: MORSE_ORTHRUS_BACKBONE_DIR
+    required: false
+    allowed_root: ${MORSE_ASSETS_DIR}
+    description: Optional host override for the backbone already embedded in the image.
+    mount:
+      container_path: /backbone
+      read_only: true
+  model_dir:
+    type: path
+    configurable_by: backend
+    backend_env: TRANSLATION_EFFICIENCY_MODEL_DIR
+    required: false
+    allowed_root: ${MORSE_ASSETS_DIR}
+    description: Optional host override for the task checkpoint already embedded in the image.
+    mount:
+      container_path: /models
+      read_only: true
+  device:
+    type: string
+    configurable_by: backend
+    backend_env: TRANSLATION_EFFICIENCY_DEVICE
+    default: auto
+    choices: [auto, cuda]
+    env: ORTHRUS_DEVICE
+    description: CUDA device selection for inference inside the container.
+  batch_size:
+    type: int
+    configurable_by: backend
+    backend_env: TRANSLATION_EFFICIENCY_BATCH_SIZE
+    default: 4
+    min: 1
+    max: 1024
+    env: ORTHRUS_BATCH_SIZE
+    description: Maximum number of candidates in one inference batch.
+  max_tokens:
+    type: int
+    configurable_by: backend
+    backend_env: TRANSLATION_EFFICIENCY_MAX_TOKENS
+    default: 16000
+    min: 1
+    max: 1000000
+    env: ORTHRUS_MAX_TOKENS
+    description: Maximum number of padded nucleotide tokens in one batch.
+self_test:
+  sequence: GGGACCAUGGCCGCCGCCGCCGCCGCCGCCUAACUGG
+  sequence_context:
+    part_ranges:
+      - {part: five_prime_utr, start: 0, end: 6, part_start: 0, part_end: 6}
+      - {part: start_codon, start: 6, end: 9, part_start: 0, part_end: 3}
+      - {part: cds, start: 9, end: 30, part_start: 0, part_end: 21}
+      - {part: stop_codon, start: 30, end: 33, part_start: 0, part_end: 3}
+      - {part: three_prime_utr, start: 33, end: 37, part_start: 0, part_end: 4}
+  expected_outputs:
+    - translation_efficiency_score

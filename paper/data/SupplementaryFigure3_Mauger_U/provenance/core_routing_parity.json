@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "n": 4,
+  "max_absolute_differences": {
+    "ribonn": 0.0,
+    "orthrus": 0.0,
+    "ribodecode": 2.384185791015625e-07
+  },
+  "elapsed_including_startup": 46.165718983858824
+}

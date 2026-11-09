@@ -1,0 +1,102 @@
+schema_version: 2
+id: translation-efficiency-held-out
+name: Orthrus Translation Efficiency (held-out)
+version: 2.2.1-heldout
+description: >-
+  Orthrus translation-efficiency regression scorer for full-length mRNA
+  excluding poly(A). Higher model scores are considered better. Non-AUG starts
+  may be outside the model's training distribution.
+runtime:
+  type: container
+  image: ghcr.io/shpakb/morse-translation-efficiency-held-out:2.2.1-heldout
+  dockerfile: Dockerfile.heldout
+  build_contexts:
+    checkpoint: ${MORSE_ASSETS_DIR}/orthrus-te-held-out
+    backbone: ${MORSE_ASSETS_DIR}/orthrus-backbone
+  timeout_seconds: 1800
+  gpus: all
+  env:
+    ORTHRUS_CHECKPOINT: /models/best.pt
+    MORSE_EXPECTED_CHECKPOINT_SHA256: 70913fc29ba9c073100913b56f59542520ec18a473fae358ff19bd57ecddd604
+    ORTHRUS_MODEL_SOURCE: /backbone
+    HF_HUB_OFFLINE: "1"
+    TRANSFORMERS_OFFLINE: "1"
+    PYTORCH_CUDA_ALLOC_CONF: expandable_segments:True
+scope:
+  configurable: false
+  allowed_parts: [five_prime_utr, start_codon, cds, stop_codon, three_prime_utr]
+  allow_slices: false
+  allow_window: false
+  default:
+    type: parts
+    spans:
+      - part: five_prime_utr
+      - part: start_codon
+      - part: cds
+      - part: stop_codon
+      - part: three_prime_utr
+outputs:
+  translation_efficiency_score:
+    type: float
+    unit: model_score
+    value_range: model-dependent real value
+    description: Normalized Orthrus translation-efficiency regression score.
+    default_policy: {role: objective, direction: max}
+parameters:
+  backbone_dir:
+    type: path
+    configurable_by: backend
+    backend_env: MORSE_ORTHRUS_BACKBONE_DIR
+    required: false
+    allowed_root: ${MORSE_ASSETS_DIR}
+    description: Optional host override for the backbone already embedded in the image.
+    mount:
+      container_path: /backbone
+      read_only: true
+  model_dir:
+    type: path
+    configurable_by: backend
+    backend_env: TRANSLATION_EFFICIENCY_MODEL_DIR
+    required: false
+    allowed_root: ${MORSE_ASSETS_DIR}
+    description: Optional host override for the task checkpoint already embedded in the image.
+    mount:
+      container_path: /models
+      read_only: true
+  device:
+    type: string
+    configurable_by: backend
+    backend_env: TRANSLATION_EFFICIENCY_DEVICE
+    default: auto
+    choices: [auto, cuda]
+    env: ORTHRUS_DEVICE
+    description: CUDA device selection for inference inside the container.
+  batch_size:
+    type: int
+    configurable_by: backend
+    backend_env: TRANSLATION_EFFICIENCY_BATCH_SIZE
+    default: 4
+    min: 1
+    max: 1024
+    env: ORTHRUS_BATCH_SIZE
+    description: Maximum number of candidates in one inference batch.
+  max_tokens:
+    type: int
+    configurable_by: backend
+    backend_env: TRANSLATION_EFFICIENCY_MAX_TOKENS
+    default: 16000
+    min: 1
+    max: 1000000
+    env: ORTHRUS_MAX_TOKENS
+    description: Maximum number of padded nucleotide tokens in one batch.
+self_test:
+  sequence: GGGACCAUGGCCGCCGCCGCCGCCGCCGCCUAACUGG
+  sequence_context:
+    part_ranges:
+      - {part: five_prime_utr, start: 0, end: 6, part_start: 0, part_end: 6}
+      - {part: start_codon, start: 6, end: 9, part_start: 0, part_end: 3}
+      - {part: cds, start: 9, end: 30, part_start: 0, part_end: 21}
+      - {part: stop_codon, start: 30, end: 33, part_start: 0, part_end: 3}
+      - {part: three_prime_utr, start: 33, end: 37, part_start: 0, part_end: 4}
+  expected_outputs:
+    - translation_efficiency_score

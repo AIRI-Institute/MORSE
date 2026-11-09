@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "audit_date": "2026-11-05",
+  "scope": "Git tracked and unignored untracked regular files at audit time; excludes local cache and virtualenv",
+  "file_count": 559,
+  "training_filename_candidates": [],
+  "model_weight_or_wheel_candidates": [],
+  "files_over_10MB": [],
+  "credential_pattern_filenames": [],
+  "credential_url_filenames": [
+    "core/tests/test_scorer_installer.py"
+  ],
+  "reviewed_fixture_exceptions": [
+    {
+      "path": "core/tests/test_scorer_installer.py",
+      "category": "synthetic authenticated URL fixture",
+      "hostname": "gitlab.example.org"
+    }
+  ],
+  "ready_paper_assets_verified": [
+    "orthrus-te-full-fit",
+    "orthrus-te-held-out",
+    "orthrus-half-life",
+    "rinalmo-imrnads",
+    "orthrus-backbone",
+    "ribonn-human-ensemble",
+    "ribodecode-translationmodel"
+  ],
+  "checks": {
+    "ribonn_manifest_pinned": "8e0d62ca61964ec660a43389ab309361f0c388a906c68c48a9d5b928c5a10cee",
+    "model_cards": "docs/model-cards.md",
+    "runtime_source_locks": "assets/runtime-lock.json",
+    "license_exceptions": "licenses/inventory.json"
+  },
+  "limitations": [
+    "Pattern scans are not exhaustive secret detection",
+    "Historical provenance/source-data paths are retained and are not active runtime defaults",
+    "Container transitive package layers and public model/image redistribution remain separately documented pending items",
+    "Static arithmetic equivalence does not replace real-checkpoint runtime parity"
+  ]
+}

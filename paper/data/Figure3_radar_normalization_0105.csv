@@ -1,0 +1,5 @@
+panel,metric,direction,maximum,denominator_count,maximum_sources,formula
+3b,mfe_per_nt,-1,0.47934989856260457,30,"[{""role"": ""mfe_per_nt"", ""seed"": 43, ""run_id"": ""F2_filtered_s43"", ""candidate_id"": ""cand_019083""}]",direction*native / maximum_among_30_visible_individual_constructs_in_F3
+3b,translation_efficiency_score,1,2.513932943344116,30,"[{""role"": ""translation_efficiency_score"", ""seed"": 43, ""run_id"": ""F2_filtered_s43"", ""candidate_id"": ""cand_017246""}]",direction*native / maximum_among_30_visible_individual_constructs_in_F3
+3b,csi_percentile,1,91.81496033926165,30,"[{""role"": ""csi_percentile"", ""seed"": 43, ""run_id"": ""F2_filtered_s43"", ""candidate_id"": ""cand_019023""}]",direction*native / maximum_among_30_visible_individual_constructs_in_F3
+3b,ribodecode_translation_log,1,4.184790134429932,30,"[{""role"": ""ribodecode_translation_log"", ""seed"": 137, ""run_id"": ""F2_filtered_s137"", ""candidate_id"": ""cand_009105""}]",direction*native / maximum_among_30_visible_individual_constructs_in_F3

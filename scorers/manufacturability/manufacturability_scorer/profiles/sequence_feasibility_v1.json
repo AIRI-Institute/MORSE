@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "profile_id": "sequence_feasibility_v1",
+  "description": "Engineering feasibility screen for the routed transcript body, excluding annotated poly(A). Thresholds are design choices, not biological viability boundaries.",
+  "parameters": {
+    "enabled_checks": ["global_gc", "local_gc", "homopolymers", "direct_repeats", "tandem_repeats", "forbidden_motifs"],
+    "global_gc_min": 0.4,
+    "global_gc_max": 0.6,
+    "local_gc_min": 0.3,
+    "local_gc_max": 0.7,
+    "local_gc_window": 50,
+    "local_gc_stride": 1,
+    "homopolymer_max_a": 9,
+    "homopolymer_max_u": 9,
+    "homopolymer_max_g": 5,
+    "homopolymer_max_c": 5,
+    "direct_repeat_length": 21,
+    "direct_repeat_min_copies": 2,
+    "tandem_min_period": 2,
+    "tandem_max_period": 6,
+    "tandem_min_length": 18,
+    "tandem_min_copies": 3,
+    "forbidden_motifs": [],
+    "exempt_regions": []
+  },
+  "provenance": [
+    {"source": "Existing MORSE GC design policy", "settings": "Global 40-60%; local 30-70% in 50 nt. This preset uses stride 1."},
+    {"source": "IDT gBlocks design guidance", "url": "https://www3.idtdna.com/pages/support/faqs/what-types-of-sequence-motifs-should-be-avoided-when-ordering-gblocks-gene-fragments-", "settings": "Reject A/T runs >=10 and G/C runs >=6; RNA U corresponds to template T."},
+    {"source": "Twist gene synthesis guidance", "url": "https://www.twistbioscience.com/products/genes/resources", "settings": "Avoid repeats longer than 20 bp. Nonoverlapping exact 21-mer copies are this preset's operational definition."},
+    {"source": "MORSE engineering heuristic", "settings": "Primitive tandem period 2-6 nt, at least 18 nt and 3 complete copies; requires sensitivity analysis."}
+  ]
+}

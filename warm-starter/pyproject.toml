@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "morse-warm-starter"
+version = "0.2.0"
+description = "Generate scorer-guided initial populations for MORSE Core."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+dependencies = [
+  "morse-core>=0.2.0",
+]
+
+[project.scripts]
+morse-warm-start = "morse_warm_starter.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["morse_warm_starter*"]

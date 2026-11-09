@@ -1,0 +1,30 @@
+[
+  {
+    "iteration": 1,
+    "proposed_events": 20,
+    "scored_events": 20,
+    "discarded_unscored_proposals": 0,
+    "cumulative_events": 20
+  },
+  {
+    "iteration": 2,
+    "proposed_events": 20,
+    "scored_events": 20,
+    "discarded_unscored_proposals": 0,
+    "cumulative_events": 40
+  },
+  {
+    "iteration": 3,
+    "proposed_events": 20,
+    "scored_events": 20,
+    "discarded_unscored_proposals": 0,
+    "cumulative_events": 60
+  },
+  {
+    "iteration": 4,
+    "proposed_events": 20,
+    "scored_events": 4,
+    "discarded_unscored_proposals": 16,
+    "cumulative_events": 64
+  }
+]

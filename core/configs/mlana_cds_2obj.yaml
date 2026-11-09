@@ -1,0 +1,99 @@
+schema_version: 4
+name: mlana_cds_2obj
+# Results folder.
+output_dir: ../../outputs/mlana_cds_2obj
+
+# Input RNA and parts.
+construct:
+  fasta: inputs/mlana_cds_2obj/sequence.fasta
+  coordinates:  # 0-based; end excluded.
+    five_prime_utr: [0, 75]
+    cds: [75, 432]
+    three_prime_utr: [432, 470]
+    poly_a: [470, 590]
+
+  # Unlisted parts stay fixed.
+  changes:
+    cds: synonymous
+
+# Search settings.
+optimizer:
+  algorithm: nsga2
+  population_size: 32
+  generations: 100
+  seed: 43
+  early_stopping:
+    enabled: true
+    metric: hypervolume
+    min_generations: 30
+    patience: 15
+    rel_tol: 0.002
+
+# Prepared scorer commands.
+scorers:
+  - name: viennarna_full
+    timeout_seconds: 1800
+    scope: [five_prime_utr, cds, three_prime_utr]
+    command: |-
+      docker exec -i \
+        -e VIENNARNA_ENABLE_PF=0 \
+        -e VIENNARNA_MAX_BP_SPAN=200 \
+        "${MORSE_VIENNARNA_CONTAINER:-morse-viennarna}" \
+        python3 /app/scorer.py
+    metrics:  # Goals, limits and logs.
+      mfe_per_nt:
+        role: optimize
+        direction: min
+      gc_fraction:
+        role: log
+      mfe:
+        role: log
+      mfe_structure:
+        role: log
+        value_type: structure
+  - name: rinalmo_immunogenicity
+    timeout_seconds: 1800
+    scope: full_sequence
+    command: |-
+      docker exec -i \
+        -e RINALMO_CHECKPOINT=/models/best_model.pt \
+        -e "RINALMO_DEVICE=${RINALMO_DEVICE:-auto}" \
+        -e RINALMO_WINDOW_SIZE=27 \
+        -e RINALMO_WINDOW_STRIDE=3 \
+        -e RINALMO_BATCH_SIZE=256 \
+        "${MORSE_IMMUNOGENICITY_CONTAINER:-morse-immunogenicity}" \
+        python3 /app/server.py
+    metrics:  # Goals, limits and logs.
+      rinalmo_window_logit_p95:
+        role: optimize
+        direction: min
+      rinalmo_window_count:
+        role: log
+        value_type: int
+      rinalmo_window_logit_mean:
+        role: log
+      rinalmo_window_logit_max:
+        role: log
+      rinalmo_window_probability_p95:
+        role: log
+  - name: sequence_quality
+    command: '"${MORSE_PYTHON}" -m morse.sequence_quality'
+    scope: [five_prime_utr, cds, three_prime_utr]
+    metrics:  # Goals, limits and logs.
+      non_polya_max_homopolymer:
+        role: threshold
+        max: 8
+        value_type: int
+      body_gc_window_min:
+        role: threshold
+        min: 0.15
+      body_gc_window_max:
+        role: threshold
+        max: 0.85
+      cpg_per_kb:
+        role: log
+      upa_per_kb:
+        role: log
+      repeated_12mer_count:
+        role: log
+        value_type: int

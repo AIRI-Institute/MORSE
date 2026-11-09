@@ -1,0 +1,27 @@
+name: Research checks
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  cpu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.10.2"
+      - run: uv sync --all-packages --extra paper --frozen
+      - name: Validate the CPU example
+        run: uv run morse validate --config examples/quickstart/experiment.yaml
+      - name: Run a real CPU optimization
+        run: uv run morse run --config examples/quickstart/experiment.yaml --output-dir outputs/quickstart
+      - name: Verify frozen paper evidence
+        run: uv run morse paper verify
+      - name: Recompute paper analysis
+        run: uv run morse paper analyze --output outputs/paper
+      - name: Regenerate paper figures
+        run: uv run morse paper figures --output outputs/paper
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cpu-example-and-paper-validation
+          path: |
+            outputs/quickstart
+            outputs/paper

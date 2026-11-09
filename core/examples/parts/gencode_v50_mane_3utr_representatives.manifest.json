@@ -1,0 +1,30 @@
+{
+  "counts": {
+    "annotated_transcripts": 5559,
+    "extracted_transcripts": 5559,
+    "selected_sequences": 20,
+    "unique_sequences": 5469
+  },
+  "inputs": {
+    "annotation": {
+      "file": "gencode.v50.annotation.gff3.gz",
+      "sha256": "2aaf245c91ed00e80920953add6cfaffcccc876dc0aceeb6ca0c86d15875899a"
+    },
+    "transcripts": {
+      "file": "gencode.v50.transcripts.fa.gz",
+      "sha256": "5a320f524d73b5793518eb19b118829033713443d0f42af20a67bb31cc06cf56"
+    }
+  },
+  "mane_only": true,
+  "max_candidates": 20,
+  "max_length": 500,
+  "min_length": 30,
+  "release": 50,
+  "schema_version": 1,
+  "set_name": "gencode_v50_mane_3utr_30_500nt",
+  "source_urls": {
+    "annotation": "https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_50/gencode.v50.annotation.gff3.gz",
+    "transcripts": "https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_50/gencode.v50.transcripts.fa.gz"
+  },
+  "utr_type": "three_prime_utr"
+}

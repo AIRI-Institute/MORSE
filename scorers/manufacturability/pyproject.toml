@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "morse-manufacturability-scorer"
+version = "4.1.0"
+description = "Configurable sequence-level manufacturability checks for synthetic mRNA designs."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {file = "LICENSE"}
+authors = [
+  {name = "2A2I Bioinformatics"},
+]
+dependencies = []
+
+[project.scripts]
+morse-sequence-feasibility = "manufacturability_scorer.feasibility_cli:main"
+morse-sequence-feasibility-server = "manufacturability_scorer.feasibility_server:main"
+
+[tool.setuptools.packages.find]
+include = ["manufacturability_scorer*"]
+
+[tool.setuptools.package-data]
+manufacturability_scorer = ["profiles/*.json"]

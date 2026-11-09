@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "morse-research"
+version = "0.1.0"
+description = "Reproducible modular mRNA optimization and paper experiments using ready scorers."
+readme = "README.md"
+requires-python = ">=3.10,<3.14"
+dependencies = [
+  "morse-core==0.4.0",
+  "morse-warm-starter==0.2.0",
+  "morse-manufacturability-scorer==4.1.0",
+  "numpy==2.2.6",
+  "pymoo==0.6.2",
+  "cloudpickle==3.1.2",
+  "PyYAML==6.0.3",
+  "matplotlib==3.10.9",
+]
+
+[project.optional-dependencies]
+paper = [
+  "scipy==1.15.3",
+]
+notebook = ["morse-core[notebook]==0.4.0"]
+
+[project.scripts]
+morse = "morse_tools.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["morse_tools*", "paper*", "assets*"]
+exclude = ["paper.raw*", "paper.reference*", "paper.data*"]
+
+[tool.setuptools.package-data]
+assets = ["*.json"]
+paper = ["*.json", "*.yaml"]
+
+[tool.uv.workspace]
+members = ["core", "warm-starter", "scorers/manufacturability"]
+
+[tool.uv.sources]
+morse-core = { workspace = true }
+morse-warm-starter = { workspace = true }
+morse-manufacturability-scorer = { workspace = true }

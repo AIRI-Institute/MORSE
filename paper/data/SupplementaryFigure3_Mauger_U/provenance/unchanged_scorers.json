@@ -1,0 +1,62 @@
+{
+  "csi.jsonl": {
+    "unchanged": true,
+    "n": 39,
+    "source_sha256": "d324a06552ddcafed6163758b0d0d8e9a75e372bc5b5e6665a0669e44baef8fe",
+    "mauger_sha256": "31ac61df47092e445952f0fa27c22d6dce22eab90e4def60e3bbdbb3d2f8a493"
+  },
+  "vienna_body.jsonl": {
+    "unchanged": true,
+    "n": 39,
+    "source_sha256": "b37b462b4069eed9774f8bec9175a97750abd5812efed8cca310ab8b57a386b0",
+    "mauger_sha256": "6f4ab8d8ac3e147090878dd1fe85ae6b3e4c68baf0126945cd7f072188130fea"
+  },
+  "ribodecode.jsonl": {
+    "unchanged": true,
+    "n": 39,
+    "source_sha256": "234f8e6415e128cb6c308407dbddc1b81191a1db683fc71118f55e37b5206ac1",
+    "mauger_sha256": "8b9cc3289f9805f121d5dd255a14b5dd215999114b3c13355e374ef9a92fc306"
+  },
+  "feasibility.jsonl": {
+    "unchanged": true,
+    "n": 39,
+    "source_sha256": "970df8250014ac8c2e644a6a4f0668d9b42ae81752e3f4a05a7b0e8cc14db996",
+    "mauger_sha256": "ad2e1a5e10f591b12fe000d4e962826e88975bf0a34ce77df9054b89f8e44add"
+  },
+  "immunogenicity.jsonl": {
+    "unchanged": true,
+    "n": 39,
+    "source_sha256": "79eabb5773c829d8de0cbcdc3135ad02d202c657be019e8b58f4ab43b7c58624",
+    "mauger_sha256": "fa446b5a270a76c9aa85b595260a2a2e72e4199acb4594d763da96826162f2fd"
+  },
+  "cai_ld.jsonl": {
+    "unchanged": true,
+    "n": 39,
+    "source_sha256": "e4b9163852a00137367251476cda4551d97096da32ceb3cb899c3ffd2b941aa2",
+    "mauger_sha256": "dc7b4a852842f9077cd40ef705a25f0308cfb8035c12009f55d24511202870ea"
+  },
+  "orthrus.jsonl": {
+    "unchanged": true,
+    "n": 39,
+    "source_sha256": "eb6a5fa550f64a7a5a235772842c017692856f8e3ea4e2912a171c567ca83724",
+    "mauger_sha256": "63310ec4c2ae1def9bb5ee8ad1fa34c25c019a7f47f056d7133a5a7349748818"
+  },
+  "half_life.jsonl": {
+    "unchanged": true,
+    "n": 39,
+    "source_sha256": "f1c7e29ff1039a8802475bc343278bed05f5619ee4089d1f8b28f8ee151a88e1",
+    "mauger_sha256": "956dcea3b086e403a02cde723d13a04817fdd2f8a70b3f2556cbda172f1bc6cd"
+  },
+  "irna.jsonl": {
+    "unchanged": true,
+    "n": 39,
+    "source_sha256": "893010eddc8eb351193f148d4f66758737918ed9ae13f2b4a8f0ea1b04ef9f76",
+    "mauger_sha256": "e53ae0c1f6a57ded49e3d6ce5ecea6b700747b7dbe569120f38abb17e41d63e7"
+  },
+  "vienna_cds.jsonl": {
+    "unchanged": true,
+    "n": 39,
+    "source_sha256": "d1733074ca0b7dcd28f71eb5c796671fe9617e1a93f09a44ff5ad7a967fb9ef6",
+    "mauger_sha256": "16d26db98dbd6ae5cedad7a6edd95591c0c554b38fd32cea32c5059fc2b724c9"
+  }
+}

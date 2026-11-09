@@ -1,0 +1,42 @@
+{
+  "checked_on": "2026-11-08",
+  "schema_version": 4,
+  "backend_api_version": 6,
+  "cpu_tests": {
+    "discovered": 367,
+    "passed": 363,
+    "skipped": 4,
+    "skip_reason": "Four IRNA container contract tests require IRNA_TEST_IMAGE; no container or GPU inference was started."
+  },
+  "configuration_validation": {
+    "schema4_yaml_files": 47,
+    "paper_configs": 35,
+    "other_examples": 11,
+    "commented_template": 1
+  },
+  "paper_equivalence": {
+    "receipt": "paper/provenance/schema4_migration.json",
+    "sequence_and_context_pairs": 26435,
+    "initial_candidates": 2240,
+    "unchanged_original_files": 156,
+    "frozen_manifest_files": 253,
+    "optimization_or_model_inference_rerun": false
+  },
+  "cpu_integration": {
+    "working_vaccine_config": "completed",
+    "commented_template": "completed",
+    "reference_and_search_bounds_preserved": true,
+    "nan_inf_null_cli_cases_rejected": 4
+  },
+  "colab": {
+    "schema4_generation": true,
+    "cds_only_without_added_parts": true,
+    "yaml_and_fasta_export": true,
+    "local_input_transport_and_preflight": true,
+    "checkpoint_and_progress": true
+  },
+  "legacy_schema3_reader": "preserved",
+  "remote_execution": false,
+  "publication": false,
+  "unit_test_sources": "Local maintainer files remain ignored and outside the public snapshot."
+}

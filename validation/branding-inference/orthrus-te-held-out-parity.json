@@ -1,0 +1,253 @@
+{
+  "model": "orthrus-te-held-out",
+  "comparison": "Renamed held-out adapter versus frozen paper observations, preserving baseline-alone then candidate batching. The compatible existing full-fit runtime supplies dependencies; the held-out source adapter and checkpoint are mounted explicitly.",
+  "image": "sha256:0c8c9f08840a602ac208f7fe371572b28b250e52bd5628b18c9739ea14f4c1ea",
+  "tolerance": {
+    "kind": "absolute",
+    "value": 0.0001
+  },
+  "batch_size": 4,
+  "gpu_index": 0,
+  "timeout_seconds": 240,
+  "request_mode": "baseline-and-candidates",
+  "request_boundary_note": "Core evaluates its reference construct alone before search (optimizer.py score_constructs([original_construct])). Combined and individual modes are explicit batch-shape diagnostics; no model or encoding is modified.",
+  "source_overlay": true,
+  "portable_fullfit_encoder_used": false,
+  "passed": true,
+  "numerical_note": "Different batch shapes, GPU kernels and BF16 arithmetic can change scores; discrepancies remain recorded and never cause automatic tolerance relaxation.",
+  "request_sha256": "7c52603145429e9f9d5f8f22edddc0b0b8672638ed44eeb8356d82c4b8c3c022",
+  "sequences": 3,
+  "archived_run_id": "F4_morse_s7",
+  "checkpoint_sha256": "70913fc29ba9c073100913b56f59542520ec18a473fae358ff19bd57ecddd604",
+  "verified_backbone_files": [
+    {
+      "path": "config.json",
+      "sha256": "a8b513b3d73356e7ac8a59516ebbf51bc03f635e6329ad32350c289f84c8a288",
+      "bytes": 375
+    },
+    {
+      "path": "orthrus_hf.py",
+      "sha256": "35fb82d090003c9bf91be1820d5cc0e22c1092d28d9805951d3f284d728cdbe4",
+      "bytes": 6543
+    },
+    {
+      "path": "pytorch_model.bin",
+      "sha256": "a188c974493679d9eb5d18b5ecc3148f3634cd785e20f8303d6f313f62f00c08",
+      "bytes": 40737856
+    }
+  ],
+  "source_sha256": {
+    "assets/manage.py": "c484fd3ee7279e25112dab32ee426aff961562d790f7170567824d5c1c86b81c",
+    "assets/registry.json": "3efdc5782c0dca10f6ff33e7158494de065c501d0c1a0ab92fa45a8c553a3b00",
+    "scorers/translation-efficiency/.dockerignore": "6573da506664c139c2a025e8893804e6e940b8db27941ab0d6d45e9c6613fc78",
+    "scorers/translation-efficiency/.gitignore": "767953f26ee5bef7376fd49cb4b33fe5e0f88e1280e3f88a94650ce85ce10b34",
+    "scorers/translation-efficiency/Dockerfile": "74c22f70d95822dba1a81aa2df0398f21543f0df95bd1356eab58ef77ba528b8",
+    "scorers/translation-efficiency/Dockerfile.heldout": "9d309bcc1d1ca7c2f5a145a42e380a0057948f4484e8edd3568bac1b922b1b73",
+    "scorers/translation-efficiency/README.md": "05873eaf76b583fadd2dd0d158d38859d050c0deefe85fe28e1a8e094d1a863b",
+    "scorers/translation-efficiency/heldout_encoding.py": "f0cb462b4ef434806af2d1c69d3dd368d03a0cdd6cdb344c9ac9015a2d3d478d",
+    "scorers/translation-efficiency/model.py": "ab23f746913da69cf8b66f62c19a637afc348c25c9ef289f982414d3eb20ce41",
+    "scorers/translation-efficiency/model_metadata/deployment_manifest.json": "830908b169d6339ad087c28585d569ec39137609193f2f0c5012f34a44b840e6",
+    "scorers/translation-efficiency/model_metadata/reference_run.json": "5160e6f8c8778155ebd271e683782e723065b33b2f78265ce3ed878379d21e65",
+    "scorers/translation-efficiency/morse-scorer-heldout.yaml": "caad7020049737135cdac40538b034d06e8a4e5014d2b542b84dac1d71bb58c6",
+    "scorers/translation-efficiency/morse-scorer.yaml": "f19f8e3f8b94c265d38963b14f9ff562efb3aa875c6a6c55f27c3e87821efa60",
+    "scorers/translation-efficiency/portable_orthrus.py": "09499cb57ee067abe5b6e7d566e6544013a68da4370155b2e0245a359e5cb540",
+    "scorers/translation-efficiency/prepare_assets.py": "c2d19864a581a73d80924921158150f327d0e5c636747582c7fc74b929ea3658",
+    "scorers/translation-efficiency/requirements.txt": "533d3fe7592114f65e55f74aa3492bc0740c30625a88957c10ce50a599d0d6c4",
+    "scorers/translation-efficiency/server.py": "b83a21b15bc16a71c5c6c47d7d77a6293754b4f57e282d4ca23d83865d61ef4f",
+    "scorers/translation-efficiency/server_heldout.py": "206d30fd5e4bc21be43b31c9e62d40399256bd8347e5afc67ba2c02f2a3adb55",
+    "scripts/validate_heldout.py": "1a5892e68f51189dc015d1a7ffb855d4e35015f51579161cf7dbd146f025bfe8",
+    "scripts/validate_inference.py": "09c9d4764eb59001964edccb500e5cf4f6882de4c29ba5f2e867a64f1862de43"
+  },
+  "source_revision": "09809d98f3f641c53897a8991fdf2dce7949d9ba",
+  "resolved_image_id": "sha256:0c8c9f08840a602ac208f7fe371572b28b250e52bd5628b18c9739ea14f4c1ea",
+  "status": "completed",
+  "current": {
+    "elapsed_seconds": 11.527061998844147,
+    "response": {
+      "request_id": "morse-ready-model-parity",
+      "outputs": [
+        {
+          "translation_efficiency_score": 0.8299789428710938
+        },
+        {
+          "translation_efficiency_score": 1.6688400506973267
+        },
+        {
+          "translation_efficiency_score": 2.326981782913208
+        }
+      ]
+    },
+    "raw_responses": [
+      {
+        "request_id": "morse-ready-model-parity::baseline-and-candidates::0",
+        "outputs": [
+          {
+            "translation_efficiency_score": 0.8299789428710938
+          }
+        ]
+      },
+      {
+        "request_id": "morse-ready-model-parity::baseline-and-candidates::1",
+        "outputs": [
+          {
+            "translation_efficiency_score": 1.6688400506973267
+          },
+          {
+            "translation_efficiency_score": 2.326981782913208
+          }
+        ]
+      }
+    ],
+    "request_mode": "baseline-and-candidates",
+    "physical_requests": [
+      {
+        "request_id": "morse-ready-model-parity::baseline-and-candidates::0",
+        "fixture_indices": [
+          0
+        ],
+        "adapter_batches": [
+          {
+            "fixture_indices": [
+              0
+            ],
+            "sequence_lengths": [
+              449
+            ],
+            "collated_tensor_shape": [
+              1,
+              449,
+              6
+            ],
+            "right_padding_nt": [
+              0
+            ]
+          }
+        ]
+      },
+      {
+        "request_id": "morse-ready-model-parity::baseline-and-candidates::1",
+        "fixture_indices": [
+          1,
+          2
+        ],
+        "adapter_batches": [
+          {
+            "fixture_indices": [
+              1,
+              2
+            ],
+            "sequence_lengths": [
+              481,
+              481
+            ],
+            "collated_tensor_shape": [
+              2,
+              481,
+              6
+            ],
+            "right_padding_nt": [
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    ],
+    "shape_provenance": "Inferred from the frozen adapter's contiguous batching and zero-padding collate contract; not a GPU profiler trace",
+    "container_name": "morse-heldout-check-e9df96b4a900",
+    "adapter": "/app/server_heldout.py",
+    "runtime_env": {
+      "OMP_NUM_THREADS": "2",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "2",
+      "HF_HUB_OFFLINE": "1",
+      "TRANSFORMERS_OFFLINE": "1",
+      "PYTHONUNBUFFERED": "1",
+      "ORTHRUS_CHECKPOINT": "/models/best.pt",
+      "ORTHRUS_MODEL_SOURCE": "/backbone",
+      "ORTHRUS_DEVICE": "cuda",
+      "ORTHRUS_BATCH_SIZE": "4",
+      "ORTHRUS_PORTABLE": "0",
+      "MORSE_EXPECTED_CHECKPOINT_SHA256": "70913fc29ba9c073100913b56f59542520ec18a473fae358ff19bd57ecddd604"
+    }
+  },
+  "differences": [
+    {
+      "index": 0,
+      "candidate_id": "cand_000001",
+      "sequence_sha256": "0b1963eea99bafb87aef6e715bca2b591a011479e60e2b15da8d67366b0cb154",
+      "field": "translation_efficiency_score",
+      "archived_value": 0.8299789428710938,
+      "current_value": 0.8299789428710938,
+      "signed_difference": 0.0,
+      "absolute_difference": 0.0,
+      "relative_difference": 0.0,
+      "within_absolute_tolerance": true
+    },
+    {
+      "index": 1,
+      "candidate_id": "cand_016686",
+      "sequence_sha256": "4ff2bb860c30e7b1a363591487c8a5d67dd12fafb7d1959b00a12818505fdc97",
+      "field": "translation_efficiency_score",
+      "archived_value": 1.6688400506973267,
+      "current_value": 1.6688400506973267,
+      "signed_difference": 0.0,
+      "absolute_difference": 0.0,
+      "relative_difference": 0.0,
+      "within_absolute_tolerance": true
+    },
+    {
+      "index": 2,
+      "candidate_id": "cand_017712",
+      "sequence_sha256": "b2c94f4a2e658785ce25fa82fed96f98efb6ad3ae851f8e886baec378a1be697",
+      "field": "translation_efficiency_score",
+      "archived_value": 2.326981782913208,
+      "current_value": 2.326981782913208,
+      "signed_difference": 0.0,
+      "absolute_difference": 0.0,
+      "relative_difference": 0.0,
+      "within_absolute_tolerance": true
+    }
+  ],
+  "maximum_absolute_difference": 0.0,
+  "validation_scope": "Post-rename MORSE inference parity on three frozen constructs. Existing immutable runtime images were reused; this is not a fresh image build or a full evolutionary campaign.",
+  "hardware": "olig, NVIDIA A100 80GB, GPU0",
+  "source_snapshot_scope": "Private isolated snapshot of inference adapters, their assets registry, validators and frozen fixtures; not a full monorepo commit",
+  "verified_model_asset": {
+    "id": "orthrus-te-held-out",
+    "status": "verified",
+    "files": [
+      {
+        "path": "best.pt",
+        "sha256": "70913fc29ba9c073100913b56f59542520ec18a473fae358ff19bd57ecddd604",
+        "bytes": 41272706
+      }
+    ],
+    "dependencies": [
+      {
+        "id": "orthrus-backbone",
+        "status": "verified",
+        "files": [
+          {
+            "path": "config.json",
+            "sha256": "a8b513b3d73356e7ac8a59516ebbf51bc03f635e6329ad32350c289f84c8a288",
+            "bytes": 375
+          },
+          {
+            "path": "orthrus_hf.py",
+            "sha256": "35fb82d090003c9bf91be1820d5cc0e22c1092d28d9805951d3f284d728cdbe4",
+            "bytes": 6543
+          },
+          {
+            "path": "pytorch_model.bin",
+            "sha256": "a188c974493679d9eb5d18b5ecc3148f3634cd785e20f8303d6f313f62f00c08",
+            "bytes": 40737856
+          }
+        ]
+      }
+    ]
+  },
+  "private_receipt_sha256": "2170135cb879d3ee258369c7b9bc6bd38c30b0a3e6ecea3e494208f0a56ad0cb",
+  "new_image_build": false,
+  "predictor_training": false
+}

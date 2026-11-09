@@ -1,0 +1,38 @@
+{
+  "status": "pass",
+  "source_snapshot_revision": "09809d98f3f641c53897a8991fdf2dce7949d9ba",
+  "comparisons": [
+    {
+      "model": "orthrus-te-full-fit",
+      "sequences": 3,
+      "maximum_absolute_difference": 0.0,
+      "passed": true
+    },
+    {
+      "model": "orthrus-half-life",
+      "sequences": 3,
+      "maximum_absolute_difference": 0.0,
+      "passed": true
+    },
+    {
+      "model": "ribonn",
+      "sequences": 3,
+      "maximum_absolute_difference": 0.0,
+      "passed": true
+    },
+    {
+      "model": "rinalmo-imrnads",
+      "sequences": 3,
+      "maximum_absolute_difference": 0.0,
+      "passed": true
+    },
+    {
+      "model": "orthrus-te-held-out",
+      "sequences": 3,
+      "maximum_absolute_difference": 0.0,
+      "passed": true
+    }
+  ],
+  "new_image_build": false,
+  "full_search_reproduction_claimed": false
+}

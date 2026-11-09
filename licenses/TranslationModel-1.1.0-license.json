@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "package": "TranslationModel",
+  "version": "1.1.0",
+  "license": "SSPL-1.0",
+  "copyright": "Copyright © 2024 Xie Lab.",
+  "notice_path": "licenses/TranslationModel-1.1.0-SSPL-1.0.txt",
+  "notice_sha256": "42baafb5997a6f54e6eb8dc186416e386cd178793d85e089d403e59f926bcd20",
+  "notice_bytes": 29445,
+  "source": "Exact registered author wheel",
+  "source_wheel_filename": "TranslationModel-1.1.0-py3-none-any.whl",
+  "source_wheel_sha256": "22d4b398a399878f7573074fd1c381b2f3894bd3a62ede9cd27989dc47ac276a",
+  "source_member": "TranslationModel-1.1.0.dist-info/LICENSE.txt",
+  "review_date": "2026-11-05",
+  "status": "License identified and preserved; source, service and redistribution obligations require review; no clearance claim"
+}

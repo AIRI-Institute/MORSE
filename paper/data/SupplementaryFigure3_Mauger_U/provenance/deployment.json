@@ -1,0 +1,14 @@
+{
+  "gitlab_main": "58864d5f8c0c06d669174873a818fa8a14c00220",
+  "server_head": "58864d5f8c0c06d669174873a818fa8a14c00220",
+  "local_and_server_clean": true,
+  "local_unit_tests": 5,
+  "container_unit_tests": 5,
+  "ribonn_image": "sha256:bc3d16cd3fc58680c4a5335dcb9310723441a7ba398a66e851d63deb5a6b2f6b",
+  "updated_te_image": "sha256:a98eb79bb3fa10f4fbe8faab73e53959e6d4e2c3f2fa84b854498bcb050880b8",
+  "te_checkpoint_sha256": "70913fc29ba9c073100913b56f59542520ec18a473fae358ff19bd57ecddd604",
+  "colab": "Not changed, per author instruction",
+  "core": "Not changed",
+  "backend_restart": false,
+  "deployment": "GitLab main verified; verified Git bundle used because server GitLab authentication unavailable"
+}

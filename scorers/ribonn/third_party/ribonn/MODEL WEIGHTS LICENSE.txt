@@ -1,0 +1,13 @@
+MODEL WEIGHTS LICENSE
+
+License Notice: Permission is hereby granted, free of charge, for academic 
+research purposes only and for non-commercial use only, to any person from an 
+academic research or non-profit organization obtaining a copy of these model 
+weights (the “Materials”) to use, copy, modify, or merge the Materials, subject 
+to the following conditions: this License Notice shall be included in all 
+copies of the Materials or of substantial portions of the Materials. For 
+purposes of this notice, “non-commercial use” excludes uses foreseeably 
+resulting in a commercial benefit. Please contact SANOFI with any questions or 
+requests to use these Materials for other purposes.  All other rights are 
+reserved. The Materials are provided 'as is", without warranty of any kind, 
+express or implied, including the warranties of noninfringement.

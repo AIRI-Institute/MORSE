@@ -1,0 +1,56 @@
+{
+  "task": "translation_efficiency",
+  "status": "deployment_validated",
+  "model_id": "quietflamingo/orthrus-large-6-track",
+  "model_revision": "c17ac0db4611c95248001d6fb4bcd95e3293cec4",
+  "recipe": {
+    "backbone_lr": 0.0001,
+    "head_lr": 0.0005,
+    "weight_decay": 0.0001,
+    "loss": "huber",
+    "head": "layernorm",
+    "splice_dropout": 0.0
+  },
+  "cross_validation": {
+    "n": 9324,
+    "folds": 9,
+    "best_epochs": [
+      3,
+      4,
+      4,
+      7,
+      15,
+      3,
+      4,
+      4,
+      12
+    ],
+    "oof_spearman": 0.7904349143082262,
+    "oof_pearson": 0.789394137653031,
+    "oof_rmse": 0.42549174096590514,
+    "oof_mae": 0.32957990114087193
+  },
+  "final_fit": {
+    "n": 10348,
+    "epochs": 4,
+    "source_checkpoint_sha256": "bba28f375d94f15c9007c1823e54bd27c840e1a5b30eff14ccf0fd498793c791",
+    "deployment_checkpoint_sha256": "c380316fe282640d563b9254e9ab8031e129f9e768c9ce04c0c7955bb0ac6bab"
+  },
+  "deployment": {
+    "default_asset_dir": "${MORSE_ASSETS_DIR}/orthrus-te-full-fit",
+    "backbone_code_sha256": "35fb82d090003c9bf91be1820d5cc0e22c1092d28d9805951d3f284d728cdbe4",
+    "optimizer_state_removed": true,
+    "gpu_smoke_test": {
+      "date": "2026-07-23",
+      "gpu": "NVIDIA A100 80GB PCIe",
+      "sequence_length_nt": 483,
+      "cold_load_seconds": 1.338,
+      "first_single_ms": 273.3528,
+      "warm_single_ms": 6.0694,
+      "batch_size": 32,
+      "batch_ms": 28.5278,
+      "per_candidate_ms": 0.8915,
+      "note": "Indicative timing on a shared GPU with concurrent workloads."
+    }
+  }
+}

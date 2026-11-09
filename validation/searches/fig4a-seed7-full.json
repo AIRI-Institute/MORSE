@@ -1,0 +1,52 @@
+{
+  "study": "Figure4a MORSE",
+  "run_id": "F3A_morse_s7",
+  "hardware": "olig, NVIDIA A100",
+  "source_revision": "d72beed152fdf0a5c27d8a37ca62a26d6263e89d",
+  "mode": "full-paper-budget",
+  "completed_generations": 256,
+  "recorded_events": 16369,
+  "in_budget_events": 12800,
+  "ignored_after_paper_budget": 3569,
+  "comparison": "Ordered first 12,800 actual scoring events against the original paper benchmark prefix. Time/progress fields excluded. CDS equality uses archived start+CDS against fresh coding_sequence; fixed UTR/stop/poly(A) are frozen in the study configuration.",
+  "equal_records_by_field": {
+    "event_index": 12800,
+    "candidate_id": 12800,
+    "coding_sequence": 12800,
+    "generation": 12800,
+    "mfe_per_nt": 12800,
+    "csi_percentile": 12800,
+    "csi_raw": 12800
+  },
+  "all_in_budget_records_exact": true,
+  "selection": {
+    "run_id": "F3A_morse_s7",
+    "recorded_events_total": 16369,
+    "in_budget_events": 12800,
+    "expected_in_budget_events": 12800,
+    "last_generation": 256,
+    "expected_last_generation": null,
+    "all_selected_ids_match": true,
+    "missing_roles": [],
+    "selected": {
+      "mfe_per_nt": "cand_010182",
+      "csi_percentile": "cand_012535",
+      "balanced": "cand_010182"
+    }
+  },
+  "sources": [
+    {
+      "path": "paper/artifacts/raw/experiments/figure3_final_20260910/shared_raw/morse/runs/seed7/benchmark_prefix.jsonl",
+      "sha256": "c1ab781121bd588ef28382fe6f85c2e9c0aabcc5dbf44dfc1dd5a5ff951cd0aa"
+    },
+    {
+      "path": "runtime/fig4a-full/F3A_morse_s7/results/run_log.jsonl.gz",
+      "sha256": "d623559ee1bf9e485c93afcd1c0eb23264e7d4394bb8775bd49a45b0635ddf9c"
+    },
+    {
+      "path": "runtime/fig4a-full/F3A_morse_s7/results/run_provenance.json",
+      "sha256": "4a6cfce45fd19d259470cec7148b10a748483f7d1572c389842c2e7cb22da665"
+    }
+  ],
+  "scope_note": "One full independent search, not all 40 paper searches. Later launcher changes added audit-only initialization checks and corrected devices for other studies; archived original F3A native sampling was already used in this run."
+}

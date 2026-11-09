@@ -1,0 +1,6 @@
+{
+  "figure": "1",
+  "kind": "Conceptual workflow",
+  "empirical_source_data": "Not applicable; architecture diagram, not a numerical experiment.",
+  "implementation": "Core sequence representation, scorer-routing and evolutionary-search configuration described in Online Methods."
+}

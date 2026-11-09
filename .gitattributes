@@ -1,0 +1,15 @@
+* text=auto
+*.pdf binary
+*.xlsx binary
+*.gz binary
+*.npz binary
+licenses/** -whitespace
+scorers/ribonn/** whitespace=-blank-at-eof
+core/examples/** whitespace=-blank-at-eof
+examples/**/*.fasta whitespace=-blank-at-eof
+paper/data/** -text -whitespace
+paper/inputs/** -text -whitespace
+paper/reference/** -text
+validation/** -text -whitespace
+scorers/**/third_party/** -whitespace
+scorers/**/vendor/** -whitespace

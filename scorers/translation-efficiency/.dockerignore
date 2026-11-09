@@ -1,0 +1,15 @@
+*
+!Dockerfile
+!Dockerfile.heldout
+!.dockerignore
+!model.py
+!server.py
+!portable_orthrus.py
+!server_heldout.py
+!heldout_encoding.py
+!notices/
+notices/**
+!notices/LICENSE
+!notices/README.md
+!notices/ORTHRUS-LICENSE.md
+!notices/ORTHRUS-PROVENANCE.md

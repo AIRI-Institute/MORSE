@@ -1,0 +1,72 @@
+{
+  "status": "pass",
+  "validation_date": "2026-11-06",
+  "checked_source_revision": "b1b4243e4b3afd9475116c358a9b8879c939da28",
+  "interface": {
+    "run_schema": 3,
+    "scorer_command": "Bash string; one JSON batch on stdin followed by EOF",
+    "metrics_roles": [
+      "optimize",
+      "threshold",
+      "log"
+    ],
+    "backend_api": 5,
+    "model_setup_automatic": false,
+    "public_scorer_interfaces_checked": 15
+  },
+  "local_cpu_suites": {
+    "discovered": 323,
+    "passed": 318,
+    "optional_runtime_skips": 5,
+    "components": 16,
+    "method": "Complete current CPU suite plus reruns of the two private tests updated for the removed installation compiler. The obsolete managed-installation/frontend tests are retained privately outside current discovery."
+  },
+  "local_suite_log_sha256": {
+    "final-command-ui-cpu-tests.log": "db18314ddc226de89d3581173bbccece6a0467d947887af4fb0f332155a99262",
+    "final-mirna-template-test.log": "4fc50a5c496668359fc1e4f3ce64f03203f3ab8386290901e079bdac45fedeb1",
+    "final-manufacturability-tests.log": "70c15088df4c189f5e0832f64bf4aeea708aec7fa17ebb97ce23403a3962e0ca"
+  },
+  "clean_checkout": {
+    "status": "pass",
+    "revision": "b1b4243e4b3afd9475116c358a9b8879c939da28",
+    "no_tracked_test_sources": true,
+    "scorer_catalog_entries": 15,
+    "notebook_real_cpu_generations": 2,
+    "generated_yaml_exact_preflight_fingerprint": true,
+    "progress_history": 2,
+    "png_images": 9,
+    "report": true,
+    "result_zip": true
+  },
+  "paper": {
+    "direct_configs_validated": 35,
+    "frozen_initial_vectors_verified": 2240,
+    "compact_bundle_files_verified": 195,
+    "raw_files_verified": 155,
+    "archive_runs_and_sweeps_reanalyzed": 40,
+    "fig5_unique_reference_transcripts": 104239,
+    "figure_pdf_hashes_unchanged": 8,
+    "real_server_diagnostic_receipt": "direct-run-22e273e/receipt.json",
+    "article_searches_executed_in_this_validation": 1,
+    "server_diagnostic_generations": 2,
+    "server_diagnostic_evaluations": 128,
+    "maximum_native_score_difference": 0.0,
+    "full_new_article_searches_executed": 0
+  },
+  "simplifications": [
+    "Removed the paper-specific MORSE launcher and monkeypatch",
+    "Removed scorer installation, runtime compilation and installation-ID API",
+    "Shared scorer factory between Core and Warm Starter",
+    "Removed Makefile and duplicate batch wrappers",
+    "Optional notebook widgets; exact scientific dependency versions unchanged"
+  ],
+  "notebook": {
+    "generates_ordinary_yaml": true,
+    "launches_same_core": true,
+    "live_progress_and_curve": true,
+    "existing_core_png_report_zip": true,
+    "model_installation": false,
+    "forms_visually_inspected": true
+  },
+  "publication": false
+}

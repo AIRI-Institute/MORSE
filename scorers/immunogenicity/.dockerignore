@@ -1,0 +1,17 @@
+# Ready weights enter only through the named assets build context.
+*
+!Dockerfile
+!.dockerignore
+!server.py
+!runtime_model.py
+!model_assets/
+model_assets/**
+!model_assets/rinalmo_mega_config.json
+!model_assets/tokenizer/
+model_assets/tokenizer/**
+!model_assets/tokenizer/tokenizer_config.json
+!model_assets/tokenizer/vocab.txt
+!notices/
+notices/**
+!notices/LICENSE
+!notices/README.md

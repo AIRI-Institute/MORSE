@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "release_status": "candidate_requires_license_review",
+  "exclude_without_clearance": [
+    {
+      "pattern": "scorers/ribonn/third_party/ribonn/**",
+      "reason": "Sanofi restricted software license; preserve source notices if inclusion authorized"
+    },
+    {
+      "pattern": "**/*.whl",
+      "reason": "Third-party wheel/model redistribution terms must be confirmed"
+    },
+    {
+      "pattern": "**/*.pt",
+      "reason": "Ready weights have separate license/source obligations"
+    },
+    {
+      "pattern": "**/*.pth",
+      "reason": "Ready weights have separate license/source obligations"
+    },
+    {
+      "pattern": "**/LinearDesign/**",
+      "reason": "Author permission required for code redistribution"
+    }
+  ],
+  "excluded_by_publication_scope": [
+    {
+      "scorer_id": "perplexity",
+      "source_path": "scorers/perplexity/",
+      "container_image": "morse/perplexity",
+      "publish_source": false,
+      "publish_container_images": false,
+      "reason": "Maintainer decision: outside the public release scope"
+    },
+    {
+      "scorer_id": "perplexity_cds",
+      "source_path": "scorers/perplexity-cds/",
+      "container_image": "morse/perplexity-cds",
+      "publish_source": false,
+      "publish_container_images": false,
+      "reason": "Maintainer decision: outside the public release scope"
+    },
+    {
+      "scorer_id": "tie",
+      "source_path": "scorers/tie/",
+      "container_image": "morse/tie",
+      "publish_source": false,
+      "publish_container_images": false,
+      "reason": "Maintainer decision: outside the public release scope"
+    },
+    {
+      "scorer_id": "mirna-context",
+      "source_path": "scorers/mirna-context/",
+      "container_image": "morse/mirna-context",
+      "publish_source": false,
+      "publish_container_images": false,
+      "reason": "Maintainer decision: outside the public release scope"
+    }
+  ]
+}

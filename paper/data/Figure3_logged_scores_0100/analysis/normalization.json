@@ -1,0 +1,97 @@
+{
+  "metrics": [
+    {
+      "key": "cai",
+      "label": "CAI",
+      "direction": "max"
+    },
+    {
+      "key": "orthrus_te_common_holdout",
+      "label": "Orthrus TE (held-out split)",
+      "direction": "max"
+    },
+    {
+      "key": "ribonn_mean_te",
+      "label": "RiboNN",
+      "direction": "max"
+    },
+    {
+      "key": "half_life_score",
+      "label": "Orthrus half-life",
+      "direction": "max"
+    },
+    {
+      "key": "cds_mfe",
+      "label": "CDS MFE",
+      "direction": "min"
+    },
+    {
+      "key": "irna_max_profile_risk",
+      "label": "scanMiR",
+      "direction": "min"
+    },
+    {
+      "key": "rinalmo_window_logit_p95",
+      "label": "RiNALMo",
+      "direction": "min"
+    }
+  ],
+  "normalization": {
+    "cai": {
+      "minimum": 0.6242842542300637,
+      "maximum": 0.8237082881121411,
+      "direction": "max",
+      "reference": "All 5960 unique full constructs occurring among the 64 selected population members in generations 1\u2013356 of F2_filtered_s211.",
+      "transform": "(x-min)/(max-min)",
+      "role": "Retrospective display only; did not influence optimization, stopping or selection."
+    },
+    "orthrus_te_common_holdout": {
+      "minimum": 0.7895194292068481,
+      "maximum": 1.992516279220581,
+      "direction": "max",
+      "reference": "All 5960 unique full constructs occurring among the 64 selected population members in generations 1\u2013356 of F2_filtered_s211.",
+      "transform": "(x-min)/(max-min)",
+      "role": "Retrospective display only; did not influence optimization, stopping or selection."
+    },
+    "ribonn_mean_te": {
+      "minimum": 1.0126559734344482,
+      "maximum": 1.649070143699646,
+      "direction": "max",
+      "reference": "All 5960 unique full constructs occurring among the 64 selected population members in generations 1\u2013356 of F2_filtered_s211.",
+      "transform": "(x-min)/(max-min)",
+      "role": "Retrospective display only; did not influence optimization, stopping or selection."
+    },
+    "half_life_score": {
+      "minimum": 0.08929780125617981,
+      "maximum": 1.9708284139633179,
+      "direction": "max",
+      "reference": "All 5960 unique full constructs occurring among the 64 selected population members in generations 1\u2013356 of F2_filtered_s211.",
+      "transform": "(x-min)/(max-min)",
+      "role": "Retrospective display only; did not influence optimization, stopping or selection."
+    },
+    "cds_mfe": {
+      "minimum": -174.5,
+      "maximum": -84.69999694824219,
+      "direction": "min",
+      "reference": "All 5960 unique full constructs occurring among the 64 selected population members in generations 1\u2013356 of F2_filtered_s211.",
+      "transform": "(max-x)/(max-min)",
+      "role": "Retrospective display only; did not influence optimization, stopping or selection."
+    },
+    "irna_max_profile_risk": {
+      "minimum": 0.00357492473961948,
+      "maximum": 0.303006943384826,
+      "direction": "min",
+      "reference": "All 5960 unique full constructs occurring among the 64 selected population members in generations 1\u2013356 of F2_filtered_s211.",
+      "transform": "(max-x)/(max-min)",
+      "role": "Retrospective display only; did not influence optimization, stopping or selection."
+    },
+    "rinalmo_window_logit_p95": {
+      "minimum": 2.626562499999998,
+      "maximum": 4.65,
+      "direction": "min",
+      "reference": "All 5960 unique full constructs occurring among the 64 selected population members in generations 1\u2013356 of F2_filtered_s211.",
+      "transform": "(max-x)/(max-min)",
+      "role": "Retrospective display only; did not influence optimization, stopping or selection."
+    }
+  }
+}

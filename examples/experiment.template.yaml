@@ -1,0 +1,48 @@
+schema_version: 4
+name: my_run
+output_dir: ../outputs/my_run  # Results folder.
+
+# Input RNA and part coordinates.
+construct:
+  fasta: vaccines/magea1/sequence.fasta  # Your FASTA.
+  coordinates:  # 0-based; end excluded.
+    five_prime_utr: [0, 17]
+    cds: [17, 947]  # Start through optional stop.
+    three_prime_utr: [947, 1011]
+    poly_a: [1011, 1081]
+
+  # Unlisted parts stay fixed.
+  changes:
+    cds: synonymous
+    # five_prime_utr: {library: utr5.fasta}
+    # three_prime_utr: {library: utr3.tsv, set: curated}
+    # poly_a: {lengths: [70, 100, 120]}
+
+# Search settings.
+optimizer:
+  algorithm: nsga2
+  population_size: 16
+  generations: 4
+  seed: 43
+  # initial_population: population.json
+  # early_stopping:
+  #   enabled: true
+  #   min_generations: 2
+  #   patience: 2
+  #   rel_tol: 0.001
+
+# Prepared scorer commands.
+scorers:
+  - name: sequence_metrics
+    command: '"${MORSE_PYTHON}" -m morse.resources.simple_scorer'
+    scope: cds  # Region sent to the scorer.
+    # timeout_seconds: 180
+    # workdir: .
+    # provenance_paths: [scorer.py, model.bin]
+    metrics:
+      cpg_per_kb: {role: optimize, direction: min}
+      gc_distance: {role: optimize, direction: min}
+      gc_fraction:
+        role: log  # Or threshold with min/max.
+        # min: 0.35
+        # max: 0.65

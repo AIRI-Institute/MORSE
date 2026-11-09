@@ -1,0 +1,29 @@
+{
+  "status": "pass",
+  "validated_code_revision": "22e8da5780e716095edd5ed2d1c6aff59036579e",
+  "installation": "Fresh uv sync --all-packages --extra paper --frozen in a clone of the candidate-only bundle.",
+  "core_import_from_clone": "core/morse/__init__.py",
+  "checks": {
+    "doctor": true,
+    "paper_manifest": true,
+    "cpu_quickstart": true,
+    "report_regeneration_warnings_as_errors": true,
+    "eight_paper_figures_warnings_as_errors": true,
+    "paper_numerical_analysis": true,
+    "custom_CDS_init_validate_run": true,
+    "unit_tests_absent_from_public_tree": true,
+    "clone_worktree_clean_after_checks": true,
+    "candidate_history_excludes_assembly": true
+  },
+  "source_sha256": {
+    "core/morse/optimizer.py": "d8d4bb79645272383937e335e9234cb93880259bdcde20e968556e46231c71b1",
+    "core/morse/plots.py": "4f05ff849f24efcf3463f42651a917ba4f5bd97398d5a3161c355aaba885be5b",
+    "core/morse/publication_style.py": "c966dd04f5c59f981d4fffe36ca35e521a1cdb6ab0bb493d7ace3702b38e9c27",
+    "core/morse/visualization.py": "c888f23cfec1c3c7f976ef355332035e3853122300fe02df6417782739fdc870",
+    "core/morse/report.py": "90ee3f29427861bde8c23d1df390e3d5f9f74a2408f4f2940169147bde41c9d5",
+    "morse_tools/cli.py": "86497a788134c6699a8a6b5b0b78fa9b1278d9e53cbd47329439c5c19b487090",
+    "pyproject.toml": "4723425007a73d88908703a3e782b6d6d5080fafcbe01d74b938716659767213",
+    "uv.lock": "85a83c8719a307490daae6081f030cac3d2a9edcd2adac08ad6b9afa6dba69c5"
+  },
+  "publication": false
+}

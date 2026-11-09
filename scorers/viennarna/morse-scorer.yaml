@@ -1,0 +1,72 @@
+schema_version: 2
+id: viennarna
+name: ViennaRNA
+version: 2.2.0
+description: >-
+  Thermodynamic scorer for full-length mRNA: MFE, normalized MFE, GC fraction,
+  and the minimum-free-energy secondary structure. It does not require a GPU.
+runtime:
+  type: container
+  image: ghcr.io/shpakb/morse-viennarna:2.2.0
+  dockerfile: Dockerfile
+  timeout_seconds: 1800
+  env:
+    VIENNARNA_ENABLE_PF: "0"
+portable_runtime:
+  type: venv
+  entrypoint: [python, scorer.py]
+  requirements: requirements-portable.txt
+  timeout_seconds: 1800
+  env:
+    VIENNARNA_ENABLE_PF: "0"
+scope:
+  configurable: true
+  allowed_parts: [five_prime_utr, start_codon, cds, stop_codon, three_prime_utr, poly_a]
+  allow_slices: true
+  allow_window: true
+  default:
+    type: full_sequence
+outputs:
+  mfe:
+    type: float
+    unit: kcal/mol
+    value_range: "(-∞, 0]"
+    description: Minimum free energy (MFE) of the analyzed RNA.
+    default_policy: {role: log}
+  mfe_per_nt:
+    type: float
+    unit: kcal/mol/nt
+    value_range: "(-∞, 0]"
+    description: MFE normalized by the length of the analyzed RNA.
+    default_policy: {role: objective, direction: min}
+  gc_fraction:
+    type: float
+    unit: fraction
+    value_range: "[0, 1]"
+    description: G+C fraction in the analyzed RNA.
+    default_policy: {role: log}
+  mfe_structure:
+    type: structure
+    value_range: dot-bracket string with input length
+    description: Minimum-free-energy secondary structure in dot-bracket notation.
+    default_policy: {role: log}
+parameters:
+  max_bp_span:
+    type: int
+    default: 200
+    min: 0
+    max: 100000
+    env: VIENNARNA_MAX_BP_SPAN
+    description: Maximum span between paired nucleotides; 0 disables the limit.
+self_test:
+  sequence: AUGGCCGCCGCCGCCGCCUAA
+  sequence_context:
+    part_ranges:
+      - {part: start_codon, start: 0, end: 3, part_start: 0, part_end: 3}
+      - {part: cds, start: 3, end: 18, part_start: 0, part_end: 15}
+      - {part: stop_codon, start: 18, end: 21, part_start: 0, part_end: 3}
+  expected_outputs:
+    - mfe
+    - mfe_per_nt
+    - gc_fraction
+    - mfe_structure

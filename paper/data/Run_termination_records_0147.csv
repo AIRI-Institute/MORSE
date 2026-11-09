@@ -1,0 +1,31 @@
+study,seed,generation,evaluations,initial_passing,source
+"Fig. 3, filtered",7,220,14078,0,manuscript/source_data/protocols/F2_filtered_s7/summary.json
+"Fig. 3, filtered",43,348,22268,0,manuscript/source_data/protocols/F2_filtered_s43/summary.json
+"Fig. 3, filtered",101,321,20538,0,manuscript/source_data/protocols/F2_filtered_s101/summary.json
+"Fig. 3, filtered",137,299,19131,0,manuscript/source_data/protocols/F2_filtered_s137/summary.json
+"Fig. 3, filtered",211,356,22775,1,manuscript/source_data/protocols/F2_filtered_s211/summary.json
+"Fig. 3, logging only",7,371,23738,0,manuscript/source_data/protocols/F2_logging_only_s7/summary.json
+"Fig. 3, logging only",43,500,31986,0,manuscript/source_data/protocols/F2_logging_only_s43/summary.json
+"Fig. 3, logging only",101,266,17020,0,manuscript/source_data/protocols/F2_logging_only_s101/summary.json
+"Fig. 3, logging only",137,429,27452,0,manuscript/source_data/protocols/F2_logging_only_s137/summary.json
+"Fig. 3, logging only",211,317,20285,1,manuscript/source_data/protocols/F2_logging_only_s211/summary.json
+"Fig. 4b, fixed UTRs",7,180,11516,58,manuscript/source_data/protocols/F3B_cds_only_s7/summary.json
+"Fig. 4b, fixed UTRs",43,186,11903,58,manuscript/source_data/protocols/F3B_cds_only_s43/summary.json
+"Fig. 4b, fixed UTRs",101,226,14460,60,manuscript/source_data/protocols/F3B_cds_only_s101/summary.json
+"Fig. 4b, fixed UTRs",137,210,13436,58,manuscript/source_data/protocols/F3B_cds_only_s137/summary.json
+"Fig. 4b, fixed UTRs",211,212,13565,61,manuscript/source_data/protocols/F3B_cds_only_s211/summary.json
+"Fig. 4b, editable UTRs",7,190,12149,58,manuscript/source_data/protocols/F3B_cds_utrs_s7/summary.json
+"Fig. 4b, editable UTRs",43,197,12601,58,manuscript/source_data/protocols/F3B_cds_utrs_s43/summary.json
+"Fig. 4b, editable UTRs",101,203,12987,60,manuscript/source_data/protocols/F3B_cds_utrs_s101/summary.json
+"Fig. 4b, editable UTRs",137,209,13375,58,manuscript/source_data/protocols/F3B_cds_utrs_s137/summary.json
+"Fig. 4b, editable UTRs",211,223,14268,61,manuscript/source_data/protocols/F3B_cds_utrs_s211/summary.json
+"Fig. 4c, continuation",7,286,18295,63,manuscript/source_data/protocols/F3C_morse_s7/summary.json
+"Fig. 4c, continuation",43,404,25835,1,manuscript/source_data/protocols/F3C_morse_s43/summary.json
+"Fig. 4c, continuation",101,354,22632,1,manuscript/source_data/protocols/F3C_morse_s101/summary.json
+"Fig. 4c, continuation",137,293,18744,0,manuscript/source_data/protocols/F3C_morse_s137/summary.json
+"Fig. 4c, continuation",211,220,14078,2,manuscript/source_data/protocols/F3C_morse_s211/summary.json
+Fig. 5,7,418,26744,,manuscript/source_data/protocols/F4_morse_s7/summary.json
+Fig. 5,43,370,23680,,manuscript/source_data/protocols/F4_morse_s43/summary.json
+Fig. 5,101,287,18366,,manuscript/source_data/protocols/F4_morse_s101/summary.json
+Fig. 5,137,265,16959,,manuscript/source_data/protocols/F4_morse_s137/summary.json
+Fig. 5,211,289,18494,,manuscript/source_data/protocols/F4_morse_s211/summary.json

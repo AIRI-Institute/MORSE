@@ -1,0 +1,6 @@
+role,seed,candidate_id,changed_codons,body_codons,five_prime_utr,three_prime_utr,changed_codon_positions_1_based
+initial,7,cand_000001,0,117,5UTR_BNT162b2,3UTR_HBB,
+mfe_per_nt,7,cand_010467,8,117,5UTR_RPL32_deltaTOP,3UTR_PSMB3_MANE,2;33;68;72;74;90;102;117
+translation_efficiency_score,7,cand_009419,26,117,5UTR_RiboBio_HSD17B4,3UTR_HBB,1;2;6;7;9;11;12;17;18;22;24;30;31;32;33;34;46;48;51;58;59;79;100;102;107;113
+cai_log,7,cand_011184,12,117,5UTR_RPL32_deltaTOP,3UTR_HBB,2;16;17;22;27;29;61;72;74;81;99;102
+best_hv,7,cand_008857,13,117,5UTR_RiboBio_HSD17B4,3UTR_HBB,2;12;13;16;17;24;34;35;41;47;59;102;107

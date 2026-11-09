@@ -1,0 +1,16 @@
+{
+  "checkpoint_file": "best_model.pt",
+  "dataset": "IMrnaDS / Chaudhary 2016",
+  "model_name": "multimolecule/rinalmo-mega",
+  "seed": 42,
+  "total_sequences": 1122,
+  "train_sequences": 898,
+  "validation_sequences": 224,
+  "epochs_requested": 5,
+  "best_epoch": 2,
+  "loss": "rocauc",
+  "batch_size": 32,
+  "validation_roc_auc": 0.9814503205128206,
+  "validation_average_precision": 0.9878704749711917,
+  "validation_balanced_accuracy_at_0_5": 0.9467948717948718
+}

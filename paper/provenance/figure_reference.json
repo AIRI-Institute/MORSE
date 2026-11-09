@@ -1,0 +1,50 @@
+[
+  {
+    "file": "Figure1_design_workflow.pdf",
+    "sha256": "13a3e4852eda922e23a5c79e35293247e17d1181fdd1843785a2109a178b6df3",
+    "bytes": 39164,
+    "historical_renderer_sha256": "ddf79379fe7a86b013da5bc7aade5d12b195562640e44e1c74775a696e0387a1"
+  },
+  {
+    "file": "Figure2_Mauger_U_rank_heatmap.pdf",
+    "sha256": "1369d7bdd577280ec7fc626481f1842c65dea03705ac85ac7b70e5f368ff539a",
+    "bytes": 822010,
+    "historical_renderer_sha256": "127d6ce16c2ec18656cedf83cabaa3d4a00e307352498ef11f7e940ac2276235"
+  },
+  {
+    "file": "Figure3_modular_design.pdf",
+    "sha256": "18a26f1851750c7b1270bc20146890abc0295182f0b920d52add788259a5653b",
+    "bytes": 813060,
+    "historical_renderer_sha256": "b509bca4e1514f6cb20296351e9cd9d177beb01dfef47b214988b6bbdc297b02"
+  },
+  {
+    "file": "Figure4_comparative_design.pdf",
+    "sha256": "0c7e141ac52cf68ce829747f222e808c7312b8913439dd1119b32a05b8840ce1",
+    "bytes": 49867,
+    "historical_renderer_sha256": "c1dc60e48cfc56ae0e0f2d869c74b386cef0361d965668ff1634df50cf4ee78e"
+  },
+  {
+    "file": "Figure5_predictor_disagreement.pdf",
+    "sha256": "59f8c5aa10f2ed629bf631c9cd1cb8b6aca211b03f87f2b07c9fc26c3eeb6a31",
+    "bytes": 76727,
+    "historical_renderer_sha256": "7397a4c63b642b7bd280517b179944a0d1336a6117b67db74b7bb61e7db78365"
+  },
+  {
+    "file": "ExtendedDataFigure1_feasibility.pdf",
+    "sha256": "3689c6dfe050c571d2a255ed40ace82536a61c8bd26cf63e1b041b7e7e9ad21a",
+    "bytes": 291729,
+    "historical_renderer_sha256": "ddf79379fe7a86b013da5bc7aade5d12b195562640e44e1c74775a696e0387a1"
+  },
+  {
+    "file": "ExtendedDataFigure2_LinearDesign_UTR_control.pdf",
+    "sha256": "d92de91cd7c8a0d346a2bdcb6c5f35c7ecbc1aed64f7e3c3c2d274940b765747",
+    "bytes": 514808,
+    "historical_renderer_sha256": "b509bca4e1514f6cb20296351e9cd9d177beb01dfef47b214988b6bbdc297b02"
+  },
+  {
+    "file": "ExtendedDataFigure3_RiboDecode_pairs.pdf",
+    "sha256": "10eeffb6e53a9639e3c1030131062b5e27627571ee06eb6ed4d9bc043cf2abb5",
+    "bytes": 32303,
+    "historical_renderer_sha256": "ddf79379fe7a86b013da5bc7aade5d12b195562640e44e1c74775a696e0387a1"
+  }
+]

@@ -1,0 +1,210 @@
+schema_version: 4
+name: f2_filtered_s137
+# Results folder.
+output_dir: ../../outputs/paper-runs/F2_filtered_s137
+
+# Input RNA and parts.
+construct:
+  fasta: ../inputs/schema4/f2_filtered_s137_reference.fasta
+  coordinates:  # 0-based; end excluded.
+    five_prime_utr: [0, 54]
+    cds: [54, 411]
+    three_prime_utr: [411, 706]
+    poly_a: [706, 806]
+
+  # Unlisted parts stay fixed.
+  changes:
+    cds: synonymous
+    five_prime_utr:
+      library: ../inputs/curated_practice_5utr_v1.tsv
+      set: curated_practice_5utr_v1
+      max_candidates: 15
+    three_prime_utr:
+      library: ../inputs/curated_practice_3utr_v1.tsv
+      set: curated_practice_3utr_v1
+      max_candidates: 15
+
+# Search settings.
+optimizer:
+  algorithm: nsga3
+  population_size: 64
+  generations: 500
+  seed: 137
+  n_offsprings: 64
+  eliminate_duplicates: true
+  crossover:
+    type: uniform
+    probability: 0.9
+  mutation:
+    type: integer_reset
+    probability: auto
+  reference_directions:
+    method: energy
+    n_points: 64
+    seed: 137
+  constraint_handling:
+    method: feasibility_first
+  early_stopping:
+    enabled: true
+    metric: hypervolume
+    min_generations: 150
+    patience: 50
+    rel_tol: 0.001
+    abs_tol: 0.0
+  initial_population_audit: ../inputs/f2_filtered_s137_initial.json
+manufacturability:
+  enabled: false
+
+# Prepared scorer commands.
+scorers:
+  - name: viennarna_transcript_body
+    command: 'curl -fsS -H ''Content-Type: application/json'' --data-binary @- http://127.0.0.1:8701/score'
+    timeout_seconds: 1800
+    scope: [five_prime_utr, cds, three_prime_utr]
+    metrics:  # Goals, limits and logs.
+      mfe_per_nt:
+        role: optimize
+        direction: min
+      mfe:
+        role: log
+      gc_fraction:
+        role: log
+      mfe_structure:
+        role: log
+        value_type: structure
+  - name: csi_human
+    command: 'curl -fsS -H ''Content-Type: application/json'' --data-binary @- http://127.0.0.1:8702/score'
+    timeout_seconds: 1800
+    scope: [start_codon, cds_body]
+    metrics:  # Goals, limits and logs.
+      csi_percentile:
+        role: optimize
+        direction: max
+      csi_raw:
+        role: log
+      csi_window_p05:
+        role: log
+      csi_window_min:
+        role: log
+      csi_destabilizing_fraction:
+        role: log
+      csi_codons:
+        role: log
+        value_type: int
+      csi_profile_id:
+        role: log
+        value_type: string
+      csi_profile_sha256:
+        role: log
+        value_type: string
+  - name: orthrus_translation_efficiency
+    command: 'curl -fsS -H ''Content-Type: application/json'' --data-binary @- http://127.0.0.1:8703/score'
+    timeout_seconds: 1800
+    scope: [five_prime_utr, cds, three_prime_utr]
+    metrics:  # Goals, limits and logs.
+      translation_efficiency_score:
+        role: optimize
+        direction: max
+  - name: ribodecode_hek293t
+    command: 'curl -fsS -H ''Content-Type: application/json'' --data-binary @- http://127.0.0.1:8704/score'
+    timeout_seconds: 1800
+    scope: [start_codon, cds_body]
+    metrics:  # Goals, limits and logs.
+      ribodecode_translation_log:
+        role: optimize
+        direction: max
+      ribodecode_translation:
+        role: log
+  - name: sequence_feasibility
+    command: 'curl -fsS -H ''Content-Type: application/json'' --data-binary @- http://127.0.0.1:8705/score'
+    timeout_seconds: 1800
+    scope: [five_prime_utr, cds, three_prime_utr]
+    metrics:  # Goals, limits and logs.
+      feasibility_pass:
+        role: log
+        value_type: bool
+      feasibility_violation_count:
+        role: threshold
+        max: 0
+        value_type: int
+      feasibility_failed_check_count:
+        role: log
+        value_type: int
+      feasibility_failed_checks_json:
+        role: log
+        value_type: string
+      feasibility_violations_json:
+        role: log
+        value_type: string
+      feasibility_exemptions_json:
+        role: log
+        value_type: string
+      feasibility_raw_counts_json:
+        role: log
+        value_type: string
+      analyzed_length:
+        role: log
+        value_type: int
+      global_gc_fraction:
+        role: log
+      local_gc_min:
+        role: log
+      local_gc_max:
+        role: log
+      local_gc_window_count:
+        role: log
+        value_type: int
+      max_homopolymer_length:
+        role: log
+        value_type: int
+      max_homopolymer_a:
+        role: log
+        value_type: int
+      max_homopolymer_c:
+        role: log
+        value_type: int
+      max_homopolymer_g:
+        role: log
+        value_type: int
+      max_homopolymer_u:
+        role: log
+        value_type: int
+      global_gc_violation_count:
+        role: log
+        value_type: int
+      local_gc_violation_count:
+        role: log
+        value_type: int
+      homopolymers_violation_count:
+        role: log
+        value_type: int
+      direct_repeats_violation_count:
+        role: log
+        value_type: int
+      tandem_repeats_violation_count:
+        role: log
+        value_type: int
+      forbidden_motifs_violation_count:
+        role: log
+        value_type: int
+      feasibility_profile_id:
+        role: log
+        value_type: string
+      feasibility_profile_sha256:
+        role: log
+        value_type: string
+      feasibility_config_sha256:
+        role: log
+        value_type: string
+      feasibility_config_json:
+        role: log
+        value_type: string
+      restriction_sites_violation_count:
+        role: log
+        value_type: int
+      capping_start_violation_count:
+        role: log
+        value_type: int
+      inverted_repeats_violation_count:
+        role: log
+        value_type: int

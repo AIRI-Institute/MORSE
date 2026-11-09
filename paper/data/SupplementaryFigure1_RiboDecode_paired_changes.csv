@@ -1,0 +1,11 @@
+run_id,figure,condition,seed,metric,initial,selected,change,initial_feasible,selected_feasible
+F3C_morse_s7,F3C,morse,7,csi_percentile,33.63009075073846,70.54999937576692,36.919908625028455,True,True
+F3C_morse_s7,F3C,morse,7,ribodecode_translation_log,4.530922889709473,4.563647747039795,0.032724857330322266,True,True
+F3C_morse_s43,F3C,morse,43,csi_percentile,35.23480279813228,70.36119063965229,35.126387841520014,False,True
+F3C_morse_s43,F3C,morse,43,ribodecode_translation_log,4.4727020263671875,4.55728006362915,0.08457803726196289,False,True
+F3C_morse_s101,F3C,morse,101,csi_percentile,33.7711384730384,67.3069673208736,33.5358288478352,False,True
+F3C_morse_s101,F3C,morse,101,ribodecode_translation_log,4.568248748779297,4.653498649597168,0.0852499008178711,False,True
+F3C_morse_s137,F3C,morse,137,csi_percentile,29.08172136629138,72.87056097965564,43.78883961336426,False,True
+F3C_morse_s137,F3C,morse,137,ribodecode_translation_log,4.512879848480225,4.521871566772461,0.008991718292236328,False,True
+F3C_morse_s211,F3C,morse,211,csi_percentile,36.94262132747975,68.99089092090415,32.0482695934244,False,True
+F3C_morse_s211,F3C,morse,211,ribodecode_translation_log,4.518364429473877,4.559659004211426,0.04129457473754883,False,True

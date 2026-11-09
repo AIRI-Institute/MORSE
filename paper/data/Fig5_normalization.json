@@ -1,0 +1,47 @@
+{
+  "metrics": [
+    "ribonn_mean_te",
+    "translation_efficiency_score",
+    "ribodecode_translation_log"
+  ],
+  "cost_signs": [
+    -1,
+    -1,
+    -1
+  ],
+  "cost_ideal": [
+    -1.7026671171188354,
+    -2.326981782913208,
+    -4.42920446395874
+  ],
+  "cost_span": [
+    0.6078450679779053,
+    1.764035701751709,
+    1.8161029815673828
+  ],
+  "reference": 1.05,
+  "unique_transcripts": 104239,
+  "sources": [
+    {
+      "run": "f4_ribonn_s7",
+      "sha256": "e8426f7249057964843e2e48464787f11931c2c58ca4b39b4658cc9823a3b71d"
+    },
+    {
+      "run": "f4_ribonn_s43",
+      "sha256": "48e3160fd9a874869c0f93baf7d1bbc57e8445e8f997fd23dcd9faea44044030"
+    },
+    {
+      "run": "f4_ribonn_s101",
+      "sha256": "5ee321ee0dcc6f4ba23364f18d44661ec0fd022516340c48cc9c7072d269c480"
+    },
+    {
+      "run": "f4_ribonn_s137",
+      "sha256": "96b27d2bd85852407e93420b48493adad6304941a4a93ac6680461e49612bec8"
+    },
+    {
+      "run": "f4_ribonn_s211",
+      "sha256": "8f04b23619e84aa544ca3e735a0fd896364839a722a920cdf490b6876976a056"
+    }
+  ],
+  "rule": "Pooled completed new archives, unique full transcripts; identical empirical CDF and HV scale for all five runs. Reporting only."
+}

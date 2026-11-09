@@ -1,0 +1,56 @@
+{
+  "model": "ribonn",
+  "source_revision": "1b063532edff87782866df368965a33ad4c19893",
+  "image": "sha256:bc3d16cd3fc58680c4a5335dcb9310723441a7ba398a66e851d63deb5a6b2f6b",
+  "request_sha256": "7c52603145429e9f9d5f8f22edddc0b0b8672638ed44eeb8356d82c4b8c3c022",
+  "sequences": 3,
+  "archived": {
+    "elapsed_seconds": 16.724557049572468,
+    "response": {
+      "request_id": "morse-ready-model-parity",
+      "outputs": [
+        {
+          "ribonn_mean_te": 1.4123536348342896,
+          "ribonn_model_sd": 0.11486633867025375,
+          "ribonn_model_count": 50
+        },
+        {
+          "ribonn_mean_te": 1.7015132904052734,
+          "ribonn_model_sd": 0.08558852970600128,
+          "ribonn_model_count": 50
+        },
+        {
+          "ribonn_mean_te": 1.6889965534210205,
+          "ribonn_model_sd": 0.08240319788455963,
+          "ribonn_model_count": 50
+        }
+      ]
+    }
+  },
+  "current": {
+    "elapsed_seconds": 8.633565619587898,
+    "response": {
+      "request_id": "morse-ready-model-parity",
+      "outputs": [
+        {
+          "ribonn_mean_te": 1.4123536348342896,
+          "ribonn_model_sd": 0.11486633867025375,
+          "ribonn_model_count": 50
+        },
+        {
+          "ribonn_mean_te": 1.7015132904052734,
+          "ribonn_model_sd": 0.08558852970600128,
+          "ribonn_model_count": 50
+        },
+        {
+          "ribonn_mean_te": 1.6889965534210205,
+          "ribonn_model_sd": 0.08240319788455963,
+          "ribonn_model_count": 50
+        }
+      ]
+    }
+  },
+  "maximum_absolute_difference": 0.0,
+  "tolerance": 1e-06,
+  "passed": true
+}

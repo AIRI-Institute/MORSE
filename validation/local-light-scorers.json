@@ -1,0 +1,69 @@
+{
+  "status": "pass",
+  "validation_date": "2026-11-06",
+  "source_revision_before_documentation_fixes": "23ff99089b124e6623d469186215a38a0db24cff",
+  "host": {
+    "os": "Darwin",
+    "architecture": "arm64",
+    "python": "3.13.3"
+  },
+  "execution": "All inference and optimization on the local Mac, without Docker or GPU.",
+  "scorers": {
+    "cai": "pass: human/mouse profiles",
+    "csi": "pass: human/mouse profiles",
+    "manufacturability": "pass: both immutable presets, overrides, thresholds and contexts",
+    "viennarna": "pass: RNA2.7.2, direct API parity, MFE/PF and scopes",
+    "irna": "pass: native R, human157/mouse170 models",
+    "mirna-context": "pass: native R, dendritic/hepatocyte profiles"
+  },
+  "main_environment": {
+    "numpy": "2.2.6",
+    "RNA": "2.7.2",
+    "r": "4.5.2",
+    "scanMiR": "1.16.0",
+    "scanMiRData": "1.16.0"
+  },
+  "checks": {
+    "standard_scorer_measurements": 95,
+    "standard_comparisons": 1084,
+    "standard_max_numeric_difference": 8.881784197001252e-16,
+    "cai_csi_feasibility_unit_tests_passed": 70,
+    "vienna_unit_and_scope_tests_passed": 13,
+    "mirna_context_R_checks_passed": 34
+  },
+  "combined_run": {
+    "scorers": 6,
+    "generations": 2,
+    "population_size": 8,
+    "evaluations": 16,
+    "pareto_count": 6,
+    "protein_identity_preserved": true,
+    "scorer_batch_sizes": [
+      1,
+      7,
+      8
+    ],
+    "png_figures": 10,
+    "pdf_figures": 10,
+    "half_spider_plot_visually_checked": true,
+    "report_regeneration_without_scorer_execution": true,
+    "observations_provenance_and_config_unchanged_by_report": true
+  },
+  "other_cli_checks": [
+    "doctor",
+    "validate",
+    "preview",
+    "score",
+    "pilot"
+  ],
+  "installed_only_locally": {
+    "ViennaRNA": "project virtual environment",
+    "R_and_scanMiR": "isolated ignored cache; no global framework or package manager changes"
+  },
+  "runtime_note": "S4Vectors binary reports Built R4.5.3 when loaded by R4.5.2; all native R checks and combined inference passed.",
+  "publication": false,
+  "excluded_by_user": [
+    "TIE",
+    "heavy scorers"
+  ]
+}

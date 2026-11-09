@@ -1,0 +1,17 @@
+{
+  "source_revision": "dc896e1d1f78bf6b4e9bb7525c7852fcf25532e8",
+  "original_model_sha256": "5d7663ea6634529fd7ada8960a101a5f6c3d0f245fa489f85bdb0f65d425cf80",
+  "original_helpers_sha256": "f7529076df30fa3a37dd26165a3c93273613cb71dc09b91d07ef7c4ce4ccf0ca",
+  "removed": [
+    {
+      "path": "src/data.py",
+      "sha256": "7c042ccf89570f357a8e8b02f23fef00dcf748ebac36a2d27933747e5a65c69d"
+    },
+    {
+      "path": "src/predict.py",
+      "sha256": "618cff3d53d1a48b6845da8cc711fce46bfe8f00d461fea53a423de8495c18d8"
+    }
+  ],
+  "inference_model_sha256": "973324f2323f0eaaa819990f5e5da6fbffd418a0469339afca5828e0fb341ec0",
+  "inference_helpers_sha256": "cc9d31c5b8f1b96d2073b9352d3a4b05c0fc562fc6211f64ce846d2a7b7533e3"
+}

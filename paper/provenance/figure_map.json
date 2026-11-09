@@ -1,0 +1,349 @@
+{
+  "revision": "0154",
+  "based_on": "0153",
+  "numerical_data_revision": "0067",
+  "source_data_revision": "0073",
+  "figures": [
+    {
+      "previous": "Fig. 1",
+      "current": "Fig. 1",
+      "previous_file": "figures/Figure1_design_workflow.pdf",
+      "file": "figures/Figure1_design_workflow.pdf",
+      "label": "fig:architecture",
+      "source_data": [
+        "Figure1_conceptual_source.json"
+      ],
+      "sha256": "13a3e4852eda922e23a5c79e35293247e17d1181fdd1843785a2109a178b6df3",
+      "display_name_policy": "Orthrus TE without checkpoint qualifiers; see Methods and checkpoint_usage_0108.json.",
+      "mfe_display_policy": "Single MFE label and #9870B1 colour; scopes and units defined in Methods and Supplementary.",
+      "document": "main.tex"
+    },
+    {
+      "previous": "Extended Data Fig. 1",
+      "current": "Fig. 2",
+      "previous_file": "figures/ExtendedDataFigure1_Mauger_U_rank_heatmap.pdf",
+      "file": "figures/Figure2_Mauger_U_rank_heatmap.pdf",
+      "label": "fig:mauger-protein-output",
+      "source_data": [
+        "SupplementaryFigure3_Mauger_U"
+      ],
+      "sha256": "1369d7bdd577280ec7fc626481f1842c65dea03705ac85ac7b70e5f368ff539a",
+      "note": "Typography updated at final display size; all scientific values, profiles and selected constructs retained.",
+      "display_name_policy": "Orthrus TE without checkpoint qualifiers; see Methods and checkpoint_usage_0108.json.",
+      "mfe_display_policy": "Single MFE label and #9870B1 colour; scopes and units defined in Methods and Supplementary.",
+      "display_style": "figure_display_style_0112.json",
+      "label_alignment_audit": "figure2_label_alignment_0113.json",
+      "formatting_revision": "0116",
+      "document": "main.tex"
+    },
+    {
+      "previous": "Fig. 2",
+      "current": "Fig. 3",
+      "previous_file": "figures/Figure2_modular_design.pdf",
+      "file": "figures/Figure3_modular_design.pdf",
+      "label": "fig:modular",
+      "source_data": [
+        "SourceData_Figure2.xlsx",
+        "Figure3_radar_values_0105.csv",
+        "Figure3_radar_normalization_0105.csv",
+        "Figure3b_construct_maps_0105.csv"
+      ],
+      "sha256": "18a26f1851750c7b1270bc20146890abc0295182f0b920d52add788259a5653b",
+      "note": "Typography updated at final display size; all scientific values, profiles and selected constructs retained.",
+      "display_source_data": "figure_display_coordinates_0105.json",
+      "radar_summary": "All specialists and selected compromise: mean ± sample SD across five independent runs; raw scores divided by each metric maximum within this experiment; fixed Initial has no SD.",
+      "display_name_policy": "Orthrus TE without checkpoint qualifiers; see Methods and checkpoint_usage_0108.json.",
+      "mfe_display_policy": "Single MFE label and #9870B1 colour; scopes and units defined in Methods and Supplementary.",
+      "layout_provenance": "figure3_layout_0110.json",
+      "display_style": "figure_display_style_0112.json",
+      "formatting_revision": "0152",
+      "caption_panel_titles": [
+        "a. Design space and scorer inputs.",
+        "b. Selected candidates and sequence changes.",
+        "c. Optimization and feasibility trajectories.",
+        "d. Additional recorded scores."
+      ],
+      "document": "main.tex",
+      "numerical_values_unchanged": true
+    },
+    {
+      "previous": "Fig. 3",
+      "current": "Fig. 4",
+      "previous_file": "figures/Figure3_comparative_design.pdf",
+      "file": "figures/Figure4_comparative_design.pdf",
+      "label": "fig:comparative",
+      "source_data": [
+        "SourceData_Figure3.xlsx",
+        "Figure4_radar_values_0109.csv",
+        "Figure4_radar_normalization_0109.csv",
+        "Figure4b_construct_maps_0109.csv"
+      ],
+      "sha256": "0c7e141ac52cf68ce829747f222e808c7312b8913439dd1119b32a05b8840ce1",
+      "display_source_data": "figure_display_coordinates_0109.json",
+      "radar_summary": "mean ± sample SD of five existing run-level selections; fixed I0 has no SD",
+      "note": "Standard Figure4_comparative_design.pdf filename restored. Same compact180×185mm graphic, maximum height185mm, caption gap4pt and complete legend.",
+      "display_name_policy": "Orthrus TE without checkpoint qualifiers; see Methods and checkpoint_usage_0108.json.",
+      "mfe_display_policy": "Single MFE label and #9870B1 colour; scopes and units defined in Methods and Supplementary.",
+      "display_style": "figure_display_style_0112.json",
+      "formatting_revision": "0116",
+      "caption_panel_titles": [
+        "a. Optimization of shared objectives.",
+        "b. Refinement of a LinearDesign sequence.",
+        "c. Refinement of RiboDecode sequences."
+      ],
+      "previous_revision_file": "figures/Figure4_comparative_design_compact.pdf",
+      "document": "main.tex"
+    },
+    {
+      "previous": "Fig. 4",
+      "current": "Fig. 5",
+      "previous_file": "figures/Figure4_predictor_disagreement.pdf",
+      "file": "figures/Figure5_predictor_disagreement.pdf",
+      "label": "fig:predictors",
+      "source_data": [
+        "SourceData_Figure4.xlsx",
+        "Figure5_radar_values_0105.csv",
+        "Figure5_radar_normalization_0105.csv"
+      ],
+      "sha256": "59f8c5aa10f2ed629bf631c9cd1cb8b6aca211b03f87f2b07c9fc26c3eeb6a31",
+      "display_source_data": "figure_display_coordinates_0105.json",
+      "radar_summary": "All specialists and selected compromise: mean ± sample SD across five independent runs; raw scores divided by each metric maximum within this experiment; fixed Initial has no SD.",
+      "note": "Typography updated at final display size; all scientific values, profiles and selected constructs retained.",
+      "display_name_policy": "Orthrus TE without checkpoint qualifiers; see Methods and checkpoint_usage_0108.json.",
+      "mfe_display_policy": "Single MFE label and #9870B1 colour; scopes and units defined in Methods and Supplementary.",
+      "display_style": "figure_display_style_0112.json",
+      "formatting_revision": "0151",
+      "caption_panel_titles": [
+        "a. Design space and predictor inputs.",
+        "b. Specialists and compromise candidates.",
+        "c. Predictor agreement and optimization dynamics."
+      ],
+      "document": "main.tex",
+      "poly_a_display": "A100",
+      "numerical_values_unchanged": true
+    },
+    {
+      "previous": "Extended Data Fig. 2",
+      "current": "Extended Data Fig. 1",
+      "previous_file": "figures/ExtendedDataFigure2_feasibility.pdf",
+      "file": "figures/ExtendedDataFigure1_feasibility.pdf",
+      "label": "fig:feasibility",
+      "source_data": [
+        "SourceData_ExtendedDataFigure1.xlsx",
+        "trajectories_common_support.csv"
+      ],
+      "sha256": "3689c6dfe050c571d2a255ed40ace82536a61c8bd26cf63e1b041b7e7e9ad21a",
+      "display_name_policy": "Orthrus TE without checkpoint qualifiers; see Methods and checkpoint_usage_0108.json.",
+      "mfe_display_policy": "Single MFE label and #9870B1 colour; scopes and units defined in Methods and Supplementary.",
+      "caption_panel_titles": [
+        "a. Population feasibility.",
+        "b. Constraint violations.",
+        "c--e. Global and local GC.",
+        "f--i. Homopolymer lengths.",
+        "j--n. Repeat and production-related violations."
+      ],
+      "document": "supplementary.tex",
+      "combined_supplementary_page": 13
+    },
+    {
+      "previous": "Extended Data Fig. 3",
+      "current": "Extended Data Fig. 2",
+      "previous_file": "figures/ExtendedDataFigure3_LinearDesign_UTR_control.pdf",
+      "file": "figures/ExtendedDataFigure2_LinearDesign_UTR_control.pdf",
+      "label": "fig:lineardesign-utr-control",
+      "source_data": [
+        "SupplementaryFigure2_LinearDesign_paired_changes.csv",
+        "SourceData_Figure3.xlsx"
+      ],
+      "sha256": "d92de91cd7c8a0d346a2bdcb6c5f35c7ecbc1aed64f7e3c3c2d274940b765747",
+      "display_name_policy": "Orthrus TE without checkpoint qualifiers; see Methods and checkpoint_usage_0108.json.",
+      "mfe_display_policy": "Single MFE label and #9870B1 colour; scopes and units defined in Methods and Supplementary.",
+      "caption_panel_titles": [
+        "a--d. Objective scores with fixed or editable UTRs.",
+        "e--h. Paired effects of permitting UTR changes."
+      ],
+      "document": "supplementary.tex",
+      "combined_supplementary_page": 14,
+      "formatting_revision": "0152",
+      "numerical_values_unchanged": true
+    },
+    {
+      "previous": "Extended Data Fig. 4",
+      "current": "Extended Data Fig. 3",
+      "previous_file": "figures/ExtendedDataFigure4_RiboDecode_pairs.pdf",
+      "file": "figures/ExtendedDataFigure3_RiboDecode_pairs.pdf",
+      "label": "fig:ribodecode-pairs",
+      "source_data": [
+        "SupplementaryFigure1_RiboDecode_paired_changes.csv",
+        "SourceData_SupplementaryFigure1.xlsx"
+      ],
+      "sha256": "10eeffb6e53a9639e3c1030131062b5e27627571ee06eb6ed4d9bc043cf2abb5",
+      "display_name_policy": "Orthrus TE without checkpoint qualifiers; see Methods and checkpoint_usage_0108.json.",
+      "mfe_display_policy": "Single MFE label and #9870B1 colour; scopes and units defined in Methods and Supplementary.",
+      "caption_panel_titles": [
+        "a. Codon stability.",
+        "b. Predicted ribosome load."
+      ],
+      "document": "supplementary.tex",
+      "combined_supplementary_page": 15
+    }
+  ],
+  "supplementary_table_map_0074_to_0075": {
+    "1": 3,
+    "2": 4,
+    "3": 6,
+    "4": 2,
+    "5": 7,
+    "6": 8,
+    "7": 1,
+    "8": 5
+  },
+  "removed_display": {
+    "topic": "Uridine runs",
+    "replacement": "Supplementary Table 5",
+    "source_data": [
+      "uridine_endpoint_distributions.csv",
+      "SourceData_ExtendedDataFigure2.xlsx"
+    ]
+  },
+  "data_filenames": "Historical numerical Source Data filenames are retained; current display numbers are mapped here.",
+  "mapping_base_revision": "0074",
+  "numbering_unchanged_from": "0104",
+  "additional_statistics": {
+    "figure": "Fig. 2",
+    "analysis": "Paired reconstructing bootstrap for 39 unmodified-U luciferase constructs",
+    "source_data": "SupplementaryFigure3_Mauger_U/paired_bootstrap_20261016",
+    "archive": "MORSE_Mauger_composite_bootstrap_20261016.zip",
+    "family_size": 12,
+    "supplementary_table": 3
+  },
+  "numerical_data_revision_note": "Raw scores, optimization archives and run-level selected candidates unchanged. Radar aggregation/display changed; no new inference or optimization.",
+  "additional_derived_source_data": {
+    "figure": "Fig.3d",
+    "run_id": "F2_filtered_s211",
+    "unique_constructs": 5960,
+    "population_members": 64,
+    "generations": [
+      1,
+      356
+    ],
+    "outputs": 7,
+    "directory": "Figure3_logged_scores_0100",
+    "archive": "MORSE_Figure3_logged_scores_0100.zip",
+    "normalization": "Per-output direction-aware retrospective min–max over5960 unique population constructs; mean over64 original selected members per generation.",
+    "archive_required_for_manuscript_compilation": false,
+    "archive_sha256": "3d3e477de303d8181b28091c43f1441c777860eff2cb2a1939613e3918c2e716"
+  },
+  "revision_note": "После перестройки Methods проверены все упоминания Methods и указатели above/below в статье, легендах и Supplementary. Два общих упоминания Online Methods в Results стали внутренними ссылками на Shared scorer configurations и Sequence-feasibility preset. В Supplementary указан актуальный раздел Shared scorer configurations. Неоднозначное described above в описании Fig. 2 заменено ссылкой на Shared candidate-selection and reporting conventions и соответствующие протоколы фигур. Все 19 гиперссылок Methods разрешаются. Других устаревших ссылок независимая сверка не обнаружила. Сохранены численные результаты, настройки, рисунки и подписи. Оба документа успешно скомпилированы. В обновлённый Overleaf-пакет больше не включается дублирующий methods.tex, локальная служебная копия синхронизирована. Обновлён единый 18-страничный Supplementary PDF, изменена только страница 3.",
+  "supplementary_table_map_0096_to_0097": {
+    "1": 1,
+    "2": 2,
+    "3": 4,
+    "4": 5,
+    "5": 6,
+    "6": 7,
+    "7": 9,
+    "8": 10
+  },
+  "new_supplementary_tables": {
+    "3": "Paired comparisons of AR and AT with all components",
+    "8": "Additional scores of selected Fig.4 constructs"
+  },
+  "additional_comparative_scoring": {
+    "supplementary_table": 8,
+    "source": "experiments/olig_remaining_scores_20261019/results/figure4_role_scores.csv",
+    "summary_rows": 23,
+    "groups": 5,
+    "runs_per_group": 5,
+    "original_objective_scores_retained": true
+  },
+  "completed_final_review_items": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+  ],
+  "deferred_final_review_items": [
+    12,
+    13,
+    14
+  ],
+  "layout": {
+    "table1_body_exact_to": "0110",
+    "table1_caption_position": "top",
+    "table1_single_page": true,
+    "figure3_full_caption_single_float": true,
+    "figure3_float_source_exact_to": "0110",
+    "builtin_compilation_main": "success",
+    "figure3_size_mm": [
+      180,
+      183.35625
+    ],
+    "figure4b_bottom_aligned": true,
+    "figure4_size_mm": [
+      180,
+      185
+    ],
+    "figure4_full_caption_single_float": true,
+    "figures2_to5_minimum_text_pt": 5,
+    "figure4_max_height_mm": 185,
+    "figure4_caption_skip_pt": 4
+  },
+  "own_scorer_exclusion_0100": {
+    "scorer": "TIE",
+    "own_scorer_removed": true,
+    "LinearDesign2_Table1_retained": true,
+    "retained_metrics": 7
+  },
+  "display_coordinates": "figure_display_coordinates_0109.json",
+  "checkpoint_transition": "checkpoint_transition_plan.json",
+  "fullfit_harmonization_completed": false,
+  "visual_and_numerical_data_unchanged": true,
+  "native_observations_unchanged": true,
+  "display_normalization_changed": false,
+  "change": "Methods shortened and technical details moved to Supplementary Notes; artwork and legends unchanged.",
+  "checkpoint_usage": "checkpoint_usage_0108.json",
+  "checkpoint_harmonization_completed": false,
+  "display_labels": "figure_display_labels_0109.json",
+  "scientific_data_provenance": "internal_review_provenance_0109.json",
+  "new_inference_or_optimization": false,
+  "label_audit": "mfe_figure_audit_0109.json",
+  "visible_record_pool_4b_changed_from_30_to_25": true,
+  "max_denominators_and_retained_normalized_values_unchanged": true,
+  "abbreviation_usage": "abbreviation_usage_0121.json",
+  "display_style": "figure_display_style_0112.json",
+  "scientific_values_and_normalization_unchanged": true,
+  "formatting_audit": "formatting_audit_0116.json",
+  "caption_titles": "caption_titles_0134.json",
+  "figure4_layout": "figure4_layout_0123.json",
+  "terminology": "terminology_0123.json",
+  "editorial_cleanup": "editorial_cleanup_0128.json",
+  "caption_punctuation": "caption_punctuation_0125.json",
+  "predictor_readouts": "predictor_readouts_0126.json",
+  "mauger_interpretation": "mauger_interpretation_0127.json",
+  "figure2_legend": "figure2_legend_0128.json",
+  "cover_letter": "cover_letter_0133.json",
+  "caption_abbreviations": "caption_abbreviations_0136.json",
+  "figure2_scope_labels": "figure2_scope_labels_0135.json",
+  "figure2_layout": "figure2_compact_0137.json",
+  "punctuation_audit": "semicolon_cleanup_0138.json",
+  "results_audit": "results_endings_0139.json",
+  "results_flow_audit": "results_flow_0140.json",
+  "previous_package_revision": "0149",
+  "discussion_audit": "discussion_integration_0143.json",
+  "catalog_note_audit": "catalog_scope_note_0144.json",
+  "additional_scorer_audit": "additional_scorer_uses_0145.json",
+  "integration_audit": "additional_scorers_integration_0146.json",
+  "methods_audit": "methods_revision_0147.json",
+  "extended_data_document": "supplementary.tex",
+  "combined_supplementary_pdf": "../output/pdf/MORSE_Supplementary_0154.pdf",
+  "poly_a_manuscript_representation": "A100",
+  "methods_structure": "methods_structure_0153.json"
+}

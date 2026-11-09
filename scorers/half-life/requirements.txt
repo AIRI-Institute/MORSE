@@ -1,0 +1,6 @@
+causal-conv1d==1.2.0.post2
+huggingface-hub==0.21.4
+mamba-ssm==1.2.0.post1
+numpy==1.24.3
+torch==2.2.0
+transformers==4.38.1

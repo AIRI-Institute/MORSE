@@ -1,0 +1,123 @@
+{
+  "model": "rinalmo-imrnads",
+  "source_revision": "09809d98f3f641c53897a8991fdf2dce7949d9ba",
+  "image": "sha256:1b664479eb83967cd090e2aace92196f90ff542cc4682b75d4c5222dc1bc4f06",
+  "request_sha256": "4fd6a853ca1fa3995df5a164922a25c02c201fc125a0bfb3b702f64357dabc03",
+  "sequences": 3,
+  "archived": {
+    "elapsed_seconds": 79.66817043721676,
+    "response": {
+      "request_id": "morse-ready-model-parity",
+      "outputs": [
+        {
+          "rinalmo_window_count": 228,
+          "rinalmo_window_logit_mean": 0.8792984584967295,
+          "rinalmo_window_logit_median": 1.234375,
+          "rinalmo_window_logit_max": 4.03125,
+          "rinalmo_window_logit_p95": 3.3687499999999986,
+          "rinalmo_window_probability_mean": 0.6458416996512294,
+          "rinalmo_window_probability_max": 0.9825575152637948,
+          "rinalmo_window_probability_p95": 0.966700072308372
+        },
+        {
+          "rinalmo_window_count": 167,
+          "rinalmo_window_logit_mean": 0.3348754151852545,
+          "rinalmo_window_logit_median": 0.419921875,
+          "rinalmo_window_logit_max": 4.625,
+          "rinalmo_window_logit_p95": 3.8703125,
+          "rinalmo_window_probability_mean": 0.5506329436452161,
+          "rinalmo_window_probability_max": 0.9902915235185259,
+          "rinalmo_window_probability_p95": 0.9795735734383733
+        },
+        {
+          "rinalmo_window_count": 167,
+          "rinalmo_window_logit_mean": 0.2701116322043413,
+          "rinalmo_window_logit_median": 0.40625,
+          "rinalmo_window_logit_max": 4.625,
+          "rinalmo_window_logit_p95": 3.6984375,
+          "rinalmo_window_probability_mean": 0.5446436400785011,
+          "rinalmo_window_probability_max": 0.9902915235185259,
+          "rinalmo_window_probability_p95": 0.9758355859576696
+        }
+      ]
+    }
+  },
+  "current": {
+    "elapsed_seconds": 26.08487383648753,
+    "response": {
+      "request_id": "morse-ready-model-parity",
+      "outputs": [
+        {
+          "rinalmo_window_count": 228,
+          "rinalmo_window_logit_mean": 0.8792984584967295,
+          "rinalmo_window_logit_median": 1.234375,
+          "rinalmo_window_logit_max": 4.03125,
+          "rinalmo_window_logit_p95": 3.3687499999999986,
+          "rinalmo_window_probability_mean": 0.6458416996512294,
+          "rinalmo_window_probability_max": 0.9825575152637948,
+          "rinalmo_window_probability_p95": 0.966700072308372
+        },
+        {
+          "rinalmo_window_count": 167,
+          "rinalmo_window_logit_mean": 0.3348754151852545,
+          "rinalmo_window_logit_median": 0.419921875,
+          "rinalmo_window_logit_max": 4.625,
+          "rinalmo_window_logit_p95": 3.8703125,
+          "rinalmo_window_probability_mean": 0.5506329436452161,
+          "rinalmo_window_probability_max": 0.9902915235185259,
+          "rinalmo_window_probability_p95": 0.9795735734383733
+        },
+        {
+          "rinalmo_window_count": 167,
+          "rinalmo_window_logit_mean": 0.2701116322043413,
+          "rinalmo_window_logit_median": 0.40625,
+          "rinalmo_window_logit_max": 4.625,
+          "rinalmo_window_logit_p95": 3.6984375,
+          "rinalmo_window_probability_mean": 0.5446436400785011,
+          "rinalmo_window_probability_max": 0.9902915235185259,
+          "rinalmo_window_probability_p95": 0.9758355859576696
+        }
+      ]
+    }
+  },
+  "maximum_absolute_difference": 0.0,
+  "tolerance": 1e-06,
+  "passed": true,
+  "validation_scope": "Post-rename MORSE inference parity on three frozen constructs. Existing immutable runtime images were reused; this is not a fresh image build or a full evolutionary campaign.",
+  "hardware": "olig, NVIDIA A100 80GB, GPU0",
+  "source_snapshot_scope": "Private isolated snapshot of inference adapters, their assets registry, validators and frozen fixtures; not a full monorepo commit",
+  "source_sha256": {
+    "assets/manage.py": "c484fd3ee7279e25112dab32ee426aff961562d790f7170567824d5c1c86b81c",
+    "assets/registry.json": "3efdc5782c0dca10f6ff33e7158494de065c501d0c1a0ab92fa45a8c553a3b00",
+    "scorers/immunogenicity/.gitignore": "b14b808510d9caddd77ee9c02ed8a0080f1516433c89aec0aeec13603957ed50",
+    "scorers/immunogenicity/Dockerfile": "50161dcd9fda23d66d413e5b4d1f33662dd6c8db69937b4847c33e69791b22a8",
+    "scorers/immunogenicity/README.md": "43f3ea3888291926daa45e0e0b5e1b47ab17209d6d6b8c65f15a1684ebcdb441",
+    "scorers/immunogenicity/model_assets/rinalmo_mega_config.json": "6799d4450726857e93f93b54667b76f6829deebace04e1e9a88358d6babb15ca",
+    "scorers/immunogenicity/model_assets/tokenizer/tokenizer_config.json": "383935fb608c34b1df52dfaac978dda8ddf8ec00b1e1b8a99f49ef5469450e71",
+    "scorers/immunogenicity/model_assets/tokenizer/vocab.txt": "3340228a43f9058ef3c9f29eb465c1bac5b68869d58c7e234833ff7b299c1673",
+    "scorers/immunogenicity/model_metadata/reference_run.json": "319f77c72afcd7ea5d04f18b9359dfdfce85f190aaa513c393141d727f8b8a79",
+    "scorers/immunogenicity/morse-scorer.yaml": "5c6ce262dc3991a4098c61914d82d8aea76eb1925c650ea9b1b88ad36f2aaf47",
+    "scorers/immunogenicity/prepare_assets.py": "032ed98d94c7a052b0c71cdd52b2a6bb27f155823efa2932409555674cc6e53f",
+    "scorers/immunogenicity/requirements.txt": "e6874d4826d3f76954b13a1b881ee94693a0db11fd2fcee55e57a61850bd64f9",
+    "scorers/immunogenicity/runtime_model.py": "a2ff25c73171f81e0dae1aef3904a9700ead993255f25a310168ee97b2153cda",
+    "scorers/immunogenicity/server.py": "6314fd63d372a5c2689866e2bc68f9bebf29a11801c445a7190b099121d285ce",
+    "scripts/validate_heldout.py": "1a5892e68f51189dc015d1a7ffb855d4e35015f51579161cf7dbd146f025bfe8",
+    "scripts/validate_inference.py": "09c9d4764eb59001964edccb500e5cf4f6882de4c29ba5f2e867a64f1862de43"
+  },
+  "verified_model_asset": {
+    "id": "rinalmo-imrnads",
+    "status": "verified",
+    "files": [
+      {
+        "path": "best_model.pt",
+        "sha256": "923d1e9f843d12fe29a9515a95b6a32eae286017790dfeef1c82215446958f0a",
+        "bytes": 592378778
+      }
+    ]
+  },
+  "private_receipt_sha256": "af06dd8be32c48f60d59df52d583c2cee65b901755d15f6715ae249e19c76d36",
+  "source_overlay": true,
+  "new_image_build": false,
+  "predictor_training": false,
+  "comparison": "Renamed current-source overlay versus the pre-existing native adapter in the same immutable Docker image, with identical ready assets and input batches."
+}

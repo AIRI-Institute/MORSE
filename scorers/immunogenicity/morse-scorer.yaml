@@ -1,0 +1,128 @@
+schema_version: 2
+id: immunogenicity
+name: RiNALMo Immunogenicity
+version: 2.1.1
+description: >-
+  Windowed RiNALMo model of an immunomodulatory signal across full-length mRNA.
+  Optimization usually minimizes the upper 95th-percentile logit.
+runtime:
+  type: container
+  image: ghcr.io/shpakb/morse-immunogenicity:2.1.1
+  dockerfile: Dockerfile
+  build_contexts:
+    assets: ${MORSE_ASSETS_DIR}/rinalmo-imrnads
+  timeout_seconds: 1800
+  gpus: all
+  env:
+    RINALMO_CHECKPOINT: /models/best_model.pt
+    MORSE_EXPECTED_CHECKPOINT_SHA256: 923d1e9f843d12fe29a9515a95b6a32eae286017790dfeef1c82215446958f0a
+scope:
+  configurable: true
+  allowed_parts: [five_prime_utr, start_codon, cds, stop_codon, three_prime_utr, poly_a]
+  allow_slices: true
+  allow_window: true
+  default:
+    type: full_sequence
+outputs:
+  rinalmo_window_logit_mean:
+    type: float
+    value_range: "(-∞, +∞)"
+    description: Mean immunogenic-signal logit across sequence windows.
+    default_policy: {role: log}
+  rinalmo_window_logit_median:
+    type: float
+    value_range: "(-∞, +∞)"
+    description: Median immunogenic-signal logit across sequence windows.
+    default_policy: {role: log}
+  rinalmo_window_logit_max:
+    type: float
+    value_range: "(-∞, +∞)"
+    description: Maximum immunogenic-signal logit across sequence windows.
+    default_policy: {role: log}
+  rinalmo_window_logit_p95:
+    type: float
+    value_range: "(-∞, +∞)"
+    description: 95th-percentile window logit; this is usually minimized.
+    default_policy: {role: objective, direction: min}
+  rinalmo_window_probability_mean:
+    type: float
+    unit: probability
+    value_range: "[0, 1]"
+    description: Mean immunogenic-signal probability across sequence windows.
+    default_policy: {role: log}
+  rinalmo_window_probability_max:
+    type: float
+    unit: probability
+    value_range: "[0, 1]"
+    description: Maximum immunogenic-signal probability across sequence windows.
+    default_policy: {role: log}
+  rinalmo_window_probability_p95:
+    type: float
+    unit: probability
+    value_range: "[0, 1]"
+    description: 95th-percentile immunogenic-signal probability across sequence windows.
+    default_policy: {role: log}
+  rinalmo_window_count:
+    type: int
+    unit: windows
+    value_range: "integer >= 1"
+    description: Number of windows evaluated for the construct.
+    default_policy: {role: log}
+parameters:
+  model_dir:
+    type: path
+    configurable_by: backend
+    backend_env: IMMUNOGENICITY_MODEL_DIR
+    required: false
+    allowed_root: ${MORSE_ASSETS_DIR}
+    description: Optional override directory containing best_model.pt; the default checkpoint is bundled in the image.
+    mount:
+      container_path: /models
+      read_only: true
+  device:
+    type: string
+    configurable_by: backend
+    backend_env: IMMUNOGENICITY_DEVICE
+    default: cpu
+    choices: [auto, cpu, cuda]
+    env: RINALMO_DEVICE
+    description: PyTorch device used for inference inside the container.
+  window_size:
+    type: int
+    default: 27
+    min: 1
+    max: 10000
+    env: RINALMO_WINDOW_SIZE
+    description: Length of each RNA window in nucleotides.
+  window_stride:
+    type: int
+    default: 3
+    min: 1
+    max: 10000
+    env: RINALMO_WINDOW_STRIDE
+    description: Step between the starts of adjacent windows, in nucleotides.
+  batch_size:
+    type: int
+    configurable_by: backend
+    backend_env: IMMUNOGENICITY_BATCH_SIZE
+    default: 256
+    min: 1
+    max: 65536
+    env: RINALMO_BATCH_SIZE
+    description: Number of windows in one inference batch.
+self_test:
+  sequence: AUGGCCGCCGCCGCCGCCGCCGCCGCCUAA
+  sequence_context:
+    part_ranges:
+      - {part: start_codon, start: 0, end: 3, part_start: 0, part_end: 3}
+      - {part: cds, start: 3, end: 27, part_start: 0, part_end: 24}
+      - {part: stop_codon, start: 27, end: 30, part_start: 0, part_end: 3}
+  expected_outputs:
+    - rinalmo_window_logit_mean
+    - rinalmo_window_logit_median
+    - rinalmo_window_logit_max
+    - rinalmo_window_logit_p95
+    - rinalmo_window_probability_mean
+    - rinalmo_window_probability_max
+    - rinalmo_window_probability_p95
+    - rinalmo_window_count

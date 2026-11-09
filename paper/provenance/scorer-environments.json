@@ -1,0 +1,716 @@
+{
+  "schema_version": 1,
+  "purpose": "Static historical runtime provenance only. The optimizer does not read this file or prepare scorer environments.",
+  "profiles": {
+    "f2-viennarna-transcript-body": {
+      "logical_scorer": "viennarna",
+      "reference_device": "cpu",
+      "frozen_runtime_sha256": "5e06ed861120cd96ff4a926df825e5e7a3c769181d7287eb048bfd5196825822",
+      "recipe": {
+        "mode": "persistent-container",
+        "image": "sha256:04fc0b293a581cc2a6905a1e21ffe843bdcf1d7cc7929d82842db8f69c93f0c6",
+        "env": {
+          "OMP_NUM_THREADS": "1",
+          "OPENBLAS_NUM_THREADS": "1",
+          "MKL_NUM_THREADS": "1",
+          "VECLIB_MAXIMUM_THREADS": "1",
+          "NUMEXPR_NUM_THREADS": "1",
+          "BLIS_NUM_THREADS": "1",
+          "TF_NUM_INTRAOP_THREADS": "1",
+          "TF_NUM_INTEROP_THREADS": "1",
+          "VIENNARNA_ENABLE_PF": "0",
+          "VIENNARNA_MAX_BP_SPAN": "200"
+        },
+        "paper_runtime": {
+          "scorer": "viennarna",
+          "reference_device": "cpu",
+          "historical_image": "sha256:04fc0b293a581cc2a6905a1e21ffe843bdcf1d7cc7929d82842db8f69c93f0c6"
+        }
+      },
+      "timeout_seconds": 1800,
+      "example_http_port": 8701
+    },
+    "f2-csi-human": {
+      "logical_scorer": "csi",
+      "reference_device": "cpu",
+      "frozen_runtime_sha256": "c5b25b95c89d37db9947fbf8ff02c6042aedd8f78460d646d1296d8e9bfdb9f9",
+      "recipe": {
+        "mode": "persistent-process",
+        "command": [
+          "@python",
+          "server.py"
+        ],
+        "workdir": "@repo/scorers/csi",
+        "env": {
+          "OMP_NUM_THREADS": "1",
+          "OPENBLAS_NUM_THREADS": "1",
+          "MKL_NUM_THREADS": "1",
+          "VECLIB_MAXIMUM_THREADS": "1",
+          "NUMEXPR_NUM_THREADS": "1",
+          "BLIS_NUM_THREADS": "1",
+          "TF_NUM_INTRAOP_THREADS": "1",
+          "TF_NUM_INTEROP_THREADS": "1",
+          "CSI_PROFILE": "profiles/homo_sapiens_consensus_wu2019_v1.json"
+        },
+        "paper_runtime": {
+          "scorer": "csi",
+          "reference_device": "cpu",
+          "historical_image": null
+        }
+      },
+      "timeout_seconds": 1800,
+      "example_http_port": 8702
+    },
+    "f2-orthrus-translation-efficiency": {
+      "logical_scorer": "orthrus-te-full-fit",
+      "reference_device": "cuda",
+      "frozen_runtime_sha256": "96dad6d6786e1138f591a5c97eb2ea5dd453bf7753e94d8fb698ce36869c30b8",
+      "recipe": {
+        "mode": "persistent-container",
+        "image": "sha256:5fbd785655f03e6bac5afa1b3496ff8c799cb38d2af885e51ce3e6a5188fd21f",
+        "env": {
+          "OMP_NUM_THREADS": "1",
+          "OPENBLAS_NUM_THREADS": "1",
+          "MKL_NUM_THREADS": "1",
+          "VECLIB_MAXIMUM_THREADS": "1",
+          "NUMEXPR_NUM_THREADS": "1",
+          "BLIS_NUM_THREADS": "1",
+          "TF_NUM_INTRAOP_THREADS": "1",
+          "TF_NUM_INTEROP_THREADS": "1",
+          "ORTHRUS_CHECKPOINT": "/models/model_final.pt",
+          "ORTHRUS_MODEL_SOURCE": "/models/orthrus-backbone",
+          "ORTHRUS_BATCH_SIZE": "8",
+          "ORTHRUS_MAX_TOKENS": "16000",
+          "ORTHRUS_DEVICE": "cuda",
+          "CUDA_VISIBLE_DEVICES": "0",
+          "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True"
+        },
+        "paper_runtime": {
+          "scorer": "orthrus-te-full-fit",
+          "reference_device": "cuda",
+          "historical_image": "sha256:5fbd785655f03e6bac5afa1b3496ff8c799cb38d2af885e51ce3e6a5188fd21f"
+        }
+      },
+      "timeout_seconds": 1800,
+      "example_http_port": 8703
+    },
+    "f2-ribodecode-hek293t": {
+      "logical_scorer": "ribodecode",
+      "reference_device": "cuda",
+      "frozen_runtime_sha256": "923c4871d5fddc4ded17ac95a95c801723a0c02c34a010b3d9c86197ccf18e9f",
+      "recipe": {
+        "mode": "persistent-container",
+        "image": "sha256:70083cd8ae45f6f622bf9d70c0ac4c131cd6c0635d63b04d2ff83af23425cc91",
+        "env": {
+          "OMP_NUM_THREADS": "1",
+          "OPENBLAS_NUM_THREADS": "1",
+          "MKL_NUM_THREADS": "1",
+          "VECLIB_MAXIMUM_THREADS": "1",
+          "NUMEXPR_NUM_THREADS": "1",
+          "BLIS_NUM_THREADS": "1",
+          "TF_NUM_INTRAOP_THREADS": "1",
+          "TF_NUM_INTEROP_THREADS": "1",
+          "CUDA_VISIBLE_DEVICES": "0",
+          "RIBODECODE_ENV": "HEK293T",
+          "RIBODECODE_BATCH_SIZE": "8"
+        },
+        "paper_runtime": {
+          "scorer": "ribodecode",
+          "reference_device": "cuda",
+          "historical_image": "sha256:70083cd8ae45f6f622bf9d70c0ac4c131cd6c0635d63b04d2ff83af23425cc91"
+        }
+      },
+      "timeout_seconds": 1800,
+      "example_http_port": 8704
+    },
+    "f2-sequence-feasibility": {
+      "logical_scorer": "manufacturability",
+      "reference_device": "cpu",
+      "frozen_runtime_sha256": "5874625a9341e4592b3a6d1613bf4dc7c4c26e192e5f5b52255a8faabf978bc7",
+      "recipe": {
+        "mode": "persistent-container",
+        "image": "sha256:ef2ee6c012f2df193ec1d0326f9bd0fe00a6c18f36a22a584190aad4fd4f522a",
+        "env": {
+          "OMP_NUM_THREADS": "1",
+          "OPENBLAS_NUM_THREADS": "1",
+          "MKL_NUM_THREADS": "1",
+          "VECLIB_MAXIMUM_THREADS": "1",
+          "NUMEXPR_NUM_THREADS": "1",
+          "BLIS_NUM_THREADS": "1",
+          "TF_NUM_INTRAOP_THREADS": "1",
+          "TF_NUM_INTEROP_THREADS": "1",
+          "SEQUENCE_FEASIBILITY_PRESET": "manufacturing_strategy_v1"
+        },
+        "paper_runtime": {
+          "scorer": "manufacturability",
+          "reference_device": "cpu",
+          "historical_image": "sha256:ef2ee6c012f2df193ec1d0326f9bd0fe00a6c18f36a22a584190aad4fd4f522a"
+        }
+      },
+      "timeout_seconds": 1800,
+      "example_http_port": 8705
+    },
+    "f3a-viennarna-transcript-body": {
+      "logical_scorer": "viennarna",
+      "reference_device": "cpu",
+      "frozen_runtime_sha256": "9600f3be8e75884687fd47a57c265295c6c5c112bd8563d1987ba2d807257c66",
+      "recipe": {
+        "mode": "persistent-container",
+        "image": "sha256:04fc0b293a581cc2a6905a1e21ffe843bdcf1d7cc7929d82842db8f69c93f0c6",
+        "env": {
+          "OMP_NUM_THREADS": "1",
+          "OPENBLAS_NUM_THREADS": "1",
+          "MKL_NUM_THREADS": "1",
+          "NUMEXPR_NUM_THREADS": "1",
+          "BLIS_NUM_THREADS": "1",
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "VIENNARNA_ENABLE_PF": "0",
+          "VIENNARNA_MAX_BP_SPAN": "200"
+        },
+        "paper_runtime": {
+          "scorer": "viennarna",
+          "reference_device": "cpu",
+          "historical_image": "sha256:04fc0b293a581cc2a6905a1e21ffe843bdcf1d7cc7929d82842db8f69c93f0c6"
+        }
+      },
+      "timeout_seconds": 1800,
+      "example_http_port": 8706
+    },
+    "f3a-csi-human": {
+      "logical_scorer": "csi",
+      "reference_device": "cpu",
+      "frozen_runtime_sha256": "80e253a3bd0a175ee2e88bfc81a902a5563d7c74ef700c1b2a69b4e6e131adb3",
+      "recipe": {
+        "mode": "persistent-process",
+        "command": [
+          "@python",
+          "server.py"
+        ],
+        "workdir": "@repo/scorers/csi",
+        "env": {
+          "OMP_NUM_THREADS": "1",
+          "OPENBLAS_NUM_THREADS": "1",
+          "MKL_NUM_THREADS": "1",
+          "NUMEXPR_NUM_THREADS": "1",
+          "BLIS_NUM_THREADS": "1",
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "CSI_PROFILE": "profiles/homo_sapiens_consensus_wu2019_v1.json"
+        },
+        "paper_runtime": {
+          "scorer": "csi",
+          "reference_device": "cpu",
+          "historical_image": null
+        }
+      },
+      "timeout_seconds": 1800,
+      "example_http_port": 8707
+    },
+    "f3b-viennarna-transcript-body": {
+      "logical_scorer": "viennarna",
+      "reference_device": "cpu",
+      "frozen_runtime_sha256": "dc3b59068933c5ac2a11d79f36d633b5211b52a30d381d2fd2cc7a1c56e2d6bc",
+      "recipe": {
+        "mode": "persistent-container",
+        "image": "sha256:04fc0b293a581cc2a6905a1e21ffe843bdcf1d7cc7929d82842db8f69c93f0c6",
+        "env": {
+          "OMP_NUM_THREADS": "1",
+          "OPENBLAS_NUM_THREADS": "1",
+          "MKL_NUM_THREADS": "1",
+          "VECLIB_MAXIMUM_THREADS": "1",
+          "NUMEXPR_NUM_THREADS": "1",
+          "BLIS_NUM_THREADS": "1",
+          "TF_NUM_INTRAOP_THREADS": "1",
+          "TF_NUM_INTEROP_THREADS": "1",
+          "VIENNARNA_ENABLE_PF": "0",
+          "VIENNARNA_MAX_BP_SPAN": "200",
+          "CUDA_VISIBLE_DEVICES": "-1",
+          "NVIDIA_VISIBLE_DEVICES": "void"
+        },
+        "paper_runtime": {
+          "scorer": "viennarna",
+          "reference_device": "cpu",
+          "historical_image": "sha256:04fc0b293a581cc2a6905a1e21ffe843bdcf1d7cc7929d82842db8f69c93f0c6"
+        }
+      },
+      "timeout_seconds": 1800,
+      "example_http_port": 8708
+    },
+    "f3b-viennarna-isolated-cds": {
+      "logical_scorer": "viennarna",
+      "reference_device": "cpu",
+      "frozen_runtime_sha256": "2fe030196b40f0096070aa84aa6644a399a23049a85fd1b0612df340df1bca6f",
+      "recipe": {
+        "mode": "persistent-container",
+        "image": "sha256:04fc0b293a581cc2a6905a1e21ffe843bdcf1d7cc7929d82842db8f69c93f0c6",
+        "env": {
+          "OMP_NUM_THREADS": "1",
+          "OPENBLAS_NUM_THREADS": "1",
+          "MKL_NUM_THREADS": "1",
+          "VECLIB_MAXIMUM_THREADS": "1",
+          "NUMEXPR_NUM_THREADS": "1",
+          "BLIS_NUM_THREADS": "1",
+          "TF_NUM_INTRAOP_THREADS": "1",
+          "TF_NUM_INTEROP_THREADS": "1",
+          "VIENNARNA_ENABLE_PF": "0",
+          "VIENNARNA_MAX_BP_SPAN": "0",
+          "CUDA_VISIBLE_DEVICES": "-1",
+          "NVIDIA_VISIBLE_DEVICES": "void"
+        },
+        "paper_runtime": {
+          "scorer": "viennarna",
+          "reference_device": "cpu",
+          "historical_image": "sha256:04fc0b293a581cc2a6905a1e21ffe843bdcf1d7cc7929d82842db8f69c93f0c6"
+        }
+      },
+      "timeout_seconds": 1800,
+      "example_http_port": 8709
+    },
+    "f3b-cai-lineardesign-frequencies": {
+      "logical_scorer": "cai",
+      "reference_device": "cpu",
+      "frozen_runtime_sha256": "f14e436c2ac9e37349b109d737862f916372797b9a85c51be57638c02953e019",
+      "recipe": {
+        "mode": "persistent-process",
+        "command": [
+          "@python",
+          "server.py"
+        ],
+        "workdir": "@repo/scorers/cai",
+        "env": {
+          "OMP_NUM_THREADS": "1",
+          "OPENBLAS_NUM_THREADS": "1",
+          "MKL_NUM_THREADS": "1",
+          "VECLIB_MAXIMUM_THREADS": "1",
+          "NUMEXPR_NUM_THREADS": "1",
+          "BLIS_NUM_THREADS": "1",
+          "TF_NUM_INTRAOP_THREADS": "1",
+          "TF_NUM_INTEROP_THREADS": "1",
+          "CAI_PROFILE": "@paper/inputs/lineardesign_cai_profile.json",
+          "CAI_LOW_WEIGHT_THRESHOLD": "0.1"
+        },
+        "paper_runtime": {
+          "scorer": "cai",
+          "reference_device": "cpu",
+          "historical_image": null
+        }
+      },
+      "timeout_seconds": 120,
+      "example_http_port": 8710
+    },
+    "f3b-orthrus-translation-efficiency": {
+      "logical_scorer": "orthrus-te-full-fit",
+      "reference_device": "cuda",
+      "frozen_runtime_sha256": "ebc8fd783a90be0136f99e3c47e9175a5fdd90b90754353f7ca0dda7b54db4f3",
+      "recipe": {
+        "mode": "persistent-container",
+        "image": "sha256:5fbd785655f03e6bac5afa1b3496ff8c799cb38d2af885e51ce3e6a5188fd21f",
+        "env": {
+          "OMP_NUM_THREADS": "1",
+          "OPENBLAS_NUM_THREADS": "1",
+          "MKL_NUM_THREADS": "1",
+          "VECLIB_MAXIMUM_THREADS": "1",
+          "NUMEXPR_NUM_THREADS": "1",
+          "BLIS_NUM_THREADS": "1",
+          "TF_NUM_INTRAOP_THREADS": "1",
+          "TF_NUM_INTEROP_THREADS": "1",
+          "ORTHRUS_CHECKPOINT": "/models/model_final.pt",
+          "ORTHRUS_MODEL_SOURCE": "/models/orthrus-backbone",
+          "ORTHRUS_BATCH_SIZE": "2",
+          "ORTHRUS_MAX_TOKENS": "4096",
+          "ORTHRUS_DEVICE": "cuda",
+          "CUDA_VISIBLE_DEVICES": "0",
+          "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True"
+        },
+        "paper_runtime": {
+          "scorer": "orthrus-te-full-fit",
+          "reference_device": "cuda",
+          "historical_image": "sha256:5fbd785655f03e6bac5afa1b3496ff8c799cb38d2af885e51ce3e6a5188fd21f"
+        }
+      },
+      "timeout_seconds": 1800,
+      "example_http_port": 8711
+    },
+    "f3b-sequence-feasibility": {
+      "logical_scorer": "manufacturability",
+      "reference_device": "cpu",
+      "frozen_runtime_sha256": "a03a96906da79c694cf3581516c1d4d091a2bebc7e5c58be533f89e612d5993f",
+      "recipe": {
+        "mode": "persistent-container",
+        "image": "sha256:ef2ee6c012f2df193ec1d0326f9bd0fe00a6c18f36a22a584190aad4fd4f522a",
+        "env": {
+          "OMP_NUM_THREADS": "1",
+          "OPENBLAS_NUM_THREADS": "1",
+          "MKL_NUM_THREADS": "1",
+          "VECLIB_MAXIMUM_THREADS": "1",
+          "NUMEXPR_NUM_THREADS": "1",
+          "BLIS_NUM_THREADS": "1",
+          "TF_NUM_INTRAOP_THREADS": "1",
+          "TF_NUM_INTEROP_THREADS": "1",
+          "SEQUENCE_FEASIBILITY_PRESET": "manufacturing_strategy_v1",
+          "SEQUENCE_FEASIBILITY_ENABLED_CHECKS": "[\"global_gc\", \"local_gc\", \"homopolymers\", \"direct_repeats\", \"tandem_repeats\", \"forbidden_motifs\", \"restriction_sites\", \"inverted_repeats\"]"
+        },
+        "paper_runtime": {
+          "scorer": "manufacturability",
+          "reference_device": "cpu",
+          "historical_image": "sha256:ef2ee6c012f2df193ec1d0326f9bd0fe00a6c18f36a22a584190aad4fd4f522a"
+        }
+      },
+      "timeout_seconds": 1800,
+      "example_http_port": 8712
+    },
+    "f3c-ribodecode-hek293t": {
+      "logical_scorer": "ribodecode",
+      "reference_device": "cpu",
+      "frozen_runtime_sha256": "80921787cfe5530b8162932b420e2b2738015b1efd41a87fa1da6b841fab4262",
+      "recipe": {
+        "mode": "persistent-container",
+        "image": "sha256:70083cd8ae45f6f622bf9d70c0ac4c131cd6c0635d63b04d2ff83af23425cc91",
+        "env": {
+          "OMP_NUM_THREADS": "1",
+          "OPENBLAS_NUM_THREADS": "1",
+          "MKL_NUM_THREADS": "1",
+          "VECLIB_MAXIMUM_THREADS": "1",
+          "NUMEXPR_NUM_THREADS": "1",
+          "BLIS_NUM_THREADS": "1",
+          "TF_NUM_INTRAOP_THREADS": "1",
+          "TF_NUM_INTEROP_THREADS": "1",
+          "CUDA_VISIBLE_DEVICES": "-1",
+          "NVIDIA_VISIBLE_DEVICES": "void",
+          "RIBODECODE_ENV": "HEK293T",
+          "RIBODECODE_BATCH_SIZE": "64"
+        },
+        "paper_runtime": {
+          "scorer": "ribodecode",
+          "reference_device": "cpu",
+          "historical_image": "sha256:70083cd8ae45f6f622bf9d70c0ac4c131cd6c0635d63b04d2ff83af23425cc91"
+        }
+      },
+      "timeout_seconds": 1800,
+      "example_http_port": 8713
+    },
+    "f3c-sequence-feasibility": {
+      "logical_scorer": "manufacturability",
+      "reference_device": "cpu",
+      "frozen_runtime_sha256": "52a14ab119ae13709366eea393af75eca5cbaf9b29806086317f766f7b447d5e",
+      "recipe": {
+        "mode": "persistent-container",
+        "image": "sha256:ef2ee6c012f2df193ec1d0326f9bd0fe00a6c18f36a22a584190aad4fd4f522a",
+        "env": {
+          "OMP_NUM_THREADS": "1",
+          "OPENBLAS_NUM_THREADS": "1",
+          "MKL_NUM_THREADS": "1",
+          "VECLIB_MAXIMUM_THREADS": "1",
+          "NUMEXPR_NUM_THREADS": "1",
+          "BLIS_NUM_THREADS": "1",
+          "TF_NUM_INTRAOP_THREADS": "1",
+          "TF_NUM_INTEROP_THREADS": "1",
+          "SEQUENCE_FEASIBILITY_PRESET": "manufacturing_strategy_v1",
+          "SEQUENCE_FEASIBILITY_ENABLED_CHECKS": "[\"global_gc\", \"local_gc\", \"homopolymers\", \"direct_repeats\", \"tandem_repeats\", \"forbidden_motifs\", \"restriction_sites\", \"inverted_repeats\"]",
+          "CUDA_VISIBLE_DEVICES": "-1",
+          "NVIDIA_VISIBLE_DEVICES": "void"
+        },
+        "paper_runtime": {
+          "scorer": "manufacturability",
+          "reference_device": "cpu",
+          "historical_image": "sha256:ef2ee6c012f2df193ec1d0326f9bd0fe00a6c18f36a22a584190aad4fd4f522a"
+        }
+      },
+      "timeout_seconds": 1800,
+      "example_http_port": 8714
+    },
+    "f4-ribonn": {
+      "logical_scorer": "ribonn",
+      "reference_device": "cuda",
+      "frozen_runtime_sha256": "dc96fa0d7dd479ccf4437e564ad1991c1830b06484884571b4ba61cffd24410f",
+      "recipe": {
+        "mode": "persistent-container",
+        "image": "sha256:bc3d16cd3fc58680c4a5335dcb9310723441a7ba398a66e851d63deb5a6b2f6b",
+        "env": {
+          "RIBONN_MODEL_DIR": "/models",
+          "RIBONN_DEVICE": "cuda",
+          "RIBONN_BATCH_SIZE": "16",
+          "OMP_NUM_THREADS": "2",
+          "OPENBLAS_NUM_THREADS": "1",
+          "MKL_NUM_THREADS": "2",
+          "NUMEXPR_NUM_THREADS": "1"
+        },
+        "paper_runtime": {
+          "scorer": "ribonn",
+          "reference_device": "cuda",
+          "historical_image": "sha256:bc3d16cd3fc58680c4a5335dcb9310723441a7ba398a66e851d63deb5a6b2f6b"
+        }
+      },
+      "timeout_seconds": 1800,
+      "example_http_port": 8715
+    },
+    "f4-orthrus-te": {
+      "logical_scorer": "orthrus-te-held-out",
+      "reference_device": "cuda",
+      "frozen_runtime_sha256": "119d1d0b012f3da3d5ea75adeb16e2b72a82d4e71b26753c98da12aeb261d434",
+      "recipe": {
+        "mode": "persistent-container",
+        "image": "sha256:a98eb79bb3fa10f4fbe8faab73e53959e6d4e2c3f2fa84b854498bcb050880b8",
+        "env": {
+          "CUDA_VISIBLE_DEVICES": "0",
+          "HF_HUB_OFFLINE": "1",
+          "TRANSFORMERS_OFFLINE": "1",
+          "HF_HOME": "/tmp/hf",
+          "OMP_NUM_THREADS": "2",
+          "OPENBLAS_NUM_THREADS": "1",
+          "MKL_NUM_THREADS": "2",
+          "NUMEXPR_NUM_THREADS": "1"
+        },
+        "paper_runtime": {
+          "scorer": "orthrus-te-held-out",
+          "reference_device": "cuda",
+          "historical_image": "sha256:a98eb79bb3fa10f4fbe8faab73e53959e6d4e2c3f2fa84b854498bcb050880b8"
+        }
+      },
+      "timeout_seconds": 1800,
+      "example_http_port": 8716
+    },
+    "f4-ribodecode-hek293t": {
+      "logical_scorer": "ribodecode",
+      "reference_device": "cpu",
+      "frozen_runtime_sha256": "10f1a75672832c1027d00fd566e1e3d61c220c06ce2048f67cb51bbd009addf3",
+      "recipe": {
+        "mode": "persistent-container",
+        "image": "sha256:70083cd8ae45f6f622bf9d70c0ac4c131cd6c0635d63b04d2ff83af23425cc91",
+        "env": {
+          "RIBODECODE_BATCH_SIZE": "256",
+          "RIBODECODE_ENV": "HEK293T",
+          "OMP_NUM_THREADS": "2",
+          "OPENBLAS_NUM_THREADS": "1",
+          "MKL_NUM_THREADS": "2",
+          "NUMEXPR_NUM_THREADS": "1",
+          "BLIS_NUM_THREADS": "1",
+          "VECLIB_MAXIMUM_THREADS": "1"
+        },
+        "paper_runtime": {
+          "scorer": "ribodecode",
+          "reference_device": "cpu",
+          "historical_image": "sha256:70083cd8ae45f6f622bf9d70c0ac4c131cd6c0635d63b04d2ff83af23425cc91"
+        }
+      },
+      "timeout_seconds": 1800,
+      "example_http_port": 8717
+    }
+  },
+  "configs": {
+    "f2_filtered_s101": {
+      "viennarna_transcript_body": "f2-viennarna-transcript-body",
+      "csi_human": "f2-csi-human",
+      "orthrus_translation_efficiency": "f2-orthrus-translation-efficiency",
+      "ribodecode_hek293t": "f2-ribodecode-hek293t",
+      "sequence_feasibility": "f2-sequence-feasibility"
+    },
+    "f2_filtered_s137": {
+      "viennarna_transcript_body": "f2-viennarna-transcript-body",
+      "csi_human": "f2-csi-human",
+      "orthrus_translation_efficiency": "f2-orthrus-translation-efficiency",
+      "ribodecode_hek293t": "f2-ribodecode-hek293t",
+      "sequence_feasibility": "f2-sequence-feasibility"
+    },
+    "f2_filtered_s211": {
+      "viennarna_transcript_body": "f2-viennarna-transcript-body",
+      "csi_human": "f2-csi-human",
+      "orthrus_translation_efficiency": "f2-orthrus-translation-efficiency",
+      "ribodecode_hek293t": "f2-ribodecode-hek293t",
+      "sequence_feasibility": "f2-sequence-feasibility"
+    },
+    "f2_filtered_s43": {
+      "viennarna_transcript_body": "f2-viennarna-transcript-body",
+      "csi_human": "f2-csi-human",
+      "orthrus_translation_efficiency": "f2-orthrus-translation-efficiency",
+      "ribodecode_hek293t": "f2-ribodecode-hek293t",
+      "sequence_feasibility": "f2-sequence-feasibility"
+    },
+    "f2_filtered_s7": {
+      "viennarna_transcript_body": "f2-viennarna-transcript-body",
+      "csi_human": "f2-csi-human",
+      "orthrus_translation_efficiency": "f2-orthrus-translation-efficiency",
+      "ribodecode_hek293t": "f2-ribodecode-hek293t",
+      "sequence_feasibility": "f2-sequence-feasibility"
+    },
+    "f2_logging_only_s101": {
+      "viennarna_transcript_body": "f2-viennarna-transcript-body",
+      "csi_human": "f2-csi-human",
+      "orthrus_translation_efficiency": "f2-orthrus-translation-efficiency",
+      "ribodecode_hek293t": "f2-ribodecode-hek293t",
+      "sequence_feasibility": "f2-sequence-feasibility"
+    },
+    "f2_logging_only_s137": {
+      "viennarna_transcript_body": "f2-viennarna-transcript-body",
+      "csi_human": "f2-csi-human",
+      "orthrus_translation_efficiency": "f2-orthrus-translation-efficiency",
+      "ribodecode_hek293t": "f2-ribodecode-hek293t",
+      "sequence_feasibility": "f2-sequence-feasibility"
+    },
+    "f2_logging_only_s211": {
+      "viennarna_transcript_body": "f2-viennarna-transcript-body",
+      "csi_human": "f2-csi-human",
+      "orthrus_translation_efficiency": "f2-orthrus-translation-efficiency",
+      "ribodecode_hek293t": "f2-ribodecode-hek293t",
+      "sequence_feasibility": "f2-sequence-feasibility"
+    },
+    "f2_logging_only_s43": {
+      "viennarna_transcript_body": "f2-viennarna-transcript-body",
+      "csi_human": "f2-csi-human",
+      "orthrus_translation_efficiency": "f2-orthrus-translation-efficiency",
+      "ribodecode_hek293t": "f2-ribodecode-hek293t",
+      "sequence_feasibility": "f2-sequence-feasibility"
+    },
+    "f2_logging_only_s7": {
+      "viennarna_transcript_body": "f2-viennarna-transcript-body",
+      "csi_human": "f2-csi-human",
+      "orthrus_translation_efficiency": "f2-orthrus-translation-efficiency",
+      "ribodecode_hek293t": "f2-ribodecode-hek293t",
+      "sequence_feasibility": "f2-sequence-feasibility"
+    },
+    "f3a_morse_s101": {
+      "viennarna_transcript_body": "f3a-viennarna-transcript-body",
+      "csi_human": "f3a-csi-human"
+    },
+    "f3a_morse_s137": {
+      "viennarna_transcript_body": "f3a-viennarna-transcript-body",
+      "csi_human": "f3a-csi-human"
+    },
+    "f3a_morse_s211": {
+      "viennarna_transcript_body": "f3a-viennarna-transcript-body",
+      "csi_human": "f3a-csi-human"
+    },
+    "f3a_morse_s43": {
+      "viennarna_transcript_body": "f3a-viennarna-transcript-body",
+      "csi_human": "f3a-csi-human"
+    },
+    "f3a_morse_s7": {
+      "viennarna_transcript_body": "f3a-viennarna-transcript-body",
+      "csi_human": "f3a-csi-human"
+    },
+    "f3b_cds_only_s101": {
+      "viennarna_transcript_body": "f3b-viennarna-transcript-body",
+      "viennarna_isolated_cds": "f3b-viennarna-isolated-cds",
+      "cai_lineardesign_frequencies": "f3b-cai-lineardesign-frequencies",
+      "orthrus_translation_efficiency": "f3b-orthrus-translation-efficiency",
+      "sequence_feasibility": "f3b-sequence-feasibility"
+    },
+    "f3b_cds_only_s137": {
+      "viennarna_transcript_body": "f3b-viennarna-transcript-body",
+      "viennarna_isolated_cds": "f3b-viennarna-isolated-cds",
+      "cai_lineardesign_frequencies": "f3b-cai-lineardesign-frequencies",
+      "orthrus_translation_efficiency": "f3b-orthrus-translation-efficiency",
+      "sequence_feasibility": "f3b-sequence-feasibility"
+    },
+    "f3b_cds_only_s211": {
+      "viennarna_transcript_body": "f3b-viennarna-transcript-body",
+      "viennarna_isolated_cds": "f3b-viennarna-isolated-cds",
+      "cai_lineardesign_frequencies": "f3b-cai-lineardesign-frequencies",
+      "orthrus_translation_efficiency": "f3b-orthrus-translation-efficiency",
+      "sequence_feasibility": "f3b-sequence-feasibility"
+    },
+    "f3b_cds_only_s43": {
+      "viennarna_transcript_body": "f3b-viennarna-transcript-body",
+      "viennarna_isolated_cds": "f3b-viennarna-isolated-cds",
+      "cai_lineardesign_frequencies": "f3b-cai-lineardesign-frequencies",
+      "orthrus_translation_efficiency": "f3b-orthrus-translation-efficiency",
+      "sequence_feasibility": "f3b-sequence-feasibility"
+    },
+    "f3b_cds_only_s7": {
+      "viennarna_transcript_body": "f3b-viennarna-transcript-body",
+      "viennarna_isolated_cds": "f3b-viennarna-isolated-cds",
+      "cai_lineardesign_frequencies": "f3b-cai-lineardesign-frequencies",
+      "orthrus_translation_efficiency": "f3b-orthrus-translation-efficiency",
+      "sequence_feasibility": "f3b-sequence-feasibility"
+    },
+    "f3b_cds_utrs_s101": {
+      "viennarna_transcript_body": "f3b-viennarna-transcript-body",
+      "viennarna_isolated_cds": "f3b-viennarna-isolated-cds",
+      "cai_lineardesign_frequencies": "f3b-cai-lineardesign-frequencies",
+      "orthrus_translation_efficiency": "f3b-orthrus-translation-efficiency",
+      "sequence_feasibility": "f3b-sequence-feasibility"
+    },
+    "f3b_cds_utrs_s137": {
+      "viennarna_transcript_body": "f3b-viennarna-transcript-body",
+      "viennarna_isolated_cds": "f3b-viennarna-isolated-cds",
+      "cai_lineardesign_frequencies": "f3b-cai-lineardesign-frequencies",
+      "orthrus_translation_efficiency": "f3b-orthrus-translation-efficiency",
+      "sequence_feasibility": "f3b-sequence-feasibility"
+    },
+    "f3b_cds_utrs_s211": {
+      "viennarna_transcript_body": "f3b-viennarna-transcript-body",
+      "viennarna_isolated_cds": "f3b-viennarna-isolated-cds",
+      "cai_lineardesign_frequencies": "f3b-cai-lineardesign-frequencies",
+      "orthrus_translation_efficiency": "f3b-orthrus-translation-efficiency",
+      "sequence_feasibility": "f3b-sequence-feasibility"
+    },
+    "f3b_cds_utrs_s43": {
+      "viennarna_transcript_body": "f3b-viennarna-transcript-body",
+      "viennarna_isolated_cds": "f3b-viennarna-isolated-cds",
+      "cai_lineardesign_frequencies": "f3b-cai-lineardesign-frequencies",
+      "orthrus_translation_efficiency": "f3b-orthrus-translation-efficiency",
+      "sequence_feasibility": "f3b-sequence-feasibility"
+    },
+    "f3b_cds_utrs_s7": {
+      "viennarna_transcript_body": "f3b-viennarna-transcript-body",
+      "viennarna_isolated_cds": "f3b-viennarna-isolated-cds",
+      "cai_lineardesign_frequencies": "f3b-cai-lineardesign-frequencies",
+      "orthrus_translation_efficiency": "f3b-orthrus-translation-efficiency",
+      "sequence_feasibility": "f3b-sequence-feasibility"
+    },
+    "f3c_morse_s101": {
+      "csi_human": "f2-csi-human",
+      "ribodecode_hek293t": "f3c-ribodecode-hek293t",
+      "viennarna_isolated_cds": "f3b-viennarna-isolated-cds",
+      "sequence_feasibility": "f3c-sequence-feasibility"
+    },
+    "f3c_morse_s137": {
+      "csi_human": "f2-csi-human",
+      "ribodecode_hek293t": "f3c-ribodecode-hek293t",
+      "viennarna_isolated_cds": "f3b-viennarna-isolated-cds",
+      "sequence_feasibility": "f3c-sequence-feasibility"
+    },
+    "f3c_morse_s211": {
+      "csi_human": "f2-csi-human",
+      "ribodecode_hek293t": "f3c-ribodecode-hek293t",
+      "viennarna_isolated_cds": "f3b-viennarna-isolated-cds",
+      "sequence_feasibility": "f3c-sequence-feasibility"
+    },
+    "f3c_morse_s43": {
+      "csi_human": "f2-csi-human",
+      "ribodecode_hek293t": "f3c-ribodecode-hek293t",
+      "viennarna_isolated_cds": "f3b-viennarna-isolated-cds",
+      "sequence_feasibility": "f3c-sequence-feasibility"
+    },
+    "f3c_morse_s7": {
+      "csi_human": "f2-csi-human",
+      "ribodecode_hek293t": "f3c-ribodecode-hek293t",
+      "viennarna_isolated_cds": "f3b-viennarna-isolated-cds",
+      "sequence_feasibility": "f3c-sequence-feasibility"
+    },
+    "f4_morse_s101": {
+      "ribonn": "f4-ribonn",
+      "orthrus_te": "f4-orthrus-te",
+      "ribodecode_hek293t": "f4-ribodecode-hek293t"
+    },
+    "f4_morse_s137": {
+      "ribonn": "f4-ribonn",
+      "orthrus_te": "f4-orthrus-te",
+      "ribodecode_hek293t": "f4-ribodecode-hek293t"
+    },
+    "f4_morse_s211": {
+      "ribonn": "f4-ribonn",
+      "orthrus_te": "f4-orthrus-te",
+      "ribodecode_hek293t": "f4-ribodecode-hek293t"
+    },
+    "f4_morse_s43": {
+      "ribonn": "f4-ribonn",
+      "orthrus_te": "f4-orthrus-te",
+      "ribodecode_hek293t": "f4-ribodecode-hek293t"
+    },
+    "f4_morse_s7": {
+      "ribonn": "f4-ribonn",
+      "orthrus_te": "f4-orthrus-te",
+      "ribodecode_hek293t": "f4-ribodecode-hek293t"
+    }
+  }
+}

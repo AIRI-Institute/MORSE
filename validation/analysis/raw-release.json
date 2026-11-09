@@ -1,0 +1,11 @@
+{
+  "status": "verified",
+  "archive": "outputs/artifacts/morse-paper-raw.tar.gz",
+  "bytes": 389985380,
+  "sha256": "7f768c397b26129657c72de12a0648d72299107f0a7c28aefbbf925c0eb893ab",
+  "raw_files_verified": 155,
+  "tracked_in_git": false,
+  "uploaded": false,
+  "path_normalization": "Six archive paths normalized to MORSE; all 155 raw file contents and source hashes are unchanged.",
+  "previous_archive_sha256": "05c0746e641c549a4ccd153fb5197d4e11d8d4635f4d988dd946cba84d836b6b"
+}

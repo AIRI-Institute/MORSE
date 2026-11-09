@@ -1,0 +1,41 @@
+{
+  "revision": "0108",
+  "display_name": "Orthrus TE",
+  "policy": "Retain the existing scientific data and per-experiment checkpoint assignments; no checkpoint unification is claimed.",
+  "checkpoints": {
+    "full_fit": {
+      "sha256": "c380316fe282640d563b9254e9ab8031e129f9e768c9ce04c0c7955bb0ac6bab",
+      "training_records": 10348,
+      "epochs": 4,
+      "cds_mask": "initiation codon and CDS body; terminal stop excluded",
+      "uses": [
+        "Fig.3a–c objective",
+        "Fig.4b objective",
+        "Extended Data Fig.2 objective",
+        "All Fig.4 radar TE axes",
+        "Retrospective Fig.4 scores in Supplementary Table8"
+      ]
+    },
+    "held_out": {
+      "sha256": "70913fc29ba9c073100913b56f59542520ec18a473fae358ff19bd57ecddd604",
+      "training_validation_test": [
+        8822,
+        966,
+        560
+      ],
+      "split_seed": 13,
+      "selected_epoch": 4,
+      "cds_mask": "initiation codon, CDS body and terminal stop",
+      "uses": [
+        "Fig.2 luciferase associations",
+        "Fig.3d retrospective trajectory",
+        "Fig.5 predictor-disagreement objective",
+        "Retrospective Fig.4 scores in Supplementary Table8"
+      ]
+    }
+  },
+  "numerical_observations_changed": false,
+  "new_inference": false,
+  "new_optimization": false,
+  "selection_changed": false
+}

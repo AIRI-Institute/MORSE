@@ -1,0 +1,104 @@
+{
+  "model": "orthrus-half-life",
+  "source_revision": "09809d98f3f641c53897a8991fdf2dce7949d9ba",
+  "image": "sha256:f38800a12100ff848ece332d28e8937fd4dcb7daf3bf825d91c64175250e1df4",
+  "request_sha256": "4fd6a853ca1fa3995df5a164922a25c02c201fc125a0bfb3b702f64357dabc03",
+  "sequences": 3,
+  "archived": {
+    "elapsed_seconds": 6.326978076249361,
+    "response": {
+      "request_id": "morse-ready-model-parity",
+      "outputs": [
+        {
+          "half_life_score": 0.45622313022613525
+        },
+        {
+          "half_life_score": 1.462702751159668
+        },
+        {
+          "half_life_score": 1.4861547946929932
+        }
+      ]
+    }
+  },
+  "current": {
+    "elapsed_seconds": 6.806859899312258,
+    "response": {
+      "request_id": "morse-ready-model-parity",
+      "outputs": [
+        {
+          "half_life_score": 0.45622313022613525
+        },
+        {
+          "half_life_score": 1.462702751159668
+        },
+        {
+          "half_life_score": 1.4861547946929932
+        }
+      ]
+    }
+  },
+  "maximum_absolute_difference": 0.0,
+  "tolerance": 1e-06,
+  "passed": true,
+  "validation_scope": "Post-rename MORSE inference parity on three frozen constructs. Existing immutable runtime images were reused; this is not a fresh image build or a full evolutionary campaign.",
+  "hardware": "olig, NVIDIA A100 80GB, GPU0",
+  "source_snapshot_scope": "Private isolated snapshot of inference adapters, their assets registry, validators and frozen fixtures; not a full monorepo commit",
+  "source_sha256": {
+    "assets/manage.py": "c484fd3ee7279e25112dab32ee426aff961562d790f7170567824d5c1c86b81c",
+    "assets/registry.json": "3efdc5782c0dca10f6ff33e7158494de065c501d0c1a0ab92fa45a8c553a3b00",
+    "scorers/half-life/.dockerignore": "6573da506664c139c2a025e8893804e6e940b8db27941ab0d6d45e9c6613fc78",
+    "scorers/half-life/.gitignore": "767953f26ee5bef7376fd49cb4b33fe5e0f88e1280e3f88a94650ce85ce10b34",
+    "scorers/half-life/Dockerfile": "3dc466e0745f898fc4f1a1b5a5b69610a1fd2b2e6d6df77b160d6e091c53e1d4",
+    "scorers/half-life/README.md": "dd6941d56940149a3facdf98cf6f7a5aeb034117f7901dd8af5fce6e9a0f6655",
+    "scorers/half-life/model.py": "71acdceb678feb1e3b889e149eee520eb4ef10f4863f475aaa35a042199c11ce",
+    "scorers/half-life/model_metadata/deployment_manifest.json": "2c72b7e15f773304ffdd5814da11f09f069b70e864e5c13ae76b8b61c7077299",
+    "scorers/half-life/model_metadata/reference_run.json": "bf9bd5256aa8a9877eced8185049861ee650e4496fafe2dbb439aed0961a3195",
+    "scorers/half-life/morse-scorer.yaml": "f688ec0525727c9a14a598e9055d1ba74abda34acac8e7d9d69981766897b77b",
+    "scorers/half-life/portable_orthrus.py": "09499cb57ee067abe5b6e7d566e6544013a68da4370155b2e0245a359e5cb540",
+    "scorers/half-life/prepare_assets.py": "06282f54a9d592b953d36a4bdc58878a3e9526885764aca879fbdcf693c70e8b",
+    "scorers/half-life/requirements.txt": "533d3fe7592114f65e55f74aa3492bc0740c30625a88957c10ce50a599d0d6c4",
+    "scorers/half-life/server.py": "b83a21b15bc16a71c5c6c47d7d77a6293754b4f57e282d4ca23d83865d61ef4f",
+    "scripts/validate_heldout.py": "1a5892e68f51189dc015d1a7ffb855d4e35015f51579161cf7dbd146f025bfe8",
+    "scripts/validate_inference.py": "09c9d4764eb59001964edccb500e5cf4f6882de4c29ba5f2e867a64f1862de43"
+  },
+  "verified_model_asset": {
+    "id": "orthrus-half-life",
+    "status": "verified",
+    "files": [
+      {
+        "path": "model_final.pt",
+        "sha256": "fe4f816572626d127f54e64d4a724923bd5a080b4898f225898f69f91f28a40e",
+        "bytes": 41275122
+      }
+    ],
+    "dependencies": [
+      {
+        "id": "orthrus-backbone",
+        "status": "verified",
+        "files": [
+          {
+            "path": "config.json",
+            "sha256": "a8b513b3d73356e7ac8a59516ebbf51bc03f635e6329ad32350c289f84c8a288",
+            "bytes": 375
+          },
+          {
+            "path": "orthrus_hf.py",
+            "sha256": "35fb82d090003c9bf91be1820d5cc0e22c1092d28d9805951d3f284d728cdbe4",
+            "bytes": 6543
+          },
+          {
+            "path": "pytorch_model.bin",
+            "sha256": "a188c974493679d9eb5d18b5ecc3148f3634cd785e20f8303d6f313f62f00c08",
+            "bytes": 40737856
+          }
+        ]
+      }
+    ]
+  },
+  "private_receipt_sha256": "8690f910472ac341801ce7e565d4111698265e66c1bbd5578f48381e2e87a179",
+  "source_overlay": true,
+  "new_image_build": false,
+  "predictor_training": false,
+  "comparison": "Renamed current-source overlay versus the pre-existing native adapter in the same immutable Docker image, with identical ready assets and input batches."
+}

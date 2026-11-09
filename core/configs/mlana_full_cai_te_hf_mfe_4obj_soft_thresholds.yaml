@@ -1,0 +1,160 @@
+schema_version: 4
+name: mlana_full_cai_te_hf_mfe_4obj_soft_thresholds
+# Results folder.
+output_dir: ../../outputs/mlana_full_cai_te_hf_mfe_4obj_soft_thresholds
+
+# Input RNA and parts.
+construct:
+  fasta: inputs/mlana_full_cai_te_hf_mfe_4obj_soft_thresholds/sequence.fasta
+  coordinates:  # 0-based; end excluded.
+    five_prime_utr: [0, 50]
+    cds: [50, 407]
+    three_prime_utr: [407, 774]
+    poly_a: [774, 874]
+
+  # Unlisted parts stay fixed.
+  changes:
+    five_prime_utr:
+      library: inputs/mlana_full_cai_te_hf_mfe_4obj_soft_thresholds/five_prime_utr.fasta
+    cds: synonymous
+    stop_codon:
+      sequences: [TAA, TAG, TGA]
+    three_prime_utr:
+      library: ../examples/parts/gencode_v50_mane_3utr_representatives.tsv
+      set: gencode_v50_mane_3utr_30_500nt
+      max_candidates: 20
+
+# Search settings.
+optimizer:
+  algorithm: nsga3
+  population_size: 64
+  generations: 300
+  seed: 43
+  n_offsprings: 64
+  eliminate_duplicates: true
+  crossover:
+    type: uniform
+    probability: 0.9
+  mutation:
+    type: integer_reset
+    probability: auto
+  reference_directions:
+    method: energy
+    n_points: 64
+    seed: 43
+  constraint_handling:
+    method: adaptive_epsilon
+    normalization: relative
+    initial_epsilon: 0.5
+    relaxation_generations: 30
+    curve: cosine
+  early_stopping:
+    enabled: true
+    metric: hypervolume
+    min_generations: 70
+    patience: 30
+    rel_tol: 0.001
+
+# Prepared scorer commands.
+scorers:
+  - name: cai_human
+    timeout_seconds: 120
+    scope: [start_codon, cds_body]
+    command: |-
+      docker exec -i \
+        "${MORSE_CAI_CONTAINER:-morse-cai}" \
+        python3 /app/server.py
+    metrics:  # Goals, limits and logs.
+      cai:
+        role: optimize
+        direction: max
+      cai_log:
+        role: log
+      cai_min_weight:
+        role: log
+      cai_low_weight_fraction:
+        role: log
+      cai_informative_codons:
+        role: log
+        value_type: int
+      cai_profile_id:
+        role: log
+        value_type: string
+      cai_profile_sha256:
+        role: log
+        value_type: string
+  - name: translation_efficiency
+    timeout_seconds: 1800
+    scope: [five_prime_utr, cds, three_prime_utr]
+    command: |-
+      docker exec -i \
+        -e PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True \
+        -e ORTHRUS_CHECKPOINT=/models/model_final.pt \
+        -e ORTHRUS_MODEL_SOURCE=/models/orthrus-backbone \
+        -e "ORTHRUS_DEVICE=${TRANSLATION_EFFICIENCY_DEVICE:-auto}" \
+        -e ORTHRUS_BATCH_SIZE=4 \
+        -e ORTHRUS_MAX_TOKENS=16000 \
+        "${MORSE_TRANSLATION_EFFICIENCY_CONTAINER:-morse-translation-efficiency}" \
+        python3 /app/server.py
+    metrics:  # Goals, limits and logs.
+      translation_efficiency_score:
+        role: optimize
+        direction: max
+  - name: half_life
+    timeout_seconds: 1800
+    scope: [five_prime_utr, cds, three_prime_utr]
+    command: |-
+      docker exec -i \
+        -e PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True \
+        -e ORTHRUS_CHECKPOINT=/models/model_final.pt \
+        -e ORTHRUS_MODEL_SOURCE=/models/orthrus-backbone \
+        -e "ORTHRUS_DEVICE=${HALF_LIFE_DEVICE:-auto}" \
+        -e ORTHRUS_BATCH_SIZE=4 \
+        -e ORTHRUS_MAX_TOKENS=18000 \
+        "${MORSE_HALF_LIFE_CONTAINER:-morse-half-life}" \
+        python3 /app/server.py
+    metrics:  # Goals, limits and logs.
+      half_life_score:
+        role: optimize
+        direction: max
+  - name: viennarna_full
+    timeout_seconds: 1800
+    scope: [five_prime_utr, cds, three_prime_utr]
+    command: |-
+      docker exec -i \
+        -e VIENNARNA_ENABLE_PF=0 \
+        -e VIENNARNA_MAX_BP_SPAN=200 \
+        "${MORSE_VIENNARNA_CONTAINER:-morse-viennarna}" \
+        python3 /app/scorer.py
+    metrics:  # Goals, limits and logs.
+      mfe_per_nt:
+        role: optimize
+        direction: min
+      gc_fraction:
+        role: log
+      mfe:
+        role: log
+      mfe_structure:
+        role: log
+        value_type: structure
+  - name: sequence_quality
+    command: '"${MORSE_PYTHON}" -m morse.sequence_quality'
+    scope: [five_prime_utr, cds, three_prime_utr]
+    metrics:  # Goals, limits and logs.
+      non_polya_max_homopolymer:
+        role: threshold
+        max: 5
+        value_type: int
+      body_gc_window_min:
+        role: threshold
+        min: 0.32
+      body_gc_window_max:
+        role: threshold
+        max: 0.68
+      cpg_per_kb:
+        role: log
+      upa_per_kb:
+        role: log
+      repeated_12mer_count:
+        role: log
+        value_type: int

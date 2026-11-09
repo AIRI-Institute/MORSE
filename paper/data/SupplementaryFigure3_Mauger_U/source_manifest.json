@@ -1,0 +1,6 @@
+{
+  "output/mauger_ribonn_20261002/figures/measurements_and_scores.csv": "53c6fa9afb23611f6386051137b40a345d42be99139dc82c4670ec7160966a6e",
+  "output/mauger_ribonn_20261002/figures/analysis_protocol.json": "f1c385243edd7c840d3ea92997094ae59ad5347662069d635499dc3a957b6324",
+  "output/mauger_ribonn_20261002/figures/spearman_correlations.csv": "1812a55625780bdbb45de528ec0546f4d8edafd9631ca818013e64f200560906",
+  "output/mauger_unmodified_hv_20261005/build.py": "fef10288d4c41de9a8db568187d257dce97213b4e5e34c9340724bfb9e30d278"
+}

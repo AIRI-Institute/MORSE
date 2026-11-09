@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-08",
+  "status": "pass",
+  "source_base_revision": "1eefa0c7d1be305cf4e53374ed436600ee056608",
+  "source_sha256": {
+    "scripts/compare_initial_scores.py": "9c1f701ce986b4cd2b069001f6c842e32c1130651109e1386137cb3274e6364b",
+    "scorers/manufacturability/manufacturability_scorer/sequence.py": "c135028c1a1dd74d1487858721dbc9f83c4068de6c29eedf4c01cd7dfdfd86fa",
+    "scorers/manufacturability/manufacturability_scorer/feasibility_server.py": "2d35b8e7ed833c1add559852a6459e7ecc55208510030f7e223c6043892ec38d",
+    "core/notebooks/MORSE_Server_Colab.ipynb": "30cb9bc8ef692e9ff3ecbe31dd9c0fc87da35d9eb8a1052ddb2dcfae35f3edf8",
+    "assets/registry.json": "73bf97cae6ecb4dd41480a9497c5ff4e822a62219db6f8d423d4c993abbe2d74",
+    "paper/provenance/bundle_manifest.json": "e867d25d9fe4081ef6064fc7f6cbec6af369bd81d8c56f06d35541ef7d0f478c",
+    "uv.lock": "b3533586b463ad86e1d972befb4a11ed105d2fadf133763568d572f9d262c0cc"
+  },
+  "cpu_tests": {
+    "suites": 16,
+    "discovered": 365,
+    "passed": 361,
+    "skipped": 4,
+    "skip_reason": "Four optional IRNA container contract tests require IRNA_TEST_IMAGE"
+  },
+  "configuration_validation": {
+    "schema_version": 4,
+    "yaml_files": 47,
+    "readme_yaml_examples": 14,
+    "scorer_execution": false
+  },
+  "cpu_examples": [
+    {
+      "name": "quickstart",
+      "config": "examples/quickstart/experiment.yaml",
+      "status": "pass"
+    },
+    {
+      "name": "magea1",
+      "config": "examples/vaccines/magea1/experiment.yaml",
+      "status": "pass"
+    },
+    {
+      "name": "magea6",
+      "config": "examples/vaccines/magea6/experiment.yaml",
+      "status": "pass"
+    },
+    {
+      "name": "single_cpg",
+      "config": "core/configs/mlana_cds_single_cpg_ga.yaml",
+      "status": "pass"
+    },
+    {
+      "name": "independent_init_run",
+      "input": "examples/custom_experiment/input_cds.fasta",
+      "status": "pass"
+    }
+  ],
+  "colab": {
+    "status": "pass",
+    "environment": "Local Python 3.13 with ipywidgets",
+    "executed_cells": [
+      "bootstrap_environment",
+      "load_module",
+      "experiment_editor",
+      "save_validate_preview",
+      "connect_executor",
+      "preflight",
+      "launch",
+      "progress",
+      "job_controls",
+      "results"
+    ],
+    "population_size": 8,
+    "generations": 2,
+    "png_plots": 9,
+    "half_spider_generated": true,
+    "yaml_and_inputs_exported": true,
+    "progress_and_result_download": true,
+    "google_colab_service_tested": false
+  },
+  "isolated_public_installation": {
+    "status": "pass",
+    "offline_frozen_uv_sync": true,
+    "local_test_sources_copied": false,
+    "existing_venv_reused": false,
+    "cpu_run": true,
+    "feasibility_cli": true,
+    "paper_verify": true,
+    "notebook_imports": true
+  },
+  "feasibility_refactor": {
+    "cases": [
+      {
+        "configuration_sha256": "cf50ef5f06368c573b0c843e3531b74f5720e7e21f2f7392b740d6d1ee420471",
+        "exactly_equal": true,
+        "observations": 11,
+        "preset": "sequence_feasibility_v1"
+      },
+      {
+        "configuration_sha256": "18f8e8896d71d61565c1dad8c07b136b8019df76fc6634ef0a6ecba629b81603",
+        "exactly_equal": true,
+        "observations": 11,
+        "preset": "sequence_feasibility_v1"
+      },
+      {
+        "configuration_sha256": "85a41cded83616f26488001f2eac445d14765b66dc15bb92cdbf9d91e31e46e0",
+        "exactly_equal": true,
+        "observations": 11,
+        "preset": "sequence_feasibility_v1"
+      },
+      {
+        "configuration_sha256": "35644021ea307c7a144166f6de78a91762ffe8e37a8969d86e831bba7b94f508",
+        "exactly_equal": true,
+        "observations": 11,
+        "preset": "manufacturing_strategy_v1"
+      },
+      {
+        "configuration_sha256": "fa64c599eeae03c36842b452e74479018ab2ba71999f2873fc32de45885465b3",
+        "exactly_equal": true,
+        "observations": 11,
+        "preset": "manufacturing_strategy_v1"
+      },
+      {
+        "configuration_sha256": "5cba0e92efdf7ca0e13dfecf1f1bd11529d26b44bc8a0ee33d8ade1f8d881abd",
+        "exactly_equal": true,
+        "observations": 11,
+        "preset": "manufacturing_strategy_v1"
+      }
+    ],
+    "note": "Exact native outputs and configuration hashes before/after extracting sequence helpers; no optimization/model inference.",
+    "observations": 66,
+    "status": "pass"
+  },
+  "initial_score_audit": {
+    "existing_logs": [
+      {
+        "run_id": "F2_filtered_s7",
+        "status": "pass",
+        "paired_transcripts": 64,
+        "fields": 68,
+        "unresolved_fields": [],
+        "new_inference": false
+      },
+      {
+        "run_id": "F4_morse_s7",
+        "status": "pass",
+        "paired_transcripts": 64,
+        "fields": 23,
+        "unresolved_fields": [],
+        "new_inference": false
+      }
+    ],
+    "f3a_fixed_construct_reconstruction": {
+      "seeds": 5,
+      "archived_transcripts": 320,
+      "status": "pass"
+    },
+    "frozen_metric_mapping": true,
+    "ambiguous_mapping_rejected": true,
+    "nonfinite_or_missing_numeric_observations_cannot_pass": true
+  },
+  "paper": {
+    "frozen_files_verified": 252,
+    "figures_regenerated": 8,
+    "historical_initial_inputs_and_configs_changed": false,
+    "duplicate_fig1_pdf_removed": true,
+    "concept_diagram_bytes_preserved": true
+  },
+  "execution_limits": {
+    "publication": false,
+    "server_access": false,
+    "paper_optimization_reruns": false,
+    "neural_model_inference": false,
+    "docker_images_rebuilt": false
+  }
+}

@@ -1,0 +1,91 @@
+schema_version: 2
+id: cai
+name: Codon Adaptation Index
+version: 2.2.0
+description: >-
+  Fast CAI scorer for an explicit start codon plus CDS body using a selectable
+  human, mouse, or custom codon profile. The initiation codon is excluded.
+runtime:
+  type: venv
+  entrypoint: [python, server.py]
+  timeout_seconds: 120
+  env:
+    CAI_PROFILE: profiles/homo_sapiens_kazusa_93487_cds.json
+scope:
+  configurable: false
+  allowed_parts: [start_codon, cds]
+  allow_slices: false
+  allow_window: false
+  default:
+    type: parts
+    spans:
+      - part: start_codon
+      - part: cds
+outputs:
+  cai:
+    type: float
+    unit: index
+    value_range: "(0, 1]"
+    description: Geometric mean of synonymous-codon weights; higher is better.
+    default_policy: {role: objective, direction: max}
+  cai_log:
+    type: float
+    value_range: "(-∞, 0]"
+    description: Natural logarithm of CAI.
+    default_policy: {role: log}
+  cai_min_weight:
+    type: float
+    value_range: "(0, 1]"
+    description: Minimum weight among informative synonymous codons.
+    default_policy: {role: log}
+  cai_low_weight_fraction:
+    type: float
+    unit: fraction
+    value_range: "[0, 1]"
+    description: Fraction of informative codons with a weight below the configured threshold.
+    default_policy: {role: log}
+  cai_informative_codons:
+    type: int
+    unit: codons
+    value_range: "integer >= 1"
+    description: Number of codons included in the CAI calculation.
+    default_policy: {role: log}
+  cai_profile_id:
+    type: string
+    value_range: string identifier
+    description: Identifier of the codon-frequency profile used for scoring.
+    default_policy: {role: log}
+  cai_profile_sha256:
+    type: string
+    value_range: 64 hexadecimal characters
+    description: SHA-256 digest of the codon-frequency profile for reproducibility.
+    default_policy: {role: log}
+parameters:
+  profile_path:
+    type: path
+    default: profiles/homo_sapiens_kazusa_93487_cds.json
+    env: CAI_PROFILE
+    description: >-
+      Human, mouse, or custom schema-1 codon-frequency profile. Relative paths
+      are resolved from the installed scorer source directory.
+  low_weight_threshold:
+    type: float
+    default: 0.1
+    min: 0.000001
+    max: 1.0
+    env: CAI_LOW_WEIGHT_THRESHOLD
+    description: Weight below which a codon contributes to cai_low_weight_fraction.
+self_test:
+  sequence: ATGTTCTTT
+  sequence_context:
+    part_ranges:
+      - {part: start_codon, start: 0, end: 3, part_start: 0, part_end: 3}
+      - {part: cds, start: 3, end: 9, part_start: 0, part_end: 6}
+  expected_outputs:
+    - cai
+    - cai_log
+    - cai_min_weight
+    - cai_low_weight_fraction
+    - cai_informative_codons
+    - cai_profile_id
+    - cai_profile_sha256

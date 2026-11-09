@@ -1,0 +1,91 @@
+{
+  "matching_policy": {
+    "eligible": "scanMiRData mature sequence is within Levenshtein distance <= 3 of a MirGeneDB 3.0 5p/3p arm",
+    "exact": "distance 0",
+    "five_prime_shift": "distance 1-3 and guide nucleotides 2-8 differ; retained but flagged for review",
+    "seed_preserving_variant": "distance 1-3 and guide nucleotides 2-8 are unchanged"
+  },
+  "maximum_mirgenedb_edit_distance": 3,
+  "selection_threshold_of_eligible_expression": 0.975,
+  "snapshot": "2026-08-21",
+  "species": {
+    "human": {
+      "eligible_unique_mature_sequences": 846,
+      "eligible_unique_target_seeds": 675,
+      "match_class_counts": {
+        "exact": 477,
+        "five_prime_shift": 102,
+        "seed_preserving_variant": 267,
+        "unmatched": 1786
+      },
+      "mirgenedb_arm_records": 1027,
+      "mirgenedb_unique_arm_sequences": 938,
+      "panels": {
+        "audit": {
+          "five_prime_shift_models": 102,
+          "minimum_selected_fraction_of_eligible": 1.0,
+          "minimum_selected_fraction_of_total": 0.978877881616638,
+          "unique_mature_sequences": 846,
+          "unique_target_seeds": 675
+        },
+        "core_975": {
+          "five_prime_shift_models": 6,
+          "minimum_selected_fraction_of_eligible": 0.9816717166300658,
+          "minimum_selected_fraction_of_total": 0.9683125487356355,
+          "unique_mature_sequences": 157,
+          "unique_target_seeds": 113
+        },
+        "extended_975": {
+          "five_prime_shift_models": 10,
+          "minimum_selected_fraction_of_eligible": 0.981863030148385,
+          "minimum_selected_fraction_of_total": 0.9708706680624101,
+          "unique_mature_sequences": 219,
+          "unique_target_seeds": 164
+        }
+      },
+      "scanmirdata_models": 2656,
+      "species": "human",
+      "unique_scanmir_mature_sequences": 2632,
+      "unique_scanmir_target_seeds": 2094
+    },
+    "mouse": {
+      "eligible_unique_mature_sequences": 749,
+      "eligible_unique_target_seeds": 608,
+      "match_class_counts": {
+        "exact": 463,
+        "five_prime_shift": 73,
+        "seed_preserving_variant": 213,
+        "unmatched": 1214
+      },
+      "mirgenedb_arm_records": 807,
+      "mirgenedb_unique_arm_sequences": 767,
+      "panels": {
+        "audit": {
+          "five_prime_shift_models": 73,
+          "minimum_selected_fraction_of_eligible": 1.0,
+          "minimum_selected_fraction_of_total": 0.9743681737166522,
+          "unique_mature_sequences": 749,
+          "unique_target_seeds": 608
+        },
+        "core_975": {
+          "five_prime_shift_models": 6,
+          "minimum_selected_fraction_of_eligible": 0.9832956216356685,
+          "minimum_selected_fraction_of_total": 0.9631860033225125,
+          "unique_mature_sequences": 170,
+          "unique_target_seeds": 122
+        },
+        "extended_975": {
+          "five_prime_shift_models": 6,
+          "minimum_selected_fraction_of_eligible": 0.9841963639037065,
+          "minimum_selected_fraction_of_total": 0.9649687832081371,
+          "unique_mature_sequences": 189,
+          "unique_target_seeds": 134
+        }
+      },
+      "scanmirdata_models": 1978,
+      "species": "mouse",
+      "unique_scanmir_mature_sequences": 1963,
+      "unique_scanmir_target_seeds": 1588
+    }
+  }
+}

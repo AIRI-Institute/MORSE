@@ -1,0 +1,15 @@
+scorer,label,n,spearman_rho,p_value,significant,method,permutations,permutation_seed,all_relevant_member,all_translation_member
+ribonn,RiboNN (human ensemble),39,0.608502024291498,0.00012,True,fixed-score two-sided permutation,99999,20261129,True,True
+te,TE–Orthrus (updated),39,0.6122779500730626,7e-05,True,fixed-score two-sided permutation,99999,20261129,True,True
+ribodecode,RiboDecode,39,0.3206477732793522,0.04717,True,fixed-score two-sided permutation,99999,20261129,True,True
+half_life,Orthrus half-life,39,0.681109550304145,2e-05,True,fixed-score two-sided permutation,99999,20261129,True,False
+csi,CSI (human percentile),39,0.7668016194331984,1e-05,True,fixed-score two-sided permutation,99999,20261129,True,False
+cai_ld,CAI (LinearDesign human),39,0.7902834008097166,1e-05,True,fixed-score two-sided permutation,99999,20261129,True,False
+mfe_body,−MFE/nt (transcript body),39,0.6647773279352227,1e-05,True,fixed-score two-sided permutation,99999,20261129,True,False
+mfe_cds,−MFE (CDS),39,0.6829959514170041,1e-05,True,fixed-score two-sided permutation,99999,20261129,True,False
+mirna,−scanMiR repression,39,-0.025303643724696345,0.87698,False,fixed-score two-sided permutation,99999,20261129,False,False
+immunogenicity,−RiNALMo signal (p95),39,0.4653470651130625,0.00304,True,fixed-score two-sided permutation,99999,20261129,False,False
+feasibility,−Feasibility violations,39,0.31996762446213467,0.04826,True,fixed-score two-sided permutation,99999,20261129,False,False
+gc,GC fraction (raw),39,0.7448757537754453,1e-05,True,fixed-score two-sided permutation,99999,20261129,True,False
+all translation,all translation,39,0.6178137651821862,9e-05,True,fixed-score two-sided permutation,99999,20261129,False,False
+All Relevant,All Relevant,39,0.8174089068825909,1e-05,True,fixed-score two-sided permutation,99999,20261129,False,False

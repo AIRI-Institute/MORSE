@@ -1,0 +1,453 @@
+schema_version: 2
+id: manufacturability
+name: Sequence feasibility
+version: 4.1.0
+description: Versioned configurable GC, homopolymer, repeat, restriction-site, capping-start,
+  and inverted-repeat risk filters with explicit exemptions.
+runtime:
+  type: container
+  image: ghcr.io/shpakb/morse-manufacturability:4.1.0
+  dockerfile: Dockerfile
+  timeout_seconds: 1800
+scope:
+  configurable: true
+  allowed_parts:
+  - five_prime_utr
+  - start_codon
+  - cds
+  - stop_codon
+  - three_prime_utr
+  allow_slices: true
+  allow_window: false
+  default:
+    type: parts
+    spans:
+    - part: five_prime_utr
+    - part: start_codon
+    - part: cds
+    - part: stop_codon
+    - part: three_prime_utr
+outputs:
+  feasibility_pass:
+    type: bool
+    value_range: true / false
+    description: True only when all enabled, non-exempt checks pass, including GC.
+    default_policy:
+      role: log
+  feasibility_violation_count:
+    type: int
+    value_range: integer >= 0
+    description: Number of enabled, non-exempt violation events; use threshold max
+      0 to filter.
+    default_policy:
+      role: threshold
+      max: 0
+  feasibility_failed_check_count:
+    type: int
+    value_range: integer >= 0
+    description: Number of distinct enabled check families with violations.
+    default_policy:
+      role: log
+  feasibility_failed_checks_json:
+    type: string
+    value_range: JSON or identifier string
+    description: JSON list of failed enabled check names.
+    default_policy:
+      role: log
+  feasibility_violations_json:
+    type: string
+    value_range: JSON or identifier string
+    description: JSON list of active violations with zero-based half-open coordinates
+      in the routed sequence.
+    default_policy:
+      role: log
+  feasibility_exemptions_json:
+    type: string
+    value_range: JSON or identifier string
+    description: JSON list of suppressed events and explicit exemption reasons.
+    default_policy:
+      role: log
+  feasibility_raw_counts_json:
+    type: string
+    value_range: JSON or identifier string
+    description: JSON counts before enabled-check selection and exemptions; includes
+      disabled checks.
+    default_policy:
+      role: log
+  analyzed_length:
+    type: int
+    value_range: integer >= 0
+    description: Length of the routed transcript body without annotated poly(A).
+    default_policy:
+      role: log
+  global_gc_fraction:
+    type: float
+    value_range: '[0, 1]'
+    description: G+C fraction of the routed sequence.
+    default_policy:
+      role: log
+  local_gc_min:
+    type: float
+    value_range: '[0, 1]'
+    description: Minimum GC fraction over windows, including the terminal window.
+    default_policy:
+      role: log
+  local_gc_max:
+    type: float
+    value_range: '[0, 1]'
+    description: Maximum GC fraction over windows, including the terminal window.
+    default_policy:
+      role: log
+  local_gc_window_count:
+    type: int
+    value_range: integer >= 0
+    description: Number of local windows; short sequences use one full-length window.
+    default_policy:
+      role: log
+  max_homopolymer_length:
+    type: int
+    value_range: integer >= 0
+    description: Longest run of a single nucleotide, including disabled or exempt
+      regions.
+    default_policy:
+      role: log
+  max_homopolymer_a:
+    type: int
+    value_range: integer >= 0
+    description: Longest A homopolymer length.
+    default_policy:
+      role: log
+  max_homopolymer_c:
+    type: int
+    value_range: integer >= 0
+    description: Longest C homopolymer length.
+    default_policy:
+      role: log
+  max_homopolymer_g:
+    type: int
+    value_range: integer >= 0
+    description: Longest G homopolymer length.
+    default_policy:
+      role: log
+  max_homopolymer_u:
+    type: int
+    value_range: integer >= 0
+    description: Longest U homopolymer length.
+    default_policy:
+      role: log
+  global_gc_violation_count:
+    type: int
+    value_range: integer >= 0
+    description: Enabled, non-exempt global_gc violation count.
+    default_policy:
+      role: log
+  local_gc_violation_count:
+    type: int
+    value_range: integer >= 0
+    description: Enabled, non-exempt local_gc violation count.
+    default_policy:
+      role: log
+  homopolymers_violation_count:
+    type: int
+    value_range: integer >= 0
+    description: Enabled, non-exempt homopolymers violation count.
+    default_policy:
+      role: log
+  direct_repeats_violation_count:
+    type: int
+    value_range: integer >= 0
+    description: Enabled, non-exempt direct_repeats violation count.
+    default_policy:
+      role: log
+  tandem_repeats_violation_count:
+    type: int
+    value_range: integer >= 0
+    description: Enabled, non-exempt tandem_repeats violation count.
+    default_policy:
+      role: log
+  forbidden_motifs_violation_count:
+    type: int
+    value_range: integer >= 0
+    description: Enabled, non-exempt forbidden_motifs violation count.
+    default_policy:
+      role: log
+  feasibility_profile_id:
+    type: string
+    value_range: JSON or identifier string
+    description: Versioned preset identifier.
+    default_policy:
+      role: log
+  feasibility_profile_sha256:
+    type: string
+    value_range: JSON or identifier string
+    description: SHA-256 of the unchanged preset file bytes.
+    default_policy:
+      role: log
+  feasibility_config_sha256:
+    type: string
+    value_range: JSON or identifier string
+    description: SHA-256 of the canonical resolved configuration.
+    default_policy:
+      role: log
+  feasibility_config_json:
+    type: string
+    value_range: JSON or identifier string
+    description: Canonical JSON of the fully resolved preset and overrides, including
+      preset digest.
+    default_policy:
+      role: log
+  restriction_sites_violation_count:
+    type: int
+    value_range: integer >= 0
+    description: Enabled, non-exempt restriction_sites violation count.
+    default_policy:
+      role: log
+  capping_start_violation_count:
+    type: int
+    value_range: integer >= 0
+    description: Enabled, non-exempt capping_start violation count.
+    default_policy:
+      role: log
+  inverted_repeats_violation_count:
+    type: int
+    value_range: integer >= 0
+    description: Enabled, non-exempt inverted_repeats violation count.
+    default_policy:
+      role: log
+parameters:
+  preset:
+    type: string
+    default: sequence_feasibility_v1
+    choices:
+    - sequence_feasibility_v1
+    - manufacturing_strategy_v1
+    env: SEQUENCE_FEASIBILITY_PRESET
+    description: Immutable versioned engineering preset; all overrides are recorded
+      and hashed.
+  enabled_checks:
+    type: string
+    default: preset
+    env: SEQUENCE_FEASIBILITY_ENABLED_CHECKS
+    description: preset inherits the selected preset; otherwise a JSON list of enabled
+      checks. Empty list records metrics without filtering.
+  global_gc_min:
+    type: float
+    default: 0.4
+    env: SEQUENCE_FEASIBILITY_GLOBAL_GC_MIN
+    description: Inclusive lower global GC fraction.
+    min: 0.0
+    max: 1.0
+  global_gc_max:
+    type: float
+    default: 0.6
+    env: SEQUENCE_FEASIBILITY_GLOBAL_GC_MAX
+    description: Inclusive upper global GC fraction.
+    min: 0.0
+    max: 1.0
+  local_gc_min:
+    type: float
+    default: 0.3
+    env: SEQUENCE_FEASIBILITY_LOCAL_GC_MIN
+    description: Inclusive lower local GC bound.
+    min: 0.0
+    max: 1.0
+  local_gc_max:
+    type: float
+    default: 0.7
+    env: SEQUENCE_FEASIBILITY_LOCAL_GC_MAX
+    description: Inclusive upper local GC bound.
+    min: 0.0
+    max: 1.0
+  local_gc_window:
+    type: int
+    default: 50
+    env: SEQUENCE_FEASIBILITY_LOCAL_GC_WINDOW
+    description: Local GC window length in nt; shorter sequences use their full length.
+    min: 1
+    max: 100000
+  local_gc_stride:
+    type: int
+    default: 1
+    env: SEQUENCE_FEASIBILITY_LOCAL_GC_STRIDE
+    description: Local GC window stride in nt; the final window is always included.
+    min: 1
+    max: 100000
+  homopolymer_max_a:
+    type: int
+    default: 9
+    env: SEQUENCE_FEASIBILITY_HOMOPOLYMER_MAX_A
+    description: Maximum permitted A homopolymer length; longer runs fail.
+    min: 1
+    max: 100000
+  homopolymer_max_u:
+    type: int
+    default: 9
+    env: SEQUENCE_FEASIBILITY_HOMOPOLYMER_MAX_U
+    description: Maximum permitted U homopolymer length; longer runs fail.
+    min: 1
+    max: 100000
+  homopolymer_max_g:
+    type: int
+    default: 5
+    env: SEQUENCE_FEASIBILITY_HOMOPOLYMER_MAX_G
+    description: Maximum permitted G homopolymer length; longer runs fail.
+    min: 1
+    max: 100000
+  homopolymer_max_c:
+    type: int
+    default: 5
+    env: SEQUENCE_FEASIBILITY_HOMOPOLYMER_MAX_C
+    description: Maximum permitted C homopolymer length; longer runs fail.
+    min: 1
+    max: 100000
+  direct_repeat_length:
+    type: int
+    default: 21
+    env: SEQUENCE_FEASIBILITY_DIRECT_REPEAT_LENGTH
+    description: Exact repeated k-mer length in nt.
+    min: 1
+    max: 100000
+  direct_repeat_min_copies:
+    type: int
+    default: 2
+    env: SEQUENCE_FEASIBILITY_DIRECT_REPEAT_MIN_COPIES
+    description: Minimum number of pairwise nonoverlapping exact k-mer copies.
+    min: 2
+    max: 100000
+  tandem_min_period:
+    type: int
+    default: 2
+    env: SEQUENCE_FEASIBILITY_TANDEM_MIN_PERIOD
+    description: Smallest primitive tandem period in nt; at least 2.
+    min: 2
+    max: 100000
+  tandem_max_period:
+    type: int
+    default: 6
+    env: SEQUENCE_FEASIBILITY_TANDEM_MAX_PERIOD
+    description: Largest primitive tandem period in nt.
+    min: 2
+    max: 100000
+  tandem_min_length:
+    type: int
+    default: 18
+    env: SEQUENCE_FEASIBILITY_TANDEM_MIN_LENGTH
+    description: Minimum tandem tract length in nt, including an incomplete trailing
+      copy.
+    min: 1
+    max: 100000
+  tandem_min_copies:
+    type: int
+    default: 3
+    env: SEQUENCE_FEASIBILITY_TANDEM_MIN_COPIES
+    description: Minimum number of complete tandem copies.
+    min: 2
+    max: 100000
+  forbidden_motifs:
+    type: string
+    default: '[]'
+    env: SEQUENCE_FEASIBILITY_FORBIDDEN_MOTIFS
+    description: JSON list of unique exact uppercase RNA motifs; supply both orientations
+      when required.
+  exempt_regions:
+    type: string
+    default: '[]'
+    env: SEQUENCE_FEASIBILITY_EXEMPT_REGIONS
+    description: JSON list of {start,end,checks,reason}; zero-based half-open routed
+      coordinates. Every event span must be fully covered. Global GC cannot be exempted.
+  restriction_enzymes:
+    type: string
+    default: preset
+    env: SEQUENCE_FEASIBILITY_RESTRICTION_ENZYMES
+    description: preset inherits the profile; otherwise JSON list of BsaI/BsmBI names.
+      Both orientations are checked. Custom exact sites can use forbidden_motifs.
+  capping_method:
+    type: string
+    default: preset
+    env: SEQUENCE_FEASIBILITY_CAPPING_METHOD
+    description: preset inherits the profile; otherwise none, cleancap_ag, or custom.
+      Requires a scope beginning at transcript nucleotide +1.
+  custom_5prime_prefix:
+    type: string
+    default: preset
+    env: SEQUENCE_FEASIBILITY_CUSTOM_5PRIME_PREFIX
+    description: preset inherits the profile; otherwise exact uppercase RNA prefix
+      for capping_method=custom.
+  inverted_repeat_stem:
+    type: string
+    default: preset
+    env: SEQUENCE_FEASIBILITY_INVERTED_REPEAT_STEM
+    description: preset inherits the profile; otherwise positive arm length in nt,
+      exact Watson-Crick complement only.
+  inverted_repeat_window:
+    type: string
+    default: preset
+    env: SEQUENCE_FEASIBILITY_INVERTED_REPEAT_WINDOW
+    description: preset inherits the profile; otherwise maximum total span of both
+      arms and intervening bases in nt.
+  inverted_repeat_min_gap:
+    type: string
+    default: preset
+    env: SEQUENCE_FEASIBILITY_INVERTED_REPEAT_MIN_GAP
+    description: preset inherits the profile; otherwise nonnegative minimum gap between
+      nonoverlapping arms. Zero includes palindromes.
+self_test:
+  sequence: GGGACCAUGGCCGCCGCCGCCGCCGCCGCCUAACUGGCUAGCUAGCUAGCUAGCUAGCUAGC
+  sequence_context:
+    part_ranges:
+    - part: five_prime_utr
+      start: 0
+      end: 6
+      part_start: 0
+      part_end: 6
+    - part: start_codon
+      start: 6
+      end: 9
+      part_start: 0
+      part_end: 3
+    - part: cds
+      start: 9
+      end: 30
+      part_start: 0
+      part_end: 21
+    - part: stop_codon
+      start: 30
+      end: 33
+      part_start: 0
+      part_end: 3
+    - part: three_prime_utr
+      start: 33
+      end: 62
+      part_start: 0
+      part_end: 29
+  expected_outputs:
+  - feasibility_pass
+  - feasibility_violation_count
+  - feasibility_failed_check_count
+  - feasibility_failed_checks_json
+  - feasibility_violations_json
+  - feasibility_exemptions_json
+  - feasibility_raw_counts_json
+  - analyzed_length
+  - global_gc_fraction
+  - local_gc_min
+  - local_gc_max
+  - local_gc_window_count
+  - max_homopolymer_length
+  - max_homopolymer_a
+  - max_homopolymer_c
+  - max_homopolymer_g
+  - max_homopolymer_u
+  - global_gc_violation_count
+  - local_gc_violation_count
+  - homopolymers_violation_count
+  - direct_repeats_violation_count
+  - tandem_repeats_violation_count
+  - forbidden_motifs_violation_count
+  - feasibility_profile_id
+  - feasibility_profile_sha256
+  - feasibility_config_sha256
+  - feasibility_config_json
+  - restriction_sites_violation_count
+  - capping_start_violation_count
+  - inverted_repeats_violation_count

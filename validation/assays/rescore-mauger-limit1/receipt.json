@@ -1,0 +1,508 @@
+{
+  "status": "completed",
+  "mode": "diagnostic",
+  "assay": "mauger",
+  "target_constructs": 1,
+  "metric_comparisons": 12,
+  "matched_comparisons": 12,
+  "maximum_absolute_difference": 0.0,
+  "all_native_scores_match": true,
+  "assets_verified": [
+    "orthrus-half-life",
+    "orthrus-te-held-out",
+    "ribodecode-translationmodel",
+    "ribonn-human-ensemble",
+    "rinalmo-imrnads"
+  ],
+  "aggregation": {
+    "status": "not-run",
+    "reason": "All 39 constructs and 12 output measurements are required for the fixed composites"
+  },
+  "predictor_training": false,
+  "scope": "Ready-scorer inference on frozen constructs; no optimization, reselection or model fitting",
+  "schema_version": 1,
+  "validation_scope": "One target construct from the 39-row Mauger assay, with canonical batch siblings scored. This does not validate the remaining 38 constructs, full composites or full panel statistics.",
+  "complete_panel_replay": false,
+  "target_ids": [
+    "L1"
+  ],
+  "exact_comparisons": 12,
+  "canonical_constructs": 39,
+  "requested_runtime": "container",
+  "requested_device": "cuda:0",
+  "input_evidence": {
+    "input_sha256": "c7efaaf724e518333ae3faab318305cd2ab0512bc28065c041d97175803bc536",
+    "n": 39
+  },
+  "scorers": [
+    {
+      "scorer": "cai",
+      "target_constructs": 1,
+      "scored_with_context": 16,
+      "seconds": 0.12699924781918526,
+      "request_batch": 16,
+      "actual_image_id": null,
+      "runtime_version": null,
+      "source_sha256": {
+        "scorers/cai/prepare_assets.py": "31acea68b751034eea687b2fbf10cf6c9b0421395cab733d28bc482c69f3f03b",
+        "scorers/cai/model.py": "4663758f0f387343f5a1420833779277000f45c03fd0633a8d9f24a05a76ac12",
+        "scorers/cai/server.py": "d21d1652b2bb8d925b019f337148b87161017a88cff9c0000ddeecae02dfcec1",
+        "scorers/cai/build_profile.py": "f07da0f1ba3d883bd7e3dcf58367bbde782076fcdd1a130f3a3930f6eeb1d7a0",
+        "scorers/cai/profiles/mus_musculus_kazusa_53036_cds.json": "9a2bf2d6e80dd60d18efe7ab524a90b4fc6841744fd7c9b6d1f522719ca14bff",
+        "scorers/cai/profiles/homo_sapiens_kazusa_93487_cds.json": "cc33880c49c3a85c7dc6b8845b9e270541e7f88f262986f468fc12a73cb0442d"
+      },
+      "effective_device": "cpu",
+      "reference_device": "cpu",
+      "runtime_mode": "persistent-process",
+      "inner_batch": {},
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1"
+      }
+    },
+    {
+      "scorer": "csi",
+      "target_constructs": 1,
+      "scored_with_context": 16,
+      "seconds": 0.12787242233753204,
+      "request_batch": 16,
+      "actual_image_id": null,
+      "runtime_version": null,
+      "source_sha256": {
+        "scorers/csi/model.py": "221c4f64b4b7e0a2395bfb72a9c1628308d81b793ba9beb5598100930bbe5aef",
+        "scorers/csi/server.py": "9a6c848c1a02f035a7d873c193fbfc07e734374d3ab3b897ae858fd32dfa20b4",
+        "scorers/csi/profiles/mus_musculus_mesc_slamseq_wu2019_v1.json": "35f577ea0d9f477aacf5a6981b04dda77430b4b16acdf8e8136ae041c0d28b2e",
+        "scorers/csi/profiles/homo_sapiens_consensus_wu2019_v1.json": "b7e698e8c29c8a6355a4f6ebb6d54e7d14bdb446e900e35b67b79cd3762b07c3"
+      },
+      "effective_device": "cpu",
+      "reference_device": "cpu",
+      "runtime_mode": "persistent-process",
+      "inner_batch": {},
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1"
+      }
+    },
+    {
+      "scorer": "viennarna-body",
+      "target_constructs": 1,
+      "scored_with_context": 16,
+      "seconds": 32.36077417805791,
+      "request_batch": 16,
+      "actual_image_id": "sha256:4536d44ad1c59c9b09532bcf96b7facad96f1cd7f45abd9a5f5e6a8b836c4372",
+      "runtime_version": "2.7.2",
+      "source_sha256": {
+        "scorers/viennarna/prepare_assets.py": "b89518ae82d02890838ae8958c03f272f4224c6024371f311f43a273d02698d9",
+        "scorers/viennarna/scorer.py": "ec286ee825ab69d10ad2628bc03e6a10ce9f2e95aab24839e2ce64b9392e1f72",
+        "scorers/viennarna/requirements-portable.txt": "95b6ccf7ecf0d080190739a5c380ee8289933bc1e9f08245a161936eaea7421f"
+      },
+      "effective_device": "cpu",
+      "reference_device": "cpu",
+      "runtime_mode": "persistent-container",
+      "inner_batch": {},
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1"
+      }
+    },
+    {
+      "scorer": "manufacturability",
+      "target_constructs": 1,
+      "scored_with_context": 16,
+      "seconds": 1.8265728428959846,
+      "request_batch": 16,
+      "actual_image_id": "sha256:cb878f6d61d711dba162aea64d9ec289eec5b0aebb25dc1012233b90f3b30d95",
+      "runtime_version": null,
+      "source_sha256": {
+        "scorers/manufacturability/manufacturability_scorer/cli.py": "deefdc852096da018e7d5b47ae69aeafc9f330eaa31c98b284eaf860e81fadff",
+        "scorers/manufacturability/manufacturability_scorer/feasibility.py": "6e2dde4b2ad5fa2ad7f609ddc2722b166ab2e6b6080d0695ab4985f8d1ad8025",
+        "scorers/manufacturability/manufacturability_scorer/model.py": "36d92af921aee7c023856fca4ab715f10e0ec38020db743bdbd62146dcec3daa",
+        "scorers/manufacturability/manufacturability_scorer/feasibility_server.py": "731db4c8bec4c8ef41d6022b168221aeb5de13547eb74437108411dd67662c83",
+        "scorers/manufacturability/manufacturability_scorer/server.py": "16f5886966d9820463400d84508510d3a2158eaa04c4ebb945a8bb00849e177e",
+        "scorers/manufacturability/manufacturability_scorer/benchmark.py": "f8be45cc16f3e0b7d3bbeaf8e1d26f9abacdb9b702e961258cfa63ffd7c4d109",
+        "scorers/manufacturability/manufacturability_scorer/feasibility_cli.py": "73847e4acd84349d80c507006bac256b161290ea95423c215173f88396f1aef3",
+        "scorers/manufacturability/manufacturability_scorer/__init__.py": "d7b83b800c2e12991be1083a3425d4ec861252b8891421bcab676f99600ca1fa",
+        "scorers/manufacturability/manufacturability_scorer/profiles/manufacturing_strategy_v1.json": "0bf9545a6f29b75c3a1b20e1bae432a42df3125fa244829e964e44a0feaf7d06",
+        "scorers/manufacturability/manufacturability_scorer/profiles/sequence_feasibility_v1.json": "d4e2c9baca0610f8db4399ce06100678d16161fdfb4f46932f1343c0aca3fd83",
+        "scorers/manufacturability/manufacturability_scorer/profiles/general_mrna_v2.json": "6e9203d9eec4ff9edb9de91b9275a59c205d5e760303f273fc70f858a05b7614",
+        "scorers/manufacturability/manufacturability_scorer/profiles/example_type_iis_motifs.json": "178c01546b90046e920fdd35d7a1384f356f8ae7cad3324700a1e04dfa16eb41"
+      },
+      "effective_device": "cpu",
+      "reference_device": "cpu",
+      "runtime_mode": "persistent-container",
+      "inner_batch": {},
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1",
+        "BLIS_NUM_THREADS": "1"
+      }
+    },
+    {
+      "scorer": "viennarna-cds",
+      "target_constructs": 1,
+      "scored_with_context": 16,
+      "seconds": 93.26116364076734,
+      "request_batch": 16,
+      "actual_image_id": "sha256:4536d44ad1c59c9b09532bcf96b7facad96f1cd7f45abd9a5f5e6a8b836c4372",
+      "runtime_version": "2.7.2",
+      "source_sha256": {
+        "scorers/viennarna/prepare_assets.py": "b89518ae82d02890838ae8958c03f272f4224c6024371f311f43a273d02698d9",
+        "scorers/viennarna/scorer.py": "ec286ee825ab69d10ad2628bc03e6a10ce9f2e95aab24839e2ce64b9392e1f72",
+        "scorers/viennarna/requirements-portable.txt": "95b6ccf7ecf0d080190739a5c380ee8289933bc1e9f08245a161936eaea7421f"
+      },
+      "effective_device": "cpu",
+      "reference_device": "cpu",
+      "runtime_mode": "persistent-container",
+      "inner_batch": {},
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1"
+      }
+    },
+    {
+      "scorer": "orthrus-te-held-out",
+      "target_constructs": 1,
+      "scored_with_context": 4,
+      "seconds": 7.12150090560317,
+      "request_batch": 4,
+      "actual_image_id": "sha256:0c8c9f08840a602ac208f7fe371572b28b250e52bd5628b18c9739ea14f4c1ea",
+      "runtime_version": null,
+      "source_sha256": {
+        "scorers/translation-efficiency/portable_orthrus.py": "00f33d2bbad01c97e23a77943f195aa7aa55d20096ad46342997d6d180ce6e0c",
+        "scorers/translation-efficiency/server_heldout.py": "206d30fd5e4bc21be43b31c9e62d40399256bd8347e5afc67ba2c02f2a3adb55",
+        "scorers/translation-efficiency/prepare_assets.py": "c2d19864a581a73d80924921158150f327d0e5c636747582c7fc74b929ea3658",
+        "scorers/translation-efficiency/model.py": "33db77db8583dba3a8b9ce3397b92c6e504ba80330f485ce40eaa00512eec8b4",
+        "scorers/translation-efficiency/server.py": "3571f3ada5882d8ed6292628c26ae0882b9eba3d86d9ce2f8cedcce05f72c79f",
+        "scorers/translation-efficiency/heldout_encoding.py": "f0cb462b4ef434806af2d1c69d3dd368d03a0cdd6cdb344c9ac9015a2d3d478d",
+        "scorers/translation-efficiency/requirements.txt": "533d3fe7592114f65e55f74aa3492bc0740c30625a88957c10ce50a599d0d6c4",
+        "scorers/translation-efficiency/model_metadata/reference_run.json": "8cd6930d981d4a194a78dac912ebd73d719c55f024f0efd4af412176d847d4a6",
+        "scorers/translation-efficiency/model_metadata/deployment_manifest.json": "5ccb725ded91643d2ad69f3daa5ebc513b34dcabc4fd61ad43388d798c55629c"
+      },
+      "effective_device": "cuda:0",
+      "reference_device": "cuda",
+      "runtime_mode": "persistent-container",
+      "inner_batch": {
+        "ORTHRUS_BATCH_SIZE": "4",
+        "ORTHRUS_MAX_TOKENS": "32000"
+      },
+      "thread_environment": {
+        "OMP_NUM_THREADS": "2",
+        "MKL_NUM_THREADS": "2",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1"
+      }
+    },
+    {
+      "scorer": "ribonn",
+      "target_constructs": 1,
+      "scored_with_context": 16,
+      "seconds": 27.762325543910265,
+      "request_batch": 16,
+      "actual_image_id": "sha256:bc3d16cd3fc58680c4a5335dcb9310723441a7ba398a66e851d63deb5a6b2f6b",
+      "runtime_version": null,
+      "source_sha256": {
+        "scorers/ribonn/encoding.py": "94fbbc1f2896967b75bc92940e5625c1ca05a9d88f8d948e64aa473de7185f57",
+        "scorers/ribonn/prepare_assets.py": "0d6aa44a0df3907b9a94f613e49e9650e6389c976b61ed3b2b3bbc5e394cd15e",
+        "scorers/ribonn/model.py": "74c39c7150808b9de646c4468cc3123628cdaebd4d55a14fa65038aca64fc6f0",
+        "scorers/ribonn/server.py": "939a2b5a2b22790294defdbec7e4c99fc3845b1d24f93602256f12a73080db0d",
+        "scorers/ribonn/requirements.txt": "27c94509f81977212eeb59c60c753beffb4cb24ae0b860e9f1227ba9c5b942a4",
+        "scorers/ribonn/third_party/ribonn/MODEL WEIGHTS LICENSE.txt": "ce6b253151d10e66606a52a1c99ac08854051d912f01ad1d01331941310cc49b",
+        "scorers/ribonn/third_party/ribonn/INFERENCE_EXTRACTION.json": "a267df1b0c956c4f95dd684e5636af54cfa2656b576a85992b586ef08fdc921d",
+        "scorers/ribonn/third_party/ribonn/src/model.py": "973324f2323f0eaaa819990f5e5da6fbffd418a0469339afca5828e0fb341ec0",
+        "scorers/ribonn/third_party/ribonn/src/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "scorers/ribonn/third_party/ribonn/src/utils/helpers.py": "cc9d31c5b8f1b96d2073b9352d3a4b05c0fc562fc6211f64ce846d2a7b7533e3",
+        "scorers/ribonn/third_party/ribonn/src/utils/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "effective_device": "cuda:0",
+      "reference_device": "cuda",
+      "runtime_mode": "persistent-container",
+      "inner_batch": {
+        "RIBONN_BATCH_SIZE": "16"
+      },
+      "thread_environment": {
+        "OMP_NUM_THREADS": "2",
+        "MKL_NUM_THREADS": "2",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1"
+      }
+    },
+    {
+      "scorer": "half-life",
+      "target_constructs": 1,
+      "scored_with_context": 16,
+      "seconds": 6.755328703671694,
+      "request_batch": 16,
+      "actual_image_id": "sha256:f38800a12100ff848ece332d28e8937fd4dcb7daf3bf825d91c64175250e1df4",
+      "runtime_version": null,
+      "source_sha256": {
+        "scorers/half-life/portable_orthrus.py": "00f33d2bbad01c97e23a77943f195aa7aa55d20096ad46342997d6d180ce6e0c",
+        "scorers/half-life/prepare_assets.py": "06282f54a9d592b953d36a4bdc58878a3e9526885764aca879fbdcf693c70e8b",
+        "scorers/half-life/model.py": "bf5a822243a660abaf39e1be67a84da56d7dd332bc949e27e7f0b6d704ba6b46",
+        "scorers/half-life/server.py": "3571f3ada5882d8ed6292628c26ae0882b9eba3d86d9ce2f8cedcce05f72c79f",
+        "scorers/half-life/requirements.txt": "533d3fe7592114f65e55f74aa3492bc0740c30625a88957c10ce50a599d0d6c4",
+        "scorers/half-life/model_metadata/reference_run.json": "89fad941b18189f7b6607eb22ae6bd290d3157df01837c44008ce3fafbe207af",
+        "scorers/half-life/model_metadata/deployment_manifest.json": "361fa39efa9eac98b2c91c5e45054503e4cf11f12d3feffd107c0e4a70a9e372"
+      },
+      "effective_device": "cuda:0",
+      "reference_device": "cuda",
+      "runtime_mode": "persistent-container",
+      "inner_batch": {
+        "ORTHRUS_BATCH_SIZE": "2",
+        "ORTHRUS_MAX_TOKENS": "4096"
+      },
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1"
+      }
+    },
+    {
+      "scorer": "ribodecode",
+      "target_constructs": 1,
+      "scored_with_context": 32,
+      "seconds": 7.7137759774923325,
+      "request_batch": 32,
+      "actual_image_id": "sha256:a90ce0fa8285d54a9aa8d934b64e8bd79d96843411509f2682e7708d87b481fd",
+      "runtime_version": null,
+      "source_sha256": {
+        "scorers/ribodecode/requirements-test.txt": "320e9b35556dacfe43faa41ad0703e4080166ec7224549544e915883a3573e4c",
+        "scorers/ribodecode/prepare_assets.py": "85d7575a02c58c38bf46d64b14f49686dee7bdad8188fbffeb422ffe66358483",
+        "scorers/ribodecode/server.py": "e8ba4b969fa70f4f275efc6e07b30fad8d578e89d21a2dde6b2f01250d539f04"
+      },
+      "effective_device": "cpu",
+      "reference_device": "cpu",
+      "runtime_mode": "persistent-container",
+      "inner_batch": {
+        "RIBODECODE_BATCH_SIZE": "32"
+      },
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1",
+        "BLIS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1"
+      }
+    },
+    {
+      "scorer": "irna",
+      "target_constructs": 1,
+      "scored_with_context": 16,
+      "seconds": 37.32692555338144,
+      "request_batch": 16,
+      "actual_image_id": "sha256:43609c166502635b5ad2c9d6d49cafabe785721559d9df5441672314d6707696",
+      "runtime_version": "1.16.0 1.16.0",
+      "source_sha256": {
+        "scorers/irna/prepare_assets.py": "4305b0fbcb0aa3c51922fcaeaee7a47346087fd37a5bfaca339cef9925923cbe",
+        "scorers/irna/scorer.R": "7049ba402a1001adf684abb3ed9d8892fd46b769e9b0bda90a5f9cfdb6e6c227",
+        "scorers/irna/server.R": "e916a24a10641bc0aa35e509f3274a34b4b955a7dd5427e9aa2bb050ce211acd",
+        "scorers/irna/panels/2026-08-21/summary.json": "889a39639cb07cb547432ecda9cc7090979e2d09283e2485339e1e449eb47f86",
+        "scorers/irna/panels/2026-08-21/sources.json": "068d657bd0ade86f3717d6d04623fce28261b564646fef06d03a7ad42276ea50"
+      },
+      "effective_device": "cpu",
+      "reference_device": "cpu",
+      "runtime_mode": "persistent-container",
+      "inner_batch": {},
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1"
+      }
+    },
+    {
+      "scorer": "immunogenicity",
+      "target_constructs": 1,
+      "scored_with_context": 4,
+      "seconds": 36.15448763594031,
+      "request_batch": 4,
+      "actual_image_id": "sha256:1b664479eb83967cd090e2aace92196f90ff542cc4682b75d4c5222dc1bc4f06",
+      "runtime_version": null,
+      "source_sha256": {
+        "scorers/immunogenicity/prepare_assets.py": "032ed98d94c7a052b0c71cdd52b2a6bb27f155823efa2932409555674cc6e53f",
+        "scorers/immunogenicity/server.py": "6314fd63d372a5c2689866e2bc68f9bebf29a11801c445a7190b099121d285ce",
+        "scorers/immunogenicity/runtime_model.py": "a2ff25c73171f81e0dae1aef3904a9700ead993255f25a310168ee97b2153cda",
+        "scorers/immunogenicity/requirements.txt": "e6874d4826d3f76954b13a1b881ee94693a0db11fd2fcee55e57a61850bd64f9",
+        "scorers/immunogenicity/model_assets/rinalmo_mega_config.json": "6799d4450726857e93f93b54667b76f6829deebace04e1e9a88358d6babb15ca",
+        "scorers/immunogenicity/model_assets/tokenizer/vocab.txt": "3340228a43f9058ef3c9f29eb465c1bac5b68869d58c7e234833ff7b299c1673",
+        "scorers/immunogenicity/model_assets/tokenizer/tokenizer_config.json": "383935fb608c34b1df52dfaac978dda8ddf8ec00b1e1b8a99f49ef5469450e71",
+        "scorers/immunogenicity/model_metadata/reference_run.json": "319f77c72afcd7ea5d04f18b9359dfdfce85f190aaa513c393141d727f8b8a79"
+      },
+      "effective_device": "cuda:0",
+      "reference_device": "cuda",
+      "runtime_mode": "persistent-container",
+      "inner_batch": {
+        "RINALMO_BATCH_SIZE": "256"
+      },
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1"
+      }
+    }
+  ],
+  "verified_assets": [
+    {
+      "id": "orthrus-half-life",
+      "status": "verified",
+      "verified_files": 1,
+      "verified_file_manifest_sha256": "d31067fd230e6598da24350aeafa7d89b7c32968ca33c30fec6bdaceb7a38400",
+      "files": [
+        {
+          "path": "model_final.pt",
+          "sha256": "fe4f816572626d127f54e64d4a724923bd5a080b4898f225898f69f91f28a40e",
+          "bytes": 41275122
+        }
+      ],
+      "dependencies": [
+        {
+          "id": "orthrus-backbone",
+          "status": "verified",
+          "verified_files": 3,
+          "verified_file_manifest_sha256": "6fd58df42be08aeddce6250367348e94325a9ad92e6190d710a56fd674e46ce2",
+          "files": [
+            {
+              "path": "config.json",
+              "sha256": "a8b513b3d73356e7ac8a59516ebbf51bc03f635e6329ad32350c289f84c8a288",
+              "bytes": 375
+            },
+            {
+              "path": "orthrus_hf.py",
+              "sha256": "35fb82d090003c9bf91be1820d5cc0e22c1092d28d9805951d3f284d728cdbe4",
+              "bytes": 6543
+            },
+            {
+              "path": "pytorch_model.bin",
+              "sha256": "a188c974493679d9eb5d18b5ecc3148f3634cd785e20f8303d6f313f62f00c08",
+              "bytes": 40737856
+            }
+          ],
+          "dependencies": []
+        }
+      ]
+    },
+    {
+      "id": "orthrus-te-held-out",
+      "status": "verified",
+      "verified_files": 1,
+      "verified_file_manifest_sha256": "fdb6c64c9f2462a35cea9e4de6f4a0b1b42337eb86ed317739aea07a3183b21c",
+      "files": [
+        {
+          "path": "best.pt",
+          "sha256": "70913fc29ba9c073100913b56f59542520ec18a473fae358ff19bd57ecddd604",
+          "bytes": 41272706
+        }
+      ],
+      "dependencies": [
+        {
+          "id": "orthrus-backbone",
+          "status": "verified",
+          "verified_files": 3,
+          "verified_file_manifest_sha256": "6fd58df42be08aeddce6250367348e94325a9ad92e6190d710a56fd674e46ce2",
+          "files": [
+            {
+              "path": "config.json",
+              "sha256": "a8b513b3d73356e7ac8a59516ebbf51bc03f635e6329ad32350c289f84c8a288",
+              "bytes": 375
+            },
+            {
+              "path": "orthrus_hf.py",
+              "sha256": "35fb82d090003c9bf91be1820d5cc0e22c1092d28d9805951d3f284d728cdbe4",
+              "bytes": 6543
+            },
+            {
+              "path": "pytorch_model.bin",
+              "sha256": "a188c974493679d9eb5d18b5ecc3148f3634cd785e20f8303d6f313f62f00c08",
+              "bytes": 40737856
+            }
+          ],
+          "dependencies": []
+        }
+      ]
+    },
+    {
+      "id": "ribodecode-translationmodel",
+      "status": "verified",
+      "verified_files": 2,
+      "verified_file_manifest_sha256": "8afe33e11043a1f365efc1e6b1c3cf03c38e323180b2f1c2fc7dcb26d06e2908",
+      "files": [
+        {
+          "path": "TranslationModel-1.1.0-py3-none-any.whl",
+          "sha256": "22d4b398a399878f7573074fd1c381b2f3894bd3a62ede9cd27989dc47ac276a",
+          "bytes": 440977043
+        },
+        {
+          "path": "env_file.csv",
+          "sha256": "9a85da49ff6d5de94cd920688d196b49af14b21e4e3fdfdda10e356edd277062",
+          "bytes": 354915
+        }
+      ],
+      "dependencies": []
+    },
+    {
+      "id": "ribonn-human-ensemble",
+      "status": "verified",
+      "verified_files": 53,
+      "verified_file_manifest_sha256": "ac6d8689fdba7debe8c439582169c195679d5152cc3eee753ffe5bedcc0b22cb",
+      "files": [
+        {
+          "path": "weights.zip",
+          "sha256": "2ce3bc1adb38ec6752c79147241a4fb2664e9804e806b3eab1287489a15d8b64",
+          "bytes": 207395960
+        },
+        {
+          "path": "ensemble.json",
+          "sha256": "8e0d62ca61964ec660a43389ab309361f0c388a906c68c48a9d5b928c5a10cee",
+          "bytes": 14604
+        },
+        {
+          "path": "human/runs.csv",
+          "sha256": "5bc7a1eedf33e1fe32beb72aca15ebbce4ac333a30e9c03e08868bafd3ee1d03",
+          "bytes": 173831
+        }
+      ],
+      "dependencies": []
+    },
+    {
+      "id": "rinalmo-imrnads",
+      "status": "verified",
+      "verified_files": 1,
+      "verified_file_manifest_sha256": "dc93e3291233d3ff4e5ee2a3d64da0a9ef8182bb9fd1a5349bd797a6788f2619",
+      "files": [
+        {
+          "path": "best_model.pt",
+          "sha256": "923d1e9f843d12fe29a9515a95b6a32eae286017790dfeef1c82215446958f0a",
+          "bytes": 592378778
+        }
+      ],
+      "dependencies": []
+    }
+  ],
+  "source_artifact_sha256": {
+    "rescore_receipt.json": "d784a3bfadcffc400d4e9bbdbcee8e4aa891bd671e0a1fabbafadac354a4e735",
+    "plan.json": "e6c7e48d278de0fd1c224038c3fc44de0d59c952e0a08353a1f926c1e3e2ef6a",
+    "asset_verification.json": "d9e08f40018a3d60a56f17b1f1638619a9346705a4d3d7cc6b31b63e2bc19564",
+    "comparison.csv": "970d64e94bd344ba48647c1ffd73a369a6e213a7df486ffb9cfb88c32e9833a6",
+    "native_scores.csv": "1699e9855a65925f57a36510011cd28697b635c40a009fe141b80befa0bb5cdf",
+    "request_timings.json": "7287837d68b66e4c779f5045f99328fb7bad1461cfad98ddb1840cc263435352"
+  },
+  "technical_log_check": {
+    "log_sha256": "b4b81152fec1b2104afe08bfc2fcf1b7e4defe66b9d9102db623d0cbe9df03f2",
+    "tracebacks": 0,
+    "error_or_failure_lines": 0,
+    "failure_artifact_present": false
+  }
+}

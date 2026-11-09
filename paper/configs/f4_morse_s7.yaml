@@ -1,0 +1,86 @@
+schema_version: 4
+name: f4_ribonn_s7
+# Results folder.
+output_dir: ../../outputs/paper-runs/F4_morse_s7
+
+# Input RNA and parts.
+construct:
+  fasta: ../inputs/schema4/f4_morse_s7_reference.fasta
+  coordinates:  # 0-based; end excluded.
+    five_prime_utr: [0, 54]
+    cds: [54, 411]
+    three_prime_utr: [411, 449]
+    poly_a: [449, 569]
+
+  # Unlisted parts stay fixed.
+  changes:
+    cds: synonymous
+    five_prime_utr:
+      library: ../inputs/curated_practice_5utr_v1.tsv
+      set: curated_practice_5utr_v1
+      max_candidates: 15
+
+# Search settings.
+optimizer:
+  algorithm: nsga3
+  population_size: 64
+  generations: 500
+  seed: 7
+  n_offsprings: 64
+  eliminate_duplicates: true
+  crossover:
+    type: uniform
+    probability: 0.9
+  mutation:
+    type: integer_reset
+    probability: auto
+  constraint_handling:
+    method: feasibility_first
+  early_stopping:
+    enabled: true
+    metric: hypervolume
+    min_generations: 150
+    patience: 50
+    rel_tol: 0.001
+    abs_tol: 0.0
+  reference_directions:
+    method: energy
+    n_points: 64
+    seed: 7
+  initial_population_audit: ../inputs/schema4/f4_morse_s7_initial.json
+manufacturability:
+  enabled: false
+
+# Prepared scorer commands.
+scorers:
+  - name: ribonn
+    command: 'curl -fsS -H ''Content-Type: application/json'' --data-binary @- http://127.0.0.1:8715/score'
+    timeout_seconds: 1800
+    scope: [five_prime_utr, cds, three_prime_utr]
+    metrics:  # Goals, limits and logs.
+      ribonn_mean_te:
+        role: optimize
+        direction: max
+      ribonn_model_sd:
+        role: log
+      ribonn_model_count:
+        role: log
+        value_type: int
+  - name: orthrus_te
+    command: 'curl -fsS -H ''Content-Type: application/json'' --data-binary @- http://127.0.0.1:8716/score'
+    timeout_seconds: 1800
+    scope: [five_prime_utr, cds, three_prime_utr]
+    metrics:  # Goals, limits and logs.
+      translation_efficiency_score:
+        role: optimize
+        direction: max
+  - name: ribodecode_hek293t
+    command: 'curl -fsS -H ''Content-Type: application/json'' --data-binary @- http://127.0.0.1:8717/score'
+    timeout_seconds: 1800
+    scope: [start_codon, cds_body]
+    metrics:  # Goals, limits and logs.
+      ribodecode_translation:
+        role: log
+      ribodecode_translation_log:
+        role: optimize
+        direction: max

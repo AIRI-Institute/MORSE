@@ -1,0 +1,1475 @@
+{
+  "status": "pass",
+  "source": "manuscript/source_data/analysis_runs.json.gz",
+  "source_sha256": "abf82f7f08706bab2be14190ed3211b746370359e13f54b28c5e94894d0c70c9",
+  "plotting_definition": "experiments/manuscript_revision_0052_20260925/build_figures.py:figure3; one scatter call per run over run.front, then balanced candidate;shared I0 once",
+  "historical_panel": "F3A",
+  "current_panel": "4a",
+  "x": "mfe_per_nt",
+  "y": "csi_percentile",
+  "point_kind": "run.front (nondominated archive); not all evaluated points",
+  "plotting_style": {
+    "morse_front": {
+      "s": 3,
+      "c": "#111827",
+      "alpha": 0.2,
+      "linewidths": 0
+    },
+    "vaxpress_front": {
+      "s": 9,
+      "facecolors": "white",
+      "edgecolors": "#64748B",
+      "linewidths": 0.6,
+      "alpha": 0.65
+    },
+    "morse_balanced": {
+      "s": 26,
+      "marker": "*",
+      "c": "#EAB308",
+      "edgecolors": "#A16207",
+      "linewidths": 0.55
+    },
+    "vaxpress_balanced": {
+      "s": 12,
+      "marker": "D",
+      "c": "white",
+      "edgecolors": "#64748B",
+      "linewidths": 0.55
+    },
+    "initial": {
+      "s": 20,
+      "marker": "x",
+      "c": "#64748B",
+      "linewidths": 0.8
+    }
+  },
+  "runs": [
+    {
+      "run_id": "F3A_morse_s7",
+      "condition": "morse",
+      "seed": 7,
+      "points": [
+        {
+          "candidate_id": "cand_009888",
+          "mfe_per_nt": -0.47702127010264295,
+          "csi_percentile": 98.7002869945501
+        },
+        {
+          "candidate_id": "cand_010057",
+          "mfe_per_nt": -0.4608510768159907,
+          "csi_percentile": 99.02871040916838
+        },
+        {
+          "candidate_id": "cand_010075",
+          "mfe_per_nt": -0.4838297742478391,
+          "csi_percentile": 98.51026245100103
+        },
+        {
+          "candidate_id": "cand_010182",
+          "mfe_per_nt": -0.5544680980925865,
+          "csi_percentile": 90.82956492506058
+        },
+        {
+          "candidate_id": "cand_010560",
+          "mfe_per_nt": -0.4734042553191489,
+          "csi_percentile": 98.99401094730308
+        },
+        {
+          "candidate_id": "cand_010661",
+          "mfe_per_nt": -0.4736170342627992,
+          "csi_percentile": 98.74392468167802
+        },
+        {
+          "candidate_id": "cand_010845",
+          "mfe_per_nt": -0.4653191424430685,
+          "csi_percentile": 99.01617542812545
+        },
+        {
+          "candidate_id": "cand_010982",
+          "mfe_per_nt": -0.4757446938372673,
+          "csi_percentile": 98.72731473376498
+        },
+        {
+          "candidate_id": "cand_011382",
+          "mfe_per_nt": -0.4897872275494515,
+          "csi_percentile": 98.3814241276679
+        },
+        {
+          "candidate_id": "cand_011430",
+          "mfe_per_nt": -0.4851063829787234,
+          "csi_percentile": 98.43118468439597
+        },
+        {
+          "candidate_id": "cand_011821",
+          "mfe_per_nt": -0.481702114673371,
+          "csi_percentile": 98.68484689775521
+        },
+        {
+          "candidate_id": "cand_012187",
+          "mfe_per_nt": -0.5210638168010305,
+          "csi_percentile": 96.82094213437176
+        },
+        {
+          "candidate_id": "cand_012196",
+          "mfe_per_nt": -0.5276595744680851,
+          "csi_percentile": 96.35923866393753
+        },
+        {
+          "candidate_id": "cand_012246",
+          "mfe_per_nt": -0.45276596393991025,
+          "csi_percentile": 99.04556483844813
+        },
+        {
+          "candidate_id": "cand_012248",
+          "mfe_per_nt": -0.5497872210563497,
+          "csi_percentile": 94.1636877589975
+        },
+        {
+          "candidate_id": "cand_012258",
+          "mfe_per_nt": -0.5193617151138631,
+          "csi_percentile": 97.09077949580046
+        },
+        {
+          "candidate_id": "cand_012389",
+          "mfe_per_nt": -0.5102127724505485,
+          "csi_percentile": 97.49848525970714
+        },
+        {
+          "candidate_id": "cand_012404",
+          "mfe_per_nt": -0.4846808575569315,
+          "csi_percentile": 98.48535818106029
+        },
+        {
+          "candidate_id": "cand_012444",
+          "mfe_per_nt": -0.5525532174617687,
+          "csi_percentile": 92.54853835191912
+        },
+        {
+          "candidate_id": "cand_012511",
+          "mfe_per_nt": -0.5397872275494514,
+          "csi_percentile": 95.56470128492057
+        },
+        {
+          "candidate_id": "cand_012521",
+          "mfe_per_nt": -0.5176595809611868,
+          "csi_percentile": 97.38543221541735
+        },
+        {
+          "candidate_id": "cand_012529",
+          "mfe_per_nt": -0.5223404255319148,
+          "csi_percentile": 96.77166471245016
+        },
+        {
+          "candidate_id": "cand_012535",
+          "mfe_per_nt": -0.44744681500374,
+          "csi_percentile": 99.04820323947426
+        },
+        {
+          "candidate_id": "cand_012565",
+          "mfe_per_nt": -0.5338297742478391,
+          "csi_percentile": 95.93037416297015
+        },
+        {
+          "candidate_id": "cand_012569",
+          "mfe_per_nt": -0.5295744550989029,
+          "csi_percentile": 96.04276493334457
+        },
+        {
+          "candidate_id": "cand_012625",
+          "mfe_per_nt": -0.4868085171313996,
+          "csi_percentile": 98.40405892975168
+        },
+        {
+          "candidate_id": "cand_012729",
+          "mfe_per_nt": -0.5057446743579621,
+          "csi_percentile": 97.79647629600844
+        },
+        {
+          "candidate_id": "cand_012773",
+          "mfe_per_nt": -0.504680844570728,
+          "csi_percentile": 98.31256799238314
+        }
+      ],
+      "balanced": {
+        "candidate_id": "cand_010182",
+        "mfe_per_nt": -0.5544680980925865,
+        "csi_percentile": 90.82956492506058
+      },
+      "initial": {
+        "candidate_id": "cand_000001",
+        "mfe_per_nt": -0.2838297742478391,
+        "csi_percentile": 23.405618344194046
+      }
+    },
+    {
+      "run_id": "F3A_vaxpress_s7",
+      "condition": "vaxpress",
+      "seed": 7,
+      "points": [
+        {
+          "candidate_id": "alpha0.25_event2032",
+          "mfe_per_nt": -0.3582978593542221,
+          "csi_percentile": 80.81232050050103
+        },
+        {
+          "candidate_id": "alpha0.25_event2170",
+          "mfe_per_nt": -0.35893616371966425,
+          "csi_percentile": 77.35294737656399
+        },
+        {
+          "candidate_id": "alpha0.25_event2428",
+          "mfe_per_nt": -0.33787234691863366,
+          "csi_percentile": 83.30299399518296
+        },
+        {
+          "candidate_id": "alpha0.5_event1673",
+          "mfe_per_nt": -0.3840425531914894,
+          "csi_percentile": 73.78806788659128
+        },
+        {
+          "candidate_id": "alpha0.5_event1714",
+          "mfe_per_nt": -0.3921276660675698,
+          "csi_percentile": 73.5165645638762
+        },
+        {
+          "candidate_id": "alpha0.5_event1892",
+          "mfe_per_nt": -0.3757446938372673,
+          "csi_percentile": 74.63748624061375
+        },
+        {
+          "candidate_id": "alpha0.5_event1998",
+          "mfe_per_nt": -0.39702128958194816,
+          "csi_percentile": 73.49417488732857
+        },
+        {
+          "candidate_id": "alpha0.5_event2199",
+          "mfe_per_nt": -0.3629787363904588,
+          "csi_percentile": 76.87824166421808
+        },
+        {
+          "candidate_id": "alpha0.5_event2460",
+          "mfe_per_nt": -0.38744682149684173,
+          "csi_percentile": 73.54768322774443
+        },
+        {
+          "candidate_id": "alpha0.5_event2551",
+          "mfe_per_nt": -0.37893618319896943,
+          "csi_percentile": 74.23263984307663
+        },
+        {
+          "candidate_id": "alpha1.0_event1677",
+          "mfe_per_nt": -0.41021277245054855,
+          "csi_percentile": 58.7107377977793
+        },
+        {
+          "candidate_id": "alpha1.0_event1943",
+          "mfe_per_nt": -0.4031914893617021,
+          "csi_percentile": 62.17747418962344
+        },
+        {
+          "candidate_id": "alpha1.0_event2308",
+          "mfe_per_nt": -0.39787234042553193,
+          "csi_percentile": 64.88338226455465
+        },
+        {
+          "candidate_id": "alpha1.0_event2508",
+          "mfe_per_nt": -0.41468083807762635,
+          "csi_percentile": 48.63934517584183
+        }
+      ],
+      "balanced": {
+        "candidate_id": "alpha1.0_event1677",
+        "mfe_per_nt": -0.41021277245054855,
+        "csi_percentile": 58.7107377977793
+      },
+      "initial": {
+        "candidate_id": "alpha0.0_event1",
+        "mfe_per_nt": -0.2838297742478391,
+        "csi_percentile": 23.405618344194046
+      }
+    },
+    {
+      "run_id": "F3A_morse_s43",
+      "condition": "morse",
+      "seed": 43,
+      "points": [
+        {
+          "candidate_id": "cand_009332",
+          "mfe_per_nt": -0.46936171511386304,
+          "csi_percentile": 99.00007488290257
+        },
+        {
+          "candidate_id": "cand_009796",
+          "mfe_per_nt": -0.48255319798246343,
+          "csi_percentile": 98.77269990844803
+        },
+        {
+          "candidate_id": "cand_010008",
+          "mfe_per_nt": -0.4555319278798205,
+          "csi_percentile": 99.02397732067041
+        },
+        {
+          "candidate_id": "cand_010022",
+          "mfe_per_nt": -0.5272340490462932,
+          "csi_percentile": 94.45555933334369
+        },
+        {
+          "candidate_id": "cand_010106",
+          "mfe_per_nt": -0.4842553321351396,
+          "csi_percentile": 98.74621106883163
+        },
+        {
+          "candidate_id": "cand_010342",
+          "mfe_per_nt": -0.46574466786486035,
+          "csi_percentile": 99.00648420074592
+        },
+        {
+          "candidate_id": "cand_010506",
+          "mfe_per_nt": -0.44234041254571144,
+          "csi_percentile": 99.0567804020961
+        },
+        {
+          "candidate_id": "cand_010710",
+          "mfe_per_nt": -0.4574468085106383,
+          "csi_percentile": 99.02190014589547
+        },
+        {
+          "candidate_id": "cand_010841",
+          "mfe_per_nt": -0.5246808640500332,
+          "csi_percentile": 95.59952199620591
+        },
+        {
+          "candidate_id": "cand_011083",
+          "mfe_per_nt": -0.507234029566988,
+          "csi_percentile": 97.89641590414423
+        },
+        {
+          "candidate_id": "cand_011110",
+          "mfe_per_nt": -0.48808509339677525,
+          "csi_percentile": 98.56892531706809
+        },
+        {
+          "candidate_id": "cand_011152",
+          "mfe_per_nt": -0.43276594446060507,
+          "csi_percentile": 99.06328458866851
+        },
+        {
+          "candidate_id": "cand_011163",
+          "mfe_per_nt": -0.49936169563455785,
+          "csi_percentile": 98.06216200748987
+        },
+        {
+          "candidate_id": "cand_011223",
+          "mfe_per_nt": -0.44340424233294545,
+          "csi_percentile": 99.05258441758478
+        },
+        {
+          "candidate_id": "cand_011299",
+          "mfe_per_nt": -0.4608510768159907,
+          "csi_percentile": 99.02111874902405
+        },
+        {
+          "candidate_id": "cand_011527",
+          "mfe_per_nt": -0.45276596393991025,
+          "csi_percentile": 99.0483786192865
+        },
+        {
+          "candidate_id": "cand_011571",
+          "mfe_per_nt": -0.478085099889877,
+          "csi_percentile": 98.90178228228454
+        },
+        {
+          "candidate_id": "cand_011575",
+          "mfe_per_nt": -0.5314893681952294,
+          "csi_percentile": 92.87149318351874
+        },
+        {
+          "candidate_id": "cand_011644",
+          "mfe_per_nt": -0.3972340360600898,
+          "csi_percentile": 99.081824534231
+        },
+        {
+          "candidate_id": "cand_011673",
+          "mfe_per_nt": -0.49617020627285574,
+          "csi_percentile": 98.3874541551715
+        },
+        {
+          "candidate_id": "cand_011889",
+          "mfe_per_nt": -0.5163829722303025,
+          "csi_percentile": 96.98647522156804
+        },
+        {
+          "candidate_id": "cand_011898",
+          "mfe_per_nt": -0.4687234107484209,
+          "csi_percentile": 99.00527953249723
+        },
+        {
+          "candidate_id": "cand_011915",
+          "mfe_per_nt": -0.5142553126558345,
+          "csi_percentile": 97.02048540124774
+        },
+        {
+          "candidate_id": "cand_011995",
+          "mfe_per_nt": -0.5040425402052859,
+          "csi_percentile": 97.89943843818831
+        },
+        {
+          "candidate_id": "cand_012017",
+          "mfe_per_nt": -0.5004255254217919,
+          "csi_percentile": 98.0012415851437
+        },
+        {
+          "candidate_id": "cand_012115",
+          "mfe_per_nt": -0.4878723469186336,
+          "csi_percentile": 98.65745212138181
+        },
+        {
+          "candidate_id": "cand_012129",
+          "mfe_per_nt": -0.41914893617021276,
+          "csi_percentile": 99.0794807185058
+        },
+        {
+          "candidate_id": "cand_012139",
+          "mfe_per_nt": -0.5023404385181184,
+          "csi_percentile": 97.99909304365356
+        },
+        {
+          "candidate_id": "cand_012304",
+          "mfe_per_nt": -0.4991489491564162,
+          "csi_percentile": 98.35906214240057
+        },
+        {
+          "candidate_id": "cand_012307",
+          "mfe_per_nt": -0.518297885326629,
+          "csi_percentile": 96.5066348242691
+        },
+        {
+          "candidate_id": "cand_012361",
+          "mfe_per_nt": -0.48574468734416554,
+          "csi_percentile": 98.68843739566347
+        },
+        {
+          "candidate_id": "cand_012513",
+          "mfe_per_nt": -0.5278723534117353,
+          "csi_percentile": 93.1965372724315
+        },
+        {
+          "candidate_id": "cand_012545",
+          "mfe_per_nt": -0.50255318499626,
+          "csi_percentile": 97.90556204396255
+        },
+        {
+          "candidate_id": "cand_012667",
+          "mfe_per_nt": -0.49531915542927196,
+          "csi_percentile": 98.53789553612395
+        },
+        {
+          "candidate_id": "cand_012729",
+          "mfe_per_nt": -0.5231914763754987,
+          "csi_percentile": 96.23024594707232
+        },
+        {
+          "candidate_id": "cand_012740",
+          "mfe_per_nt": -0.5091489426633145,
+          "csi_percentile": 97.72056737047626
+        },
+        {
+          "candidate_id": "cand_012781",
+          "mfe_per_nt": -0.498936170212766,
+          "csi_percentile": 98.37397038801736
+        },
+        {
+          "candidate_id": "cand_012791",
+          "mfe_per_nt": -0.5361702127659574,
+          "csi_percentile": 91.17684267493243
+        },
+        {
+          "candidate_id": "cand_012800",
+          "mfe_per_nt": -0.5129787363904588,
+          "csi_percentile": 97.63261317299039
+        }
+      ],
+      "balanced": {
+        "candidate_id": "cand_012791",
+        "mfe_per_nt": -0.5361702127659574,
+        "csi_percentile": 91.17684267493243
+      },
+      "initial": {
+        "candidate_id": "cand_000001",
+        "mfe_per_nt": -0.2838297742478391,
+        "csi_percentile": 23.405618344194046
+      }
+    },
+    {
+      "run_id": "F3A_vaxpress_s43",
+      "condition": "vaxpress",
+      "seed": 43,
+      "points": [
+        {
+          "candidate_id": "alpha0.25_event1812",
+          "mfe_per_nt": -0.36638297223030253,
+          "csi_percentile": 82.36620619458911
+        },
+        {
+          "candidate_id": "alpha0.25_event1916",
+          "mfe_per_nt": -0.36957446159200463,
+          "csi_percentile": 79.3906047871633
+        },
+        {
+          "candidate_id": "alpha0.25_event1925",
+          "mfe_per_nt": -0.3574468085106383,
+          "csi_percentile": 83.22117609238501
+        },
+        {
+          "candidate_id": "alpha0.25_event2063",
+          "mfe_per_nt": -0.357234029566988,
+          "csi_percentile": 83.22473653921337
+        },
+        {
+          "candidate_id": "alpha0.25_event2486",
+          "mfe_per_nt": -0.3604255189286902,
+          "csi_percentile": 83.10355566597859
+        },
+        {
+          "candidate_id": "alpha0.25_event2496",
+          "mfe_per_nt": -0.3740425596845911,
+          "csi_percentile": 79.07114928975068
+        },
+        {
+          "candidate_id": "alpha0.25_event2547",
+          "mfe_per_nt": -0.3859574338223072,
+          "csi_percentile": 77.99101651011374
+        },
+        {
+          "candidate_id": "alpha0.75_event1460",
+          "mfe_per_nt": -0.39446807212017954,
+          "csi_percentile": 69.46227226706895
+        },
+        {
+          "candidate_id": "alpha0.75_event1512",
+          "mfe_per_nt": -0.4082978593542221,
+          "csi_percentile": 65.14570615750225
+        },
+        {
+          "candidate_id": "alpha0.75_event1952",
+          "mfe_per_nt": -0.4019148806308178,
+          "csi_percentile": 67.14571267685983
+        },
+        {
+          "candidate_id": "alpha0.75_event2293",
+          "mfe_per_nt": -0.4293617086207613,
+          "csi_percentile": 58.871673436839366
+        },
+        {
+          "candidate_id": "alpha0.75_event2476",
+          "mfe_per_nt": -0.4385106512840758,
+          "csi_percentile": 58.766675429744645
+        },
+        {
+          "candidate_id": "alpha0.75_event2527",
+          "mfe_per_nt": -0.4187234107484209,
+          "csi_percentile": 60.14484635339814
+        },
+        {
+          "candidate_id": "alpha0.75_event2535",
+          "mfe_per_nt": -0.43936170212765957,
+          "csi_percentile": 57.526896197602206
+        }
+      ],
+      "balanced": {
+        "candidate_id": "alpha0.75_event2535",
+        "mfe_per_nt": -0.43936170212765957,
+        "csi_percentile": 57.526896197602206
+      },
+      "initial": {
+        "candidate_id": "alpha0.0_event1",
+        "mfe_per_nt": -0.2838297742478391,
+        "csi_percentile": 23.405618344194046
+      }
+    },
+    {
+      "run_id": "F3A_morse_s101",
+      "condition": "morse",
+      "seed": 101,
+      "points": [
+        {
+          "candidate_id": "cand_009058",
+          "mfe_per_nt": -0.4289361831989694,
+          "csi_percentile": 99.06549946245083
+        },
+        {
+          "candidate_id": "cand_010219",
+          "mfe_per_nt": -0.47489361052817486,
+          "csi_percentile": 98.96794945361142
+        },
+        {
+          "candidate_id": "cand_010287",
+          "mfe_per_nt": -0.47829787883352726,
+          "csi_percentile": 98.93556143560193
+        },
+        {
+          "candidate_id": "cand_010631",
+          "mfe_per_nt": -0.529148929677111,
+          "csi_percentile": 97.4412050900988
+        },
+        {
+          "candidate_id": "cand_010766",
+          "mfe_per_nt": -0.47297872989735706,
+          "csi_percentile": 99.02469356513475
+        },
+        {
+          "candidate_id": "cand_010846",
+          "mfe_per_nt": -0.5393617021276595,
+          "csi_percentile": 96.94443628763949
+        },
+        {
+          "candidate_id": "cand_010942",
+          "mfe_per_nt": -0.5099999935068983,
+          "csi_percentile": 98.35979738443676
+        },
+        {
+          "candidate_id": "cand_010972",
+          "mfe_per_nt": -0.5168084976520945,
+          "csi_percentile": 98.14208764348895
+        },
+        {
+          "candidate_id": "cand_011003",
+          "mfe_per_nt": -0.4842553321351396,
+          "csi_percentile": 98.90944332577524
+        },
+        {
+          "candidate_id": "cand_011068",
+          "mfe_per_nt": -0.5234042553191489,
+          "csi_percentile": 97.91704079396263
+        },
+        {
+          "candidate_id": "cand_011128",
+          "mfe_per_nt": -0.5251063894718251,
+          "csi_percentile": 97.79967927727557
+        },
+        {
+          "candidate_id": "cand_011349",
+          "mfe_per_nt": -0.5278723534117353,
+          "csi_percentile": 97.63584171991053
+        },
+        {
+          "candidate_id": "cand_011398",
+          "mfe_per_nt": -0.5529787104180519,
+          "csi_percentile": 95.31368148624587
+        },
+        {
+          "candidate_id": "cand_011437",
+          "mfe_per_nt": -0.49382980022024603,
+          "csi_percentile": 98.70946491228423
+        },
+        {
+          "candidate_id": "cand_011536",
+          "mfe_per_nt": -0.5434042423329455,
+          "csi_percentile": 96.57361878594344
+        },
+        {
+          "candidate_id": "cand_011562",
+          "mfe_per_nt": -0.5597872470287566,
+          "csi_percentile": 94.66263522288124
+        },
+        {
+          "candidate_id": "cand_011656",
+          "mfe_per_nt": -0.4929787169111536,
+          "csi_percentile": 98.75735199971466
+        },
+        {
+          "candidate_id": "cand_011674",
+          "mfe_per_nt": -0.4597872470287567,
+          "csi_percentile": 99.0427994475754
+        },
+        {
+          "candidate_id": "cand_011913",
+          "mfe_per_nt": -0.49063831085854387,
+          "csi_percentile": 98.86074611771919
+        },
+        {
+          "candidate_id": "cand_011916",
+          "mfe_per_nt": -0.5225532044755652,
+          "csi_percentile": 98.10394875023032
+        },
+        {
+          "candidate_id": "cand_012004",
+          "mfe_per_nt": -0.5412765827584773,
+          "csi_percentile": 96.90845318106355
+        },
+        {
+          "candidate_id": "cand_012008",
+          "mfe_per_nt": -0.4517021341526762,
+          "csi_percentile": 99.05704408260036
+        },
+        {
+          "candidate_id": "cand_012119",
+          "mfe_per_nt": -0.5012766087308843,
+          "csi_percentile": 98.68640572146839
+        },
+        {
+          "candidate_id": "cand_012153",
+          "mfe_per_nt": -0.4519148806308178,
+          "csi_percentile": 99.05318283518467
+        },
+        {
+          "candidate_id": "cand_012184",
+          "mfe_per_nt": -0.5080851128760805,
+          "csi_percentile": 98.46100942404982
+        },
+        {
+          "candidate_id": "cand_012206",
+          "mfe_per_nt": -0.551063829787234,
+          "csi_percentile": 95.84885951125807
+        },
+        {
+          "candidate_id": "cand_012226",
+          "mfe_per_nt": -0.5148936170212766,
+          "csi_percentile": 98.16770848318691
+        },
+        {
+          "candidate_id": "cand_012244",
+          "mfe_per_nt": -0.506170199779754,
+          "csi_percentile": 98.46157639943515
+        },
+        {
+          "candidate_id": "cand_012266",
+          "mfe_per_nt": -0.548936170212766,
+          "csi_percentile": 96.15548284348174
+        },
+        {
+          "candidate_id": "cand_012269",
+          "mfe_per_nt": -0.45021277894365025,
+          "csi_percentile": 99.0637191706839
+        },
+        {
+          "candidate_id": "cand_012318",
+          "mfe_per_nt": -0.5342553321351396,
+          "csi_percentile": 97.28819428645973
+        },
+        {
+          "candidate_id": "cand_012395",
+          "mfe_per_nt": -0.5351063829787234,
+          "csi_percentile": 96.99055304655903
+        },
+        {
+          "candidate_id": "cand_012517",
+          "mfe_per_nt": -0.5125531785031583,
+          "csi_percentile": 98.25261133275342
+        },
+        {
+          "candidate_id": "cand_012535",
+          "mfe_per_nt": -0.5455319019074135,
+          "csi_percentile": 96.42736360035794
+        },
+        {
+          "candidate_id": "cand_012611",
+          "mfe_per_nt": -0.46723405553939495,
+          "csi_percentile": 99.03139725998966
+        },
+        {
+          "candidate_id": "cand_012772",
+          "mfe_per_nt": -0.5259574403154089,
+          "csi_percentile": 97.67076045567914
+        },
+        {
+          "candidate_id": "cand_012782",
+          "mfe_per_nt": -0.5429787169111536,
+          "csi_percentile": 96.76638956388611
+        },
+        {
+          "candidate_id": "cand_012783",
+          "mfe_per_nt": -0.562340399559508,
+          "csi_percentile": 93.94470806660082
+        }
+      ],
+      "balanced": {
+        "candidate_id": "cand_012783",
+        "mfe_per_nt": -0.562340399559508,
+        "csi_percentile": 93.94470806660082
+      },
+      "initial": {
+        "candidate_id": "cand_000001",
+        "mfe_per_nt": -0.2838297742478391,
+        "csi_percentile": 23.405618344194046
+      }
+    },
+    {
+      "run_id": "F3A_vaxpress_s101",
+      "condition": "vaxpress",
+      "seed": 101,
+      "points": [
+        {
+          "candidate_id": "alpha0.0_event2407",
+          "mfe_per_nt": -0.31638297223030254,
+          "csi_percentile": 82.13689405448152
+        },
+        {
+          "candidate_id": "alpha0.25_event1426",
+          "mfe_per_nt": -0.3723404255319149,
+          "csi_percentile": 80.26946459288283
+        },
+        {
+          "candidate_id": "alpha0.25_event2211",
+          "mfe_per_nt": -0.37531913594996674,
+          "csi_percentile": 76.4672030752559
+        },
+        {
+          "candidate_id": "alpha0.25_event2319",
+          "mfe_per_nt": -0.37744679552443483,
+          "csi_percentile": 73.78459188560895
+        },
+        {
+          "candidate_id": "alpha0.25_event2459",
+          "mfe_per_nt": -0.38744682149684173,
+          "csi_percentile": 73.39581674426192
+        },
+        {
+          "candidate_id": "alpha0.25_event2544",
+          "mfe_per_nt": -0.3587234172415226,
+          "csi_percentile": 81.55146496840625
+        },
+        {
+          "candidate_id": "alpha0.75_event2257",
+          "mfe_per_nt": -0.4038297937271443,
+          "csi_percentile": 59.423417417906386
+        },
+        {
+          "candidate_id": "alpha0.75_event2559",
+          "mfe_per_nt": -0.39234041254571145,
+          "csi_percentile": 61.09540754156995
+        }
+      ],
+      "balanced": {
+        "candidate_id": "alpha0.75_event2257",
+        "mfe_per_nt": -0.4038297937271443,
+        "csi_percentile": 59.423417417906386
+      },
+      "initial": {
+        "candidate_id": "alpha0.0_event1",
+        "mfe_per_nt": -0.2838297742478391,
+        "csi_percentile": 23.405618344194046
+      }
+    },
+    {
+      "run_id": "F3A_morse_s137",
+      "condition": "morse",
+      "seed": 137,
+      "points": [
+        {
+          "candidate_id": "cand_006874",
+          "mfe_per_nt": -0.4829787234042553,
+          "csi_percentile": 98.51325182054471
+        },
+        {
+          "candidate_id": "cand_009339",
+          "mfe_per_nt": -0.5034042683053523,
+          "csi_percentile": 97.90411019474747
+        },
+        {
+          "candidate_id": "cand_009589",
+          "mfe_per_nt": -0.430638284886137,
+          "csi_percentile": 99.03625365356949
+        },
+        {
+          "candidate_id": "cand_009851",
+          "mfe_per_nt": -0.46468083807762633,
+          "csi_percentile": 98.91841655861634
+        },
+        {
+          "candidate_id": "cand_010165",
+          "mfe_per_nt": -0.4442553256420379,
+          "csi_percentile": 99.01741667335669
+        },
+        {
+          "candidate_id": "cand_010221",
+          "mfe_per_nt": -0.506170199779754,
+          "csi_percentile": 97.68849091959521
+        },
+        {
+          "candidate_id": "cand_010285",
+          "mfe_per_nt": -0.4955319019074136,
+          "csi_percentile": 98.15079732126709
+        },
+        {
+          "candidate_id": "cand_010378",
+          "mfe_per_nt": -0.421914900110123,
+          "csi_percentile": 99.05448654749718
+        },
+        {
+          "candidate_id": "cand_010450",
+          "mfe_per_nt": -0.4853191619223737,
+          "csi_percentile": 98.44649283594009
+        },
+        {
+          "candidate_id": "cand_010765",
+          "mfe_per_nt": -0.5210638168010305,
+          "csi_percentile": 96.17176599684501
+        },
+        {
+          "candidate_id": "cand_010786",
+          "mfe_per_nt": -0.4685106318047706,
+          "csi_percentile": 98.82901257824469
+        },
+        {
+          "candidate_id": "cand_010880",
+          "mfe_per_nt": -0.5102127724505485,
+          "csi_percentile": 97.55776288939465
+        },
+        {
+          "candidate_id": "cand_011032",
+          "mfe_per_nt": -0.49021275297124334,
+          "csi_percentile": 98.37534896472994
+        },
+        {
+          "candidate_id": "cand_011120",
+          "mfe_per_nt": -0.5051063699925199,
+          "csi_percentile": 97.73196378938559
+        },
+        {
+          "candidate_id": "cand_011131",
+          "mfe_per_nt": -0.5042553191489362,
+          "csi_percentile": 97.85249439212788
+        },
+        {
+          "candidate_id": "cand_011139",
+          "mfe_per_nt": -0.4629787363904588,
+          "csi_percentile": 98.96188531663735
+        },
+        {
+          "candidate_id": "cand_011194",
+          "mfe_per_nt": -0.44276597043301197,
+          "csi_percentile": 99.03110386300426
+        },
+        {
+          "candidate_id": "cand_011260",
+          "mfe_per_nt": -0.4563829787234043,
+          "csi_percentile": 98.99503907352226
+        },
+        {
+          "candidate_id": "cand_011261",
+          "mfe_per_nt": -0.5153191424430685,
+          "csi_percentile": 97.36868440047601
+        },
+        {
+          "candidate_id": "cand_011348",
+          "mfe_per_nt": -0.4444680721201795,
+          "csi_percentile": 99.01209152493793
+        },
+        {
+          "candidate_id": "cand_011353",
+          "mfe_per_nt": -0.49531915542927196,
+          "csi_percentile": 98.23697507878398
+        },
+        {
+          "candidate_id": "cand_011418",
+          "mfe_per_nt": -0.5225532044755652,
+          "csi_percentile": 95.90673410456398
+        },
+        {
+          "candidate_id": "cand_011427",
+          "mfe_per_nt": -0.481702114673371,
+          "csi_percentile": 98.5352623742661
+        },
+        {
+          "candidate_id": "cand_011464",
+          "mfe_per_nt": -0.5070212830888464,
+          "csi_percentile": 97.66535045132946
+        },
+        {
+          "candidate_id": "cand_011483",
+          "mfe_per_nt": -0.5044680980925864,
+          "csi_percentile": 97.75510425765133
+        },
+        {
+          "candidate_id": "cand_011613",
+          "mfe_per_nt": -0.5202127659574468,
+          "csi_percentile": 96.40119726045896
+        },
+        {
+          "candidate_id": "cand_011618",
+          "mfe_per_nt": -0.45595745330161236,
+          "csi_percentile": 99.00885646459884
+        },
+        {
+          "candidate_id": "cand_011630",
+          "mfe_per_nt": -0.5159574468085106,
+          "csi_percentile": 96.90302889445395
+        },
+        {
+          "candidate_id": "cand_011700",
+          "mfe_per_nt": -0.4595744680851064,
+          "csi_percentile": 98.96830293427998
+        },
+        {
+          "candidate_id": "cand_011772",
+          "mfe_per_nt": -0.43574468734416555,
+          "csi_percentile": 99.03563472097788
+        },
+        {
+          "candidate_id": "cand_011787",
+          "mfe_per_nt": -0.43042553840799536,
+          "csi_percentile": 99.05200865801808
+        },
+        {
+          "candidate_id": "cand_011826",
+          "mfe_per_nt": -0.4504255254217919,
+          "csi_percentile": 99.00958061292093
+        },
+        {
+          "candidate_id": "cand_011889",
+          "mfe_per_nt": -0.4887233977622174,
+          "csi_percentile": 98.40811505849338
+        },
+        {
+          "candidate_id": "cand_012036",
+          "mfe_per_nt": -0.5172340555393949,
+          "csi_percentile": 96.89113800421784
+        },
+        {
+          "candidate_id": "cand_012077",
+          "mfe_per_nt": -0.5119149066032247,
+          "csi_percentile": 97.40510353974791
+        },
+        {
+          "candidate_id": "cand_012109",
+          "mfe_per_nt": -0.4987233912691157,
+          "csi_percentile": 98.1473741019396
+        },
+        {
+          "candidate_id": "cand_012222",
+          "mfe_per_nt": -0.5029787104180519,
+          "csi_percentile": 98.11056710890671
+        },
+        {
+          "candidate_id": "cand_012422",
+          "mfe_per_nt": -0.48489360403507314,
+          "csi_percentile": 98.4688946990984
+        },
+        {
+          "candidate_id": "cand_012448",
+          "mfe_per_nt": -0.518297885326629,
+          "csi_percentile": 96.6203598765162
+        },
+        {
+          "candidate_id": "cand_012473",
+          "mfe_per_nt": -0.526595744680851,
+          "csi_percentile": 95.01329855270582
+        },
+        {
+          "candidate_id": "cand_012482",
+          "mfe_per_nt": -0.5012766087308843,
+          "csi_percentile": 98.12626997058919
+        },
+        {
+          "candidate_id": "cand_012486",
+          "mfe_per_nt": -0.47382978074094084,
+          "csi_percentile": 98.76950165330994
+        },
+        {
+          "candidate_id": "cand_012520",
+          "mfe_per_nt": -0.4802127594643451,
+          "csi_percentile": 98.61822044787499
+        },
+        {
+          "candidate_id": "cand_012553",
+          "mfe_per_nt": -0.47829787883352726,
+          "csi_percentile": 98.72080444525388
+        },
+        {
+          "candidate_id": "cand_012629",
+          "mfe_per_nt": -0.5257446938372673,
+          "csi_percentile": 95.65823522133833
+        },
+        {
+          "candidate_id": "cand_012710",
+          "mfe_per_nt": -0.520425544901097,
+          "csi_percentile": 96.35116848561415
+        },
+        {
+          "candidate_id": "cand_012715",
+          "mfe_per_nt": -0.4710638168010306,
+          "csi_percentile": 98.79495488319908
+        },
+        {
+          "candidate_id": "cand_012741",
+          "mfe_per_nt": -0.4372340425531915,
+          "csi_percentile": 99.03543541827973
+        }
+      ],
+      "balanced": {
+        "candidate_id": "cand_012473",
+        "mfe_per_nt": -0.526595744680851,
+        "csi_percentile": 95.01329855270582
+      },
+      "initial": {
+        "candidate_id": "cand_000001",
+        "mfe_per_nt": -0.2838297742478391,
+        "csi_percentile": 23.405618344194046
+      }
+    },
+    {
+      "run_id": "F3A_vaxpress_s137",
+      "condition": "vaxpress",
+      "seed": 137,
+      "points": [
+        {
+          "candidate_id": "alpha0.5_event1370",
+          "mfe_per_nt": -0.3685106318047706,
+          "csi_percentile": 77.08640052828189
+        },
+        {
+          "candidate_id": "alpha0.5_event1715",
+          "mfe_per_nt": -0.3697872405356549,
+          "csi_percentile": 72.94950182325022
+        },
+        {
+          "candidate_id": "alpha0.5_event1726",
+          "mfe_per_nt": -0.3578723339324302,
+          "csi_percentile": 80.04394445540811
+        },
+        {
+          "candidate_id": "alpha0.5_event1768",
+          "mfe_per_nt": -0.3763829657372008,
+          "csi_percentile": 68.47333333694559
+        },
+        {
+          "candidate_id": "alpha0.5_event1926",
+          "mfe_per_nt": -0.3727659509537068,
+          "csi_percentile": 68.60079230970268
+        },
+        {
+          "candidate_id": "alpha0.5_event1996",
+          "mfe_per_nt": -0.3706382913792387,
+          "csi_percentile": 72.23054385060185
+        },
+        {
+          "candidate_id": "alpha0.5_event2208",
+          "mfe_per_nt": -0.35319148936170214,
+          "csi_percentile": 86.43374787011206
+        },
+        {
+          "candidate_id": "alpha0.5_event2218",
+          "mfe_per_nt": -0.356170199779754,
+          "csi_percentile": 83.89510270468283
+        },
+        {
+          "candidate_id": "alpha0.5_event2298",
+          "mfe_per_nt": -0.36468083807762636,
+          "csi_percentile": 78.73437668656081
+        },
+        {
+          "candidate_id": "alpha0.5_event2353",
+          "mfe_per_nt": -0.35446809809258645,
+          "csi_percentile": 85.41287486781442
+        },
+        {
+          "candidate_id": "alpha0.5_event2532",
+          "mfe_per_nt": -0.36531914244306846,
+          "csi_percentile": 77.19594144438663
+        },
+        {
+          "candidate_id": "alpha0.5_event2552",
+          "mfe_per_nt": -0.36446809159948473,
+          "csi_percentile": 79.92303898370179
+        },
+        {
+          "candidate_id": "alpha0.75_event1499",
+          "mfe_per_nt": -0.38000001298620345,
+          "csi_percentile": 68.44547018670393
+        },
+        {
+          "candidate_id": "alpha0.75_event1577",
+          "mfe_per_nt": -0.39106383628033575,
+          "csi_percentile": 66.42493839911191
+        },
+        {
+          "candidate_id": "alpha0.75_event2272",
+          "mfe_per_nt": -0.4031914893617021,
+          "csi_percentile": 61.036940143220804
+        },
+        {
+          "candidate_id": "alpha0.75_event2383",
+          "mfe_per_nt": -0.39808511936918217,
+          "csi_percentile": 64.06458744322597
+        },
+        {
+          "candidate_id": "alpha1.0_event1688",
+          "mfe_per_nt": -0.40361701478349404,
+          "csi_percentile": 47.34861019048658
+        },
+        {
+          "candidate_id": "alpha1.0_event2174",
+          "mfe_per_nt": -0.4140425661776928,
+          "csi_percentile": 46.16478410728105
+        },
+        {
+          "candidate_id": "alpha1.0_event2206",
+          "mfe_per_nt": -0.4153191424430685,
+          "csi_percentile": 45.596144596438855
+        },
+        {
+          "candidate_id": "alpha1.0_event2475",
+          "mfe_per_nt": -0.43127658925157913,
+          "csi_percentile": 44.33390933454935
+        }
+      ],
+      "balanced": {
+        "candidate_id": "alpha1.0_event1688",
+        "mfe_per_nt": -0.40361701478349404,
+        "csi_percentile": 47.34861019048658
+      },
+      "initial": {
+        "candidate_id": "alpha0.0_event1",
+        "mfe_per_nt": -0.2838297742478391,
+        "csi_percentile": 23.405618344194046
+      }
+    },
+    {
+      "run_id": "F3A_morse_s211",
+      "condition": "morse",
+      "seed": 211,
+      "points": [
+        {
+          "candidate_id": "cand_008954",
+          "mfe_per_nt": -0.44893617021276594,
+          "csi_percentile": 99.02938525719367
+        },
+        {
+          "candidate_id": "cand_009778",
+          "mfe_per_nt": -0.41574466786486036,
+          "csi_percentile": 99.0903019287885
+        },
+        {
+          "candidate_id": "cand_010111",
+          "mfe_per_nt": -0.41702127659574467,
+          "csi_percentile": 99.08602565309926
+        },
+        {
+          "candidate_id": "cand_010168",
+          "mfe_per_nt": -0.4259574403154089,
+          "csi_percentile": 99.0618126587386
+        },
+        {
+          "candidate_id": "cand_010234",
+          "mfe_per_nt": -0.4800000129862035,
+          "csi_percentile": 98.57522024279241
+        },
+        {
+          "candidate_id": "cand_010692",
+          "mfe_per_nt": -0.45510636999251997,
+          "csi_percentile": 99.02877829431932
+        },
+        {
+          "candidate_id": "cand_011079",
+          "mfe_per_nt": -0.4400000064931017,
+          "csi_percentile": 99.06100260704129
+        },
+        {
+          "candidate_id": "cand_011346",
+          "mfe_per_nt": -0.42127659574468085,
+          "csi_percentile": 99.07256290519749
+        },
+        {
+          "candidate_id": "cand_011351",
+          "mfe_per_nt": -0.4891489231840093,
+          "csi_percentile": 98.49433435846251
+        },
+        {
+          "candidate_id": "cand_011374",
+          "mfe_per_nt": -0.5114893487159242,
+          "csi_percentile": 96.19047530096567
+        },
+        {
+          "candidate_id": "cand_011413",
+          "mfe_per_nt": -0.4587234172415226,
+          "csi_percentile": 99.01638449257803
+        },
+        {
+          "candidate_id": "cand_011415",
+          "mfe_per_nt": -0.528085099889877,
+          "csi_percentile": 94.50031917475155
+        },
+        {
+          "candidate_id": "cand_011526",
+          "mfe_per_nt": -0.4942553256420379,
+          "csi_percentile": 98.1957846391454
+        },
+        {
+          "candidate_id": "cand_011641",
+          "mfe_per_nt": -0.49404254669838765,
+          "csi_percentile": 98.42989519960484
+        },
+        {
+          "candidate_id": "cand_011659",
+          "mfe_per_nt": -0.5234042553191489,
+          "csi_percentile": 95.19578187796007
+        },
+        {
+          "candidate_id": "cand_011703",
+          "mfe_per_nt": -0.4997872210563497,
+          "csi_percentile": 97.82285187537758
+        },
+        {
+          "candidate_id": "cand_011756",
+          "mfe_per_nt": -0.44276597043301197,
+          "csi_percentile": 99.04157524070139
+        },
+        {
+          "candidate_id": "cand_011785",
+          "mfe_per_nt": -0.5251063894718251,
+          "csi_percentile": 94.73247531601167
+        },
+        {
+          "candidate_id": "cand_011895",
+          "mfe_per_nt": -0.4763829657372008,
+          "csi_percentile": 99.00196294699693
+        },
+        {
+          "candidate_id": "cand_012012",
+          "mfe_per_nt": -0.5014893552090259,
+          "csi_percentile": 97.1468136955902
+        },
+        {
+          "candidate_id": "cand_012075",
+          "mfe_per_nt": -0.4876595679749834,
+          "csi_percentile": 98.56653689202935
+        },
+        {
+          "candidate_id": "cand_012123",
+          "mfe_per_nt": -0.5193617151138631,
+          "csi_percentile": 95.44016115461893
+        },
+        {
+          "candidate_id": "cand_012303",
+          "mfe_per_nt": -0.5110638232941324,
+          "csi_percentile": 97.11203238785485
+        },
+        {
+          "candidate_id": "cand_012308",
+          "mfe_per_nt": -0.5146808380776263,
+          "csi_percentile": 96.13953746045155
+        },
+        {
+          "candidate_id": "cand_012332",
+          "mfe_per_nt": -0.5321276725606715,
+          "csi_percentile": 94.29721586761767
+        },
+        {
+          "candidate_id": "cand_012524",
+          "mfe_per_nt": -0.42319147637549864,
+          "csi_percentile": 99.06457660686132
+        },
+        {
+          "candidate_id": "cand_012578",
+          "mfe_per_nt": -0.5065957576670546,
+          "csi_percentile": 97.12927562747608
+        },
+        {
+          "candidate_id": "cand_012584",
+          "mfe_per_nt": -0.47936170862076133,
+          "csi_percentile": 98.68394624380474
+        },
+        {
+          "candidate_id": "cand_012678",
+          "mfe_per_nt": -0.5112766022377826,
+          "csi_percentile": 96.39665067219039
+        },
+        {
+          "candidate_id": "cand_012681",
+          "mfe_per_nt": -0.4978723404255319,
+          "csi_percentile": 98.19218899597448
+        },
+        {
+          "candidate_id": "cand_012762",
+          "mfe_per_nt": -0.5010638297872341,
+          "csi_percentile": 97.53798317745975
+        }
+      ],
+      "balanced": {
+        "candidate_id": "cand_012332",
+        "mfe_per_nt": -0.5321276725606715,
+        "csi_percentile": 94.29721586761767
+      },
+      "initial": {
+        "candidate_id": "cand_000001",
+        "mfe_per_nt": -0.2838297742478391,
+        "csi_percentile": 23.405618344194046
+      }
+    },
+    {
+      "run_id": "F3A_vaxpress_s211",
+      "condition": "vaxpress",
+      "seed": 211,
+      "points": [
+        {
+          "candidate_id": "alpha0.0_event2310",
+          "mfe_per_nt": -0.3514893552090259,
+          "csi_percentile": 74.13893657567984
+        },
+        {
+          "candidate_id": "alpha0.0_event2359",
+          "mfe_per_nt": -0.34000000649310175,
+          "csi_percentile": 77.02000470694144
+        },
+        {
+          "candidate_id": "alpha0.0_event2371",
+          "mfe_per_nt": -0.34723403606008973,
+          "csi_percentile": 74.89357961606093
+        },
+        {
+          "candidate_id": "alpha0.0_event2413",
+          "mfe_per_nt": -0.3372340425531915,
+          "csi_percentile": 81.66277778033742
+        },
+        {
+          "candidate_id": "alpha0.0_event2533",
+          "mfe_per_nt": -0.3089361637196642,
+          "csi_percentile": 81.8194180608034
+        },
+        {
+          "candidate_id": "alpha0.5_event1984",
+          "mfe_per_nt": -0.3840425531914894,
+          "csi_percentile": 73.81530848495962
+        },
+        {
+          "candidate_id": "alpha0.5_event2474",
+          "mfe_per_nt": -0.3906383108585439,
+          "csi_percentile": 71.59117992698106
+        },
+        {
+          "candidate_id": "alpha0.5_event2533",
+          "mfe_per_nt": -0.39489363000748007,
+          "csi_percentile": 70.33672526764681
+        },
+        {
+          "candidate_id": "alpha0.5_event2554",
+          "mfe_per_nt": -0.39808511936918217,
+          "csi_percentile": 69.62281469043496
+        },
+        {
+          "candidate_id": "alpha1.0_event2490",
+          "mfe_per_nt": -0.40255318499625997,
+          "csi_percentile": 46.59313090596255
+        }
+      ],
+      "balanced": {
+        "candidate_id": "alpha1.0_event2490",
+        "mfe_per_nt": -0.40255318499625997,
+        "csi_percentile": 46.59313090596255
+      },
+      "initial": {
+        "candidate_id": "alpha0.0_event1",
+        "mfe_per_nt": -0.2838297742478391,
+        "csi_percentile": 23.405618344194046
+      }
+    }
+  ],
+  "total_front_points": 250,
+  "balanced_points": 10,
+  "initial": {
+    "candidate_id": "cand_000001",
+    "mfe_per_nt": -0.2838297742478391,
+    "csi_percentile": 23.405618344194046
+  }
+}

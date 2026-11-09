@@ -1,0 +1,44 @@
+{
+  "model": "orthrus-te-full-fit",
+  "source_revision": "1b063532edff87782866df368965a33ad4c19893",
+  "image": "sha256:0c8c9f08840a602ac208f7fe371572b28b250e52bd5628b18c9739ea14f4c1ea",
+  "request_sha256": "4fd6a853ca1fa3995df5a164922a25c02c201fc125a0bfb3b702f64357dabc03",
+  "sequences": 3,
+  "archived": {
+    "elapsed_seconds": 61.72463556006551,
+    "response": {
+      "request_id": "morse-ready-model-parity",
+      "outputs": [
+        {
+          "translation_efficiency_score": 1.4349124431610107
+        },
+        {
+          "translation_efficiency_score": 2.202573776245117
+        },
+        {
+          "translation_efficiency_score": 2.1166815757751465
+        }
+      ]
+    }
+  },
+  "current": {
+    "elapsed_seconds": 6.6806396022439,
+    "response": {
+      "request_id": "morse-ready-model-parity",
+      "outputs": [
+        {
+          "translation_efficiency_score": 1.4349124431610107
+        },
+        {
+          "translation_efficiency_score": 2.202573776245117
+        },
+        {
+          "translation_efficiency_score": 2.1166815757751465
+        }
+      ]
+    }
+  },
+  "maximum_absolute_difference": 0.0,
+  "tolerance": 1e-06,
+  "passed": true
+}

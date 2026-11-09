@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "scorer": "ribodecode",
+  "scorer_version": "2.1.1",
+  "asset_id": "ribodecode-translationmodel",
+  "source_revision": "fcf2d50decf99ebaf0ed2cd58d1dd9976a820470",
+  "package": "TranslationModel",
+  "package_version": "1.1.0",
+  "license": "SSPL-1.0",
+  "files": [
+    {
+      "path": "TranslationModel-1.1.0-py3-none-any.whl",
+      "sha256": "22d4b398a399878f7573074fd1c381b2f3894bd3a62ede9cd27989dc47ac276a",
+      "bytes": 440977043
+    },
+    {
+      "path": "env_file.csv",
+      "sha256": "9a85da49ff6d5de94cd920688d196b49af14b21e4e3fdfdda10e356edd277062",
+      "bytes": 354915
+    }
+  ],
+  "installed_package_files": [
+    {
+      "path": "TranslationModel/best_model.p",
+      "sha256": "3c6322ea417b68e13a520928a1d55fe7b4bc993e92c512e7c1acec121a35b2a6",
+      "bytes": 476658175
+    },
+    {
+      "path": "TranslationModel/inference.py",
+      "sha256": "6acd4e3427a8996c1cbc743f7b22944ebd77ebb3bc3c2f66a4cf8957258c1806",
+      "bytes": 18078
+    },
+    {
+      "path": "TranslationModel/model_config.json",
+      "sha256": "e1c328985d7df061278317b934604ce0e63b2181ab062e301f042e86a7ea83d9",
+      "bytes": 965
+    },
+    {
+      "path": "TranslationModel/conditions/A549_normal_10552_RPKM_A549.npz",
+      "sha256": "55efa79c67be2e0cd3f9227367366c88d8d166db54b8714b1e4c0516d0094b0a",
+      "bytes": 84678
+    },
+    {
+      "path": "TranslationModel/conditions/HEK293T_normal_10552_RPKM_HEK293T.npz",
+      "sha256": "c1db139ef7eb69a527edd13d43782dcbb6c453e78c2619efa21a5569ff535daa",
+      "bytes": 84678
+    },
+    {
+      "path": "TranslationModel/conditions/HeLa_normal_10552_RPKM_HeLa.npz",
+      "sha256": "7f6533bf2595a249f64088a28de0dacf8270676606532497cde5ba555f23eb5f",
+      "bytes": 84678
+    },
+    {
+      "path": "TranslationModel/conditions/HeLa_normal_10552_RPKM_Hela.npz",
+      "sha256": "7f6533bf2595a249f64088a28de0dacf8270676606532497cde5ba555f23eb5f",
+      "bytes": 84678
+    },
+    {
+      "path": "TranslationModel-1.1.0.dist-info/LICENSE.txt",
+      "sha256": "42baafb5997a6f54e6eb8dc186416e386cd178793d85e089d403e59f926bcd20",
+      "bytes": 29445
+    },
+    {
+      "path": "TranslationModel-1.1.0.dist-info/METADATA",
+      "sha256": "5428fa15093cff1739ef2e1473238e4dfe7fef997c9ddb09a7eab826f7e66089",
+      "bytes": 1146
+    },
+    {
+      "path": "TranslationModel-1.1.0.dist-info/WHEEL",
+      "sha256": "227f454cdc5e3fad0a9d3906c3bc24ea624f61dfdd4128c46665dd05d30223ef",
+      "bytes": 91
+    },
+    {
+      "path": "TranslationModel-1.1.0.dist-info/entry_points.txt",
+      "sha256": "72beeec8c2d76284e83816f77cd8a02f4ef495154fae01ec79558bb7c554196f",
+      "bytes": 69
+    },
+    {
+      "path": "TranslationModel-1.1.0.dist-info/top_level.txt",
+      "sha256": "8bde7a031e1405d3549dedc07340141f27bd6d36793453544eecd3ffc94c35e5",
+      "bytes": 17
+    }
+  ]
+}

@@ -1,0 +1,125 @@
+{
+  "status": "pass",
+  "source_revision": "22e273eaf57df417fcb5c68e5d2be1ac63e60088",
+  "validation": "One bounded real F3A_s7 diagnostic, exactly 2 generations; no full or other article searches were rerun.",
+  "public_config": "paper/configs/f3a_morse_s7.yaml",
+  "public_config_sha256": "475613ebaab943f88c91c859eb870cd17ff05eb4df353a2eff9b0646f673ff3d",
+  "diagnostic_config_sha256": "d6761e2b7d98a0f640b14cfe73af42c2ce650bdb95d4da3eb782fdced62caaab",
+  "configuration_changes": {
+    "generations": 2,
+    "early_stopping_enabled": false,
+    "input_paths": "Resolved from the unmodified public YAML before copying"
+  },
+  "cli": "morse run --config DIAGNOSTIC_COPY.yaml --output-dir RESULTS",
+  "started_utc": "2026-11-06T12:39:43.835335+00:00",
+  "finished_utc": "2026-11-06T12:40:46.594291+00:00",
+  "elapsed_seconds": 62.758921802043915,
+  "evaluations": 128,
+  "completed_generations": 2,
+  "scorer_batch_sizes": {
+    "viennarna_transcript_body": [
+      1,
+      63,
+      64
+    ],
+    "csi_human": [
+      1,
+      63,
+      64
+    ]
+  },
+  "first_generation_audit": {
+    "verified": true,
+    "generation": 1,
+    "population_size": 64,
+    "passing": 64,
+    "threshold_epsilon": 0,
+    "evaluation_order_verified": true,
+    "expected_sequence_set_sha256": "618e530933032d5517d610d87b258d768c36cef23734d2a152629d4472bfe917",
+    "observed_sequence_set_sha256": "618e530933032d5517d610d87b258d768c36cef23734d2a152629d4472bfe917",
+    "expected_evaluation_order_sha256": "4225504b6a8940bf85acf83f4d6119533231231775b65a420bf06c05d6910e57",
+    "observed_evaluation_order_sha256": "4225504b6a8940bf85acf83f4d6119533231231775b65a420bf06c05d6910e57",
+    "source_sha256": "40bc2a4724fcf65f137f5acb328f0ad039f598244e5438b2b7bef3b08fd3c733",
+    "initialization_policy": "native",
+    "audit_only": true
+  },
+  "exact_comparisons_by_field": {
+    "candidate_id": 128,
+    "sequence": 128,
+    "coding_sequence": 128,
+    "generation": 128,
+    "eval_index": 128,
+    "output_mfe_per_nt": 128,
+    "output_csi_percentile": 128,
+    "output_csi_raw": 128
+  },
+  "maximum_native_score_difference": 0.0,
+  "reference": "Previous full F3A_s7 native experiment, same first 128 actual evaluations",
+  "reference_log_sha256": "d623559ee1bf9e485c93afcd1c0eb23264e7d4394bb8775bd49a45b0635ddf9c",
+  "fresh_log_sha256": "45c099592d28daeb3c4ab96e3c74260560d1f34d95153904b440b48b039950e1",
+  "prepared_container_unchanged": true,
+  "prepared_backend_pids_unchanged": true,
+  "optimizer_docker_cli_denied": true,
+  "optimizer_docker_calls": 0,
+  "container_created_explicitly_before_optimizer": true,
+  "image_id": "sha256:4536d44ad1c59c9b09532bcf96b7facad96f1cd7f45abd9a5f5e6a8b836c4372",
+  "model_presets": {
+    "viennarna": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "NUMEXPR_NUM_THREADS": "1",
+      "BLIS_NUM_THREADS": "1",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "VIENNARNA_ENABLE_PF": "0",
+      "VIENNARNA_MAX_BP_SPAN": "200"
+    },
+    "csi": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "NUMEXPR_NUM_THREADS": "1",
+      "BLIS_NUM_THREADS": "1",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "CSI_PROFILE": "profiles/homo_sapiens_consensus_wu2019_v1.json"
+    }
+  },
+  "source_checkout_tracked_clean": true,
+  "prepared_process_evidence": {
+    "container_id": "42aaba55f2d27ba4b31dffd76f8b0bbff9f9e9f505cb3349d269a1cf78d39812",
+    "container_pid": 1434195,
+    "proxy_pids": {
+      "viennarna": 1434247,
+      "csi": 1434282
+    },
+    "backend_client_pids": {
+      "viennarna": [
+        1434271
+      ],
+      "csi": [
+        1434323
+      ]
+    },
+    "restart_count": 0
+  },
+  "cleanup": {
+    "proxy_exit_codes": {
+      "viennarna": 0,
+      "csi": 0
+    },
+    "own_container_removed": true,
+    "listeners_released": [
+      8706,
+      8707
+    ]
+  },
+  "transport": "Plain Bash curl commands POST one JSON batch to each already-running localhost scorer; models retain their backend processes.",
+  "entrypoint": "An isolated morse console entrypoint runs the committed morse_tools CLI using the existing scientific interpreter and explicit source checkout.",
+  "bundle_verification": {
+    "kind": "incremental Git bundle",
+    "requires_revision": "c5312676eff8894fcfe3de2cc08bd7786191cb3b",
+    "sha256": "f7f1528240ae93a6fc092232dded64f043daadc9f1a81cb75cb3f02e43821546",
+    "verified_before_fetch": true
+  },
+  "private_receipt_sha256": "bd1f724b20bef3221f6a88c3f4a14522310528bb97b39b57950b1f8fba1c5698"
+}

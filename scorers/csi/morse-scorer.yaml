@@ -1,0 +1,108 @@
+schema_version: 2
+id: csi
+name: Codon Stability Index
+version: 1.0.0
+description: >-
+  Profile-driven codon stability scorer for an explicit start codon plus CDS
+  body. The start codon is excluded, and the same runtime can be instantiated
+  with human, mouse, tissue, or cell-state CSC profiles.
+runtime:
+  type: venv
+  entrypoint: [python, server.py]
+  timeout_seconds: 120
+  env:
+    CSI_PROFILE: profiles/homo_sapiens_consensus_wu2019_v1.json
+scope:
+  configurable: false
+  allowed_parts: [start_codon, cds]
+  allow_slices: false
+  allow_window: false
+  default:
+    type: parts
+    spans:
+      - part: start_codon
+      - part: cds
+outputs:
+  csi_raw:
+    type: float
+    unit: mean CSC
+    value_range: profile-dependent
+    description: Arithmetic mean of profile CSC values after the start codon.
+    default_policy: {role: log}
+  csi_percentile:
+    type: float
+    unit: percentile
+    value_range: "[0, 100]"
+    description: CSI mapped to the reference CDS distribution stored in the profile.
+    default_policy: {role: objective, direction: max}
+  csi_window_p05:
+    type: float
+    unit: mean CSC
+    value_range: profile-dependent
+    description: Fifth percentile of sliding-window mean CSC values.
+    default_policy: {role: log}
+  csi_window_min:
+    type: float
+    unit: mean CSC
+    value_range: profile-dependent
+    description: Minimum sliding-window mean CSC value.
+    default_policy: {role: log}
+  csi_destabilizing_fraction:
+    type: float
+    unit: fraction
+    value_range: "[0, 1]"
+    description: Fraction of CDS-body codons below the configured CSC threshold.
+    default_policy: {role: log}
+  csi_codons:
+    type: int
+    unit: codons
+    value_range: integer >= 1
+    description: Number of codons included after excluding the explicit start codon.
+    default_policy: {role: log}
+  csi_profile_id:
+    type: string
+    value_range: string identifier
+    description: Identifier of the CSC profile used for scoring.
+    default_policy: {role: log}
+  csi_profile_sha256:
+    type: string
+    value_range: 64 hexadecimal characters
+    description: SHA-256 digest of the exact profile file used for scoring.
+    default_policy: {role: log}
+parameters:
+  profile_path:
+    type: path
+    default: profiles/homo_sapiens_consensus_wu2019_v1.json
+    env: CSI_PROFILE
+    description: >-
+      Human, mouse, tissue, cell-state, or custom schema-1 CSI profile. Relative
+      paths are resolved from the installed scorer source directory.
+  window_codons:
+    type: int
+    default: 15
+    min: 1
+    max: 200
+    env: CSI_WINDOW_CODONS
+    description: Sliding-window width used by the local CSI diagnostics.
+  destabilizing_threshold:
+    type: float
+    default: 0.0
+    min: -1.0
+    max: 1.0
+    env: CSI_DESTABILIZING_THRESHOLD
+    description: CSC value below which a codon is counted as destabilizing.
+self_test:
+  sequence: ATGTTCTTT
+  sequence_context:
+    part_ranges:
+      - {part: start_codon, start: 0, end: 3, part_start: 0, part_end: 3}
+      - {part: cds, start: 3, end: 9, part_start: 0, part_end: 6}
+  expected_outputs:
+    - csi_raw
+    - csi_percentile
+    - csi_window_p05
+    - csi_window_min
+    - csi_destabilizing_fraction
+    - csi_codons
+    - csi_profile_id
+    - csi_profile_sha256

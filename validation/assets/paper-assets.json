@@ -1,0 +1,521 @@
+{
+  "status": "pass",
+  "scope": "All registry assets marked paper=true, including recursive dependencies. Optional non-paper models are not installed or claimed tested.",
+  "assets": [
+    {
+      "id": "orthrus-te-full-fit",
+      "status": "verified",
+      "files": [
+        {
+          "path": "model_final.pt",
+          "sha256": "c380316fe282640d563b9254e9ab8031e129f9e768c9ce04c0c7955bb0ac6bab",
+          "bytes": 41275186
+        }
+      ],
+      "dependencies": [
+        {
+          "id": "orthrus-backbone",
+          "status": "verified",
+          "files": [
+            {
+              "path": "config.json",
+              "sha256": "a8b513b3d73356e7ac8a59516ebbf51bc03f635e6329ad32350c289f84c8a288",
+              "bytes": 375
+            },
+            {
+              "path": "orthrus_hf.py",
+              "sha256": "35fb82d090003c9bf91be1820d5cc0e22c1092d28d9805951d3f284d728cdbe4",
+              "bytes": 6543
+            },
+            {
+              "path": "pytorch_model.bin",
+              "sha256": "a188c974493679d9eb5d18b5ecc3148f3634cd785e20f8303d6f313f62f00c08",
+              "bytes": 40737856
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "orthrus-te-held-out",
+      "status": "verified",
+      "files": [
+        {
+          "path": "best.pt",
+          "sha256": "70913fc29ba9c073100913b56f59542520ec18a473fae358ff19bd57ecddd604",
+          "bytes": 41272706
+        }
+      ],
+      "dependencies": [
+        {
+          "id": "orthrus-backbone",
+          "status": "verified",
+          "files": [
+            {
+              "path": "config.json",
+              "sha256": "a8b513b3d73356e7ac8a59516ebbf51bc03f635e6329ad32350c289f84c8a288",
+              "bytes": 375
+            },
+            {
+              "path": "orthrus_hf.py",
+              "sha256": "35fb82d090003c9bf91be1820d5cc0e22c1092d28d9805951d3f284d728cdbe4",
+              "bytes": 6543
+            },
+            {
+              "path": "pytorch_model.bin",
+              "sha256": "a188c974493679d9eb5d18b5ecc3148f3634cd785e20f8303d6f313f62f00c08",
+              "bytes": 40737856
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "orthrus-half-life",
+      "status": "verified",
+      "files": [
+        {
+          "path": "model_final.pt",
+          "sha256": "fe4f816572626d127f54e64d4a724923bd5a080b4898f225898f69f91f28a40e",
+          "bytes": 41275122
+        }
+      ],
+      "dependencies": [
+        {
+          "id": "orthrus-backbone",
+          "status": "verified",
+          "files": [
+            {
+              "path": "config.json",
+              "sha256": "a8b513b3d73356e7ac8a59516ebbf51bc03f635e6329ad32350c289f84c8a288",
+              "bytes": 375
+            },
+            {
+              "path": "orthrus_hf.py",
+              "sha256": "35fb82d090003c9bf91be1820d5cc0e22c1092d28d9805951d3f284d728cdbe4",
+              "bytes": 6543
+            },
+            {
+              "path": "pytorch_model.bin",
+              "sha256": "a188c974493679d9eb5d18b5ecc3148f3634cd785e20f8303d6f313f62f00c08",
+              "bytes": 40737856
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rinalmo-imrnads",
+      "status": "verified",
+      "files": [
+        {
+          "path": "best_model.pt",
+          "sha256": "923d1e9f843d12fe29a9515a95b6a32eae286017790dfeef1c82215446958f0a",
+          "bytes": 592378778
+        }
+      ]
+    },
+    {
+      "id": "orthrus-backbone",
+      "status": "verified",
+      "files": [
+        {
+          "path": "config.json",
+          "sha256": "a8b513b3d73356e7ac8a59516ebbf51bc03f635e6329ad32350c289f84c8a288",
+          "bytes": 375
+        },
+        {
+          "path": "orthrus_hf.py",
+          "sha256": "35fb82d090003c9bf91be1820d5cc0e22c1092d28d9805951d3f284d728cdbe4",
+          "bytes": 6543
+        },
+        {
+          "path": "pytorch_model.bin",
+          "sha256": "a188c974493679d9eb5d18b5ecc3148f3634cd785e20f8303d6f313f62f00c08",
+          "bytes": 40737856
+        }
+      ]
+    },
+    {
+      "id": "ribodecode-translationmodel",
+      "status": "verified",
+      "files": [
+        {
+          "path": "TranslationModel-1.1.0-py3-none-any.whl",
+          "sha256": "22d4b398a399878f7573074fd1c381b2f3894bd3a62ede9cd27989dc47ac276a",
+          "bytes": 440977043
+        },
+        {
+          "path": "env_file.csv",
+          "sha256": "9a85da49ff6d5de94cd920688d196b49af14b21e4e3fdfdda10e356edd277062",
+          "bytes": 354915
+        }
+      ]
+    },
+    {
+      "id": "ribonn-human-ensemble",
+      "status": "verified",
+      "files": [
+        {
+          "path": "weights.zip",
+          "sha256": "2ce3bc1adb38ec6752c79147241a4fb2664e9804e806b3eab1287489a15d8b64",
+          "bytes": 207395960
+        },
+        {
+          "path": "ensemble.json",
+          "sha256": "8e0d62ca61964ec660a43389ab309361f0c388a906c68c48a9d5b928c5a10cee",
+          "bytes": 14604
+        },
+        {
+          "path": "human/runs.csv",
+          "sha256": "5bc7a1eedf33e1fe32beb72aca15ebbce4ac333a30e9c03e08868bafd3ee1d03",
+          "bytes": 173831
+        },
+        {
+          "path": "human/5aa149a922834dd89c15adb9f04255df/state_dict.pth",
+          "sha256": "564052b8ded5cdccc5e980aaab9ec24199edd532cd5d5a675f782fc803fe3917",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/dee295337146482684ebc2dd17fd1a8b/state_dict.pth",
+          "sha256": "19ff71a26547b53eb5f0539bdeba7136b50a1d6e887cfb76ae7d6bf12db57da0",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/6c1a41c776fe43feb13db0b539ac7d02/state_dict.pth",
+          "sha256": "b6c3e6af4f3d4f9c7c33c544a1bfeb53c85654c0f370168ddb99924381aed62e",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/fb622b4ef10440dcb08fb170fe37402e/state_dict.pth",
+          "sha256": "650c93227abec7b8861aa76dce6729653e94bcfb16153d1b4f4096f3ed5d365c",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/3e495ec75a0348cb9db67f6382da6879/state_dict.pth",
+          "sha256": "3367417f9c7c43815aaea1547955d6fdef3afb535f361090076f9a23399447bd",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/86d88305945243a6921480206159deae/state_dict.pth",
+          "sha256": "c2059eb755d92f78a95c138b5ee87394e841a0cad5e082e78f235a2cb16b105f",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/ef1510de8ebb4cf08bdd08b2e12f176e/state_dict.pth",
+          "sha256": "1d7ec0ee27fc19423cc4b8e3fdfbf0bf8a080e39ebdae4fa0aa1bd39b22fedf2",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/d894a1482ede474c820d9468715e4037/state_dict.pth",
+          "sha256": "acbfcf44466a088999582237ca5fbbd96e95db82b71e525212fc7a63ce8fc1cb",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/6ba9d52314a74086aaeaccc9c31a2c52/state_dict.pth",
+          "sha256": "949163f2edb401c7c4ec81f21345352b613caf3dacb6ccebcc27572f744ef002",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/864e367a040c4defab3d466e0b99109e/state_dict.pth",
+          "sha256": "853611075effa93c16a56ce4b993ec31dfc5db9976926f8a8f328a896ca1b90b",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/0ad046d67ba7481881d5c7f918acedb4/state_dict.pth",
+          "sha256": "4d3f2cee058a3d81d84c7f4d7b66db6839e25a4f8df6c236bb10840e9c37bac4",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/0818d970b3634b698e32b5a87a2b47ca/state_dict.pth",
+          "sha256": "82c5673cd75b123ca20c921ffe08b752e6bc1f283668af7f14b2a34ecf6e530c",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/8e6a39d4b261425ca7503ab871147bda/state_dict.pth",
+          "sha256": "0212699abf3ab9af92409602fe23c86b31da91deb7ada63b957bc2acd84b356d",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/0d98bed4eccb4e5ca34254d4e76661aa/state_dict.pth",
+          "sha256": "6a57480306b28f10c13fdfff9ff6323f8c349e26f6f357924bded133754d3e0a",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/94ffdd2c3c3f42388e0ca10a0b1a5a65/state_dict.pth",
+          "sha256": "c1ee36bc1c285caac715ed8f51bb66c3c4c3614275a5d03fe3d65cf56837a5c7",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/0fe366a471c44cea8c6f3b87f12ea8aa/state_dict.pth",
+          "sha256": "78c958ce57548098675677b50a45a7e091da00bbea06027fbef73f8cb52e9262",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/f98a5603003b4388afd9dc85eea9ae60/state_dict.pth",
+          "sha256": "31e36af918cbf2e3fa7d90487831827c12430752d9c0598cbe887d767631ee28",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/a27d87d8a4574258bd41792e95ee8092/state_dict.pth",
+          "sha256": "8d568a6008553d06ef9b6bced2389c28405bf26a8ff4472c8ed2e7152e887b4f",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/28c8f56aff0a48d78be3928e1db310d5/state_dict.pth",
+          "sha256": "191317d6095cb4d0dd911a0a37defd58ad8f6925d06e5c901537d58b0dee09b0",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/62cbcc6328004fde98ff2b3a160417db/state_dict.pth",
+          "sha256": "bc6cbf8bfa29fdf4b3c480e0ef28126806d7287de96497c2cc4257aa1752259d",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/3d4ff8e9396f46fbb1ff72810a217f0f/state_dict.pth",
+          "sha256": "dc6011f6fad6baf81f95315941c9c87d0687bed23355aac02e89f2b33c292145",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/38d518784f2240e5afe203dee5d02b45/state_dict.pth",
+          "sha256": "89e77981530dd60b031f6adbdaee187f39ad8d73ec1b4248090f4de7dc5c8994",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/a6913ed6496549ea9f598a8c6f5f735f/state_dict.pth",
+          "sha256": "98effd4b11c79d8f9130dd9ad985d04a1e40b0ab554943fd281ffbe369ae0d2d",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/6772cf48f10043779bbe6669988071aa/state_dict.pth",
+          "sha256": "8b6610f1a8b70087c8a26d81887afd307c30a8e9385840fd28bedb052e8a03e0",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/59d3a35a891a4c5b836c866bbcc843e7/state_dict.pth",
+          "sha256": "7afb055e36860b2db1c5f3063b84c1f2c2e512b68033fade7a12344c3f51d874",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/7f9c831e6fbb4d7b82fed019ad9ef32b/state_dict.pth",
+          "sha256": "7337e9c898b31b8523887be78684e9f2ab954cfa612bb18028bef5e30cb483e4",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/00025c74093f4910b6c324fa7fd6baf3/state_dict.pth",
+          "sha256": "8393043c144e922e02cc7c4fb566454b8bda5e286ce3e2aa30b38c67b3602212",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/77f9d6157b794a97bc4b2edce5a9b894/state_dict.pth",
+          "sha256": "e134b081b13802518cb1f48abcc34b590eddf1504db326ad432fe3706fed4990",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/19df49828b41477292e818d63cd9b736/state_dict.pth",
+          "sha256": "c545788fd3b7a5d8345e2658a8c088e62ac8a24f9b9d29b50456663d0f3e4f24",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/34ca29bf68dd4aa0aaec3627b39298fe/state_dict.pth",
+          "sha256": "6c02498929a1003732732f7b58ff4be385d6eed85bfc103814eb3109779a9929",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/131ca12aaf074edbbe9ed3eb13e816fa/state_dict.pth",
+          "sha256": "fb1d78637f1cde9c50f607f224f5ea6028076ac8582bc628adfd9d258cbd6684",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/65e0099460d94d6aa004a67fc11d97b0/state_dict.pth",
+          "sha256": "0cec3d56bb95bf95013229838b086d96e735bb2a204d27f17fd05cf9941018aa",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/54a0a6d011fb434398580cf1a392382a/state_dict.pth",
+          "sha256": "59359837591bd4757e737affa8f345b88e221c432d0c837a341aa48364b6db51",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/69de6cd06769484697ab47bb2f223fb8/state_dict.pth",
+          "sha256": "12b57782aead7c40c3a10e97b878c9edec45e0eb5497bd9ccd6911464debf236",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/fe4885418b04417eb4aeb85877a83afa/state_dict.pth",
+          "sha256": "bd6726d294632f1099fd7895e7ab345d0205ac5380b2ea546c91e642d9a8ae79",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/af6aafdb74c14dd4840c7e85d754d598/state_dict.pth",
+          "sha256": "4ca7adaf324a34724fa5c77cbba7297a7e93cff3f77b8ae8e9387e36163ad727",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/3f7af710a5be403baae1d317cc730d3c/state_dict.pth",
+          "sha256": "a8fc0506acf44881b3856153993a0f8e037a19bdc732a6083beaf38661ac0370",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/0c30bb8f490b4d1f97621c0f4840d356/state_dict.pth",
+          "sha256": "c29dd95acc3734895731316b683093dfe3de27fdaea0e9dba0b88e4247ec8239",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/43548e3209fb4b1b84827bc93ebe1747/state_dict.pth",
+          "sha256": "96a537bb9a4e3b40268ffcacb8f47e12d29f9e94b9b88b2043d141c24f15b1b8",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/eb1fecfde34f4063a1d99d6618f39024/state_dict.pth",
+          "sha256": "93413e15b90551549959cc2ece1fc643017d1deddc3e0239dfe83f2b4b5658e7",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/fd7f50da3fe74c448c2f43b603abe865/state_dict.pth",
+          "sha256": "1ad2d46c535dfb915e59ce97233b217b36e468899e4b6108a1e6e8c691faf92d",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/d3f0da56cdf5486b88f4942eb62681d6/state_dict.pth",
+          "sha256": "ec68285c8cfa6656115445ffd08bb44fd4cff1f49cefb6138e6f1d4b16974372",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/c8d73e1e062c4b32a25d2294a0ae0345/state_dict.pth",
+          "sha256": "368340a86e9002bf637faf51ec4f2434a31c2029b99909548059c77f0a7b0e54",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/add6dd3d3641469ba847b54a6727ad3c/state_dict.pth",
+          "sha256": "5414ab6a4d2a2c8fb4278cbee6eefd2def7a6347e8aadfc865e076df388a3e94",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/3c8401c18f764efe8cae7aadebaf35cd/state_dict.pth",
+          "sha256": "4663d7ef9274ba5bcb688fafeb55a3efeecd13417b863bf49ccea3ff049870f8",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/4383701fa6ba4c37a82659f26b7ef018/state_dict.pth",
+          "sha256": "2a858ee25ef3f271e8e12daec8cbe01abb3288f0bdd4abf42f59fca8a6f4ccbc",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/057db008d02743f4b319c5961b00ed41/state_dict.pth",
+          "sha256": "e73a027edd3e14bf77ab2dcb4f8d5ba9869a0ef068747c92c72f3f9719e60b7f",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/7b60785f84d84eaeb9b2a62b84a276cd/state_dict.pth",
+          "sha256": "41f17c540c14c1908496030d34337ace48e6da0e948be98868536f1beca192d0",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/b75460c9c00a4357bcb66640801d6900/state_dict.pth",
+          "sha256": "a3fd87e52d31cb50b7e2372ae58a64d1ad69c578378a2c6984ef69f86f60b7f9",
+          "bytes": 1020514
+        },
+        {
+          "path": "human/c3b120c515fd4d45881e67d1e8028d21/state_dict.pth",
+          "sha256": "5296e1eab68ab97cc32611fd740ec5858290d844defa6ea4631473d727c72fa0",
+          "bytes": 1020514
+        }
+      ]
+    },
+    {
+      "id": "cai-profiles",
+      "status": "verified",
+      "files": [
+        {
+          "path": "homo_sapiens_kazusa_93487_cds.json",
+          "sha256": "cc33880c49c3a85c7dc6b8845b9e270541e7f88f262986f468fc12a73cb0442d",
+          "bytes": 1840
+        },
+        {
+          "path": "mus_musculus_kazusa_53036_cds.json",
+          "sha256": "9a2bf2d6e80dd60d18efe7ab524a90b4fc6841744fd7c9b6d1f522719ca14bff",
+          "bytes": 1906
+        }
+      ]
+    },
+    {
+      "id": "csi-profiles",
+      "status": "verified",
+      "files": [
+        {
+          "path": "homo_sapiens_consensus_wu2019_v1.json",
+          "sha256": "b7e698e8c29c8a6355a4f6ebb6d54e7d14bdb446e900e35b67b79cd3762b07c3",
+          "bytes": 9937
+        },
+        {
+          "path": "mus_musculus_mesc_slamseq_wu2019_v1.json",
+          "sha256": "35f577ea0d9f477aacf5a6981b04dda77430b4b16acdf8e8136ae041c0d28b2e",
+          "bytes": 10308
+        }
+      ]
+    },
+    {
+      "id": "sequence-feasibility-profiles",
+      "status": "verified",
+      "files": [
+        {
+          "path": "example_type_iis_motifs.json",
+          "sha256": "178c01546b90046e920fdd35d7a1384f356f8ae7cad3324700a1e04dfa16eb41",
+          "bytes": 75
+        },
+        {
+          "path": "general_mrna_v2.json",
+          "sha256": "6e9203d9eec4ff9edb9de91b9275a59c205d5e760303f273fc70f858a05b7614",
+          "bytes": 1614
+        },
+        {
+          "path": "manufacturing_strategy_v1.json",
+          "sha256": "0bf9545a6f29b75c3a1b20e1bae432a42df3125fa244829e964e44a0feaf7d06",
+          "bytes": 3255
+        },
+        {
+          "path": "sequence_feasibility_v1.json",
+          "sha256": "d4e2c9baca0610f8db4399ce06100678d16161fdfb4f46932f1343c0aca3fd83",
+          "bytes": 1723
+        }
+      ]
+    },
+    {
+      "id": "scanmir-panels",
+      "status": "verified",
+      "files": [
+        {
+          "path": "coverage.tsv",
+          "sha256": "34a46bb6465e18e351cfea12d4389217f9f1e80c1793a5ace675a28ef6c8625d",
+          "bytes": 6504
+        },
+        {
+          "path": "human/core_975.tsv",
+          "sha256": "dbe84c7972becac445d40bc231cb95895f24a698cda8afa6eee863a9e4d365fa",
+          "bytes": 110861
+        },
+        {
+          "path": "mouse/core_975.tsv",
+          "sha256": "39d6d9544fa819a05f20e5712381619d053e043e25e425dff3f4a5e806c44757",
+          "bytes": 130055
+        },
+        {
+          "path": "profiles.tsv",
+          "sha256": "fa70b7ef3a931114c79b9f2c91a1e3547030cfb6ef9b35b680bf3e82074d9e92",
+          "bytes": 927
+        },
+        {
+          "path": "sources.json",
+          "sha256": "068d657bd0ade86f3717d6d04623fce28261b564646fef06d03a7ad42276ea50",
+          "bytes": 2320
+        },
+        {
+          "path": "summary.json",
+          "sha256": "889a39639cb07cb547432ecda9cc7090979e2d09283e2485339e1e449eb47f86",
+          "bytes": 3280
+        }
+      ]
+    }
+  ]
+}

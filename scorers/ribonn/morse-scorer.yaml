@@ -1,0 +1,75 @@
+schema_version: 2
+id: ribonn
+name: RiboNN Translation Efficiency
+version: 1.0.1
+description: Official human RiboNN ensemble; mean predicted TE over 78 cell types.
+runtime:
+  type: container
+  image: ghcr.io/shpakb/morse-ribonn:1.0.1
+  dockerfile: Dockerfile
+  build_contexts:
+    assets: ${MORSE_ASSETS_DIR}/container-image-inputs/ribonn-1.0.1
+  timeout_seconds: 1800
+  gpus: all
+  env:
+    RIBONN_MODEL_DIR: /models
+scope:
+  configurable: false
+  allowed_parts: [five_prime_utr, start_codon, cds, stop_codon, three_prime_utr]
+  allow_slices: false
+  allow_window: false
+  default:
+    type: parts
+    spans:
+      - {part: five_prime_utr}
+      - {part: start_codon}
+      - {part: cds}
+      - {part: stop_codon}
+      - {part: three_prime_utr}
+outputs:
+  ribonn_mean_te:
+    type: float
+    unit: model_score
+    description: Mean TE prediction over 50 models and 78 human cell types; maximize.
+    default_policy: {role: objective, direction: max}
+  ribonn_model_sd:
+    type: float
+    description: Sample SD of the 50 model-level mean TE predictions, not a calibrated uncertainty.
+    default_policy: {role: log}
+  ribonn_model_count:
+    type: int
+    description: Number of ensemble models (50).
+    default_policy: {role: log}
+parameters:
+  model_dir:
+    type: path
+    configurable_by: backend
+    backend_env: RIBONN_MODEL_DIR
+    required: false
+    allowed_root: ${MORSE_ASSETS_DIR}
+    mount: {container_path: /models, read_only: true}
+    description: Optional override of the bundled official ensemble; mounted only when explicitly supplied.
+  device:
+    type: string
+    default: cuda
+    choices: [cuda, cpu]
+    env: RIBONN_DEVICE
+    description: Inference device.
+  batch_size:
+    type: int
+    default: 16
+    min: 1
+    max: 128
+    env: RIBONN_BATCH_SIZE
+    description: Number of complete transcripts per model batch.
+self_test:
+  sequence: GGGACCAUGGCCGCCGCCGCCGCCGCCGCCUAACUGG
+  sequence_context:
+    part_ranges:
+      - {part: five_prime_utr, start: 0, end: 6, part_start: 0, part_end: 6}
+      - {part: start_codon, start: 6, end: 9, part_start: 0, part_end: 3}
+      - {part: cds, start: 9, end: 30, part_start: 0, part_end: 21}
+      - {part: stop_codon, start: 30, end: 33, part_start: 0, part_end: 3}
+      - {part: three_prime_utr, start: 33, end: 37, part_start: 0, part_end: 4}
+  expected_outputs: [ribonn_mean_te, ribonn_model_sd, ribonn_model_count]
+

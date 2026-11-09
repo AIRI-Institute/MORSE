@@ -1,0 +1,10 @@
+*
+!Dockerfile
+!.dockerignore
+!server.py
+!notices/
+notices/**
+!notices/LICENSE
+!notices/README.md
+!notices/image-assets.json
+!notices/TranslationModel-SSPL-1.0.txt

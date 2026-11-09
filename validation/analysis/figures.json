@@ -1,0 +1,45 @@
+{
+  "status": "pass",
+  "figures": [
+    "Figure1_design_workflow",
+    "Figure2_Mauger_U_rank_heatmap",
+    "Figure3_modular_design",
+    "Figure4_comparative_design",
+    "Figure5_predictor_disagreement",
+    "ExtendedDataFigure1_feasibility",
+    "ExtendedDataFigure2_LinearDesign_UTR_control",
+    "ExtendedDataFigure3_RiboDecode_pairs"
+  ],
+  "layout": "Reconstructed scientific layouts; exact published PDFs are archived separately in paper/reference.",
+  "numerical_source": "Frozen individual observations, current panel-specific normalizations and selected IDs; no old numerical PDF is used as an input.",
+  "static_vector_source": "Figure1_design_workflow.pdf is a concept-only diagram.",
+  "tables": [
+    "Native_score_summary.csv",
+    "Run_termination_records.csv",
+    "SupplementaryTable10_codon_hamming.csv",
+    "SupplementaryTable1_scorers.csv",
+    "SupplementaryTable2_protocols.csv",
+    "SupplementaryTable3_paired_bootstrap.csv",
+    "SupplementaryTable4_feasibility.json",
+    "SupplementaryTable5_generation220.csv",
+    "SupplementaryTable5_summary.csv",
+    "SupplementaryTable6_uridine.csv",
+    "SupplementaryTable7_native_comparisons.csv",
+    "SupplementaryTable8_additional_scores.csv",
+    "SupplementaryTable9_UTRs.csv"
+  ],
+  "outputs": {
+    "ExtendedDataFigure1_feasibility.pdf": "1c6e75866a6b0efde05931de89b90ac738f4437a78d48cac078638818c883a90",
+    "ExtendedDataFigure2_LinearDesign_UTR_control.pdf": "93f59f392b92a8c20b6a174ae8dec8c3bebf457beb9a6d1122b09edd7fc5bf83",
+    "ExtendedDataFigure3_RiboDecode_pairs.pdf": "9c37c9eea46641141d5d34e6787f437fd5d0c2444ba8e450668ce923c9c6f0b1",
+    "Figure1_design_workflow.pdf": "13a3e4852eda922e23a5c79e35293247e17d1181fdd1843785a2109a178b6df3",
+    "Figure2_Mauger_U_rank_heatmap.pdf": "1cdefbe81d86b53bb4e24365d172197eccecd3a021e49209b55db089e0d2afbd",
+    "Figure3_modular_design.pdf": "afa0c2f67a11595bf93a4cf58bac1b2d0ecebf2555c1d717531e86246a47480d",
+    "Figure4_comparative_design.pdf": "1aa7c2740158a9acdd15bbfc24e9b02e2a040a75a08edf2c4e489fd1e938bdd2",
+    "Figure5_predictor_disagreement.pdf": "efcd6e98e3cd0c52f12893b438ead2119eab42872d3c99f9e4eb6490b5710ca8"
+  },
+  "plotted_observations_sha256": "3c2ce8df271b6b8ff3e7f81ef7a0b56c50a1b3db7672841278af783aef9e27dd",
+  "new_model_inference": false,
+  "optimization_rerun": false,
+  "pixel_identical_claimed": false
+}

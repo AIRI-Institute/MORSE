@@ -1,0 +1,4 @@
+panel,metric,direction,maximum,denominator_count,maximum_sources,formula
+5b,ribonn_mean_te,1,1.7026671171188354,25,"[{""role"": ""ribonn_mean_te"", ""seed"": 43, ""candidate_id"": ""cand_022770""}]",native_score / per_metric_maximum_within_this_experiment
+5b,translation_efficiency_score,1,2.326981782913208,25,"[{""role"": ""translation_efficiency_score"", ""seed"": 7, ""candidate_id"": ""cand_017712""}]",native_score / per_metric_maximum_within_this_experiment
+5b,ribodecode_translation_log,1,4.42920446395874,25,"[{""role"": ""ribodecode_translation_log"", ""seed"": 137, ""candidate_id"": ""cand_015821""}]",native_score / per_metric_maximum_within_this_experiment

@@ -1,0 +1,49 @@
+{
+  "snapshot": "2026-08-21",
+  "sources": {
+    "atlas/human_metadata.parquet": {
+      "sha256": "da508a24478ddf531ebd4907b0bbd4d6b57465ebbd4fe3d208a4de9b950a37d9",
+      "url": "https://web.ccb.uni-saarland.de/mirnatissueatlas_2025/download_file/meta_data_human/"
+    },
+    "atlas/human_mirna_avg_std.parquet": {
+      "sha256": "a61138ed3618458746604ec4f1a470b8f307fe99a4e2fd8ead03473dc585feab",
+      "url": "https://web.ccb.uni-saarland.de/mirnatissueatlas_2025/download_file/mirna_avg_std_human/"
+    },
+    "atlas/mouse_metadata.parquet": {
+      "sha256": "e7f7ca6bbd104fa73c5c92d7547b582c5299487bfefdcdae6cf67ae7b434d4e4",
+      "url": "https://web.ccb.uni-saarland.de/mirnatissueatlas_2025/download_file/meta_data_mouse/"
+    },
+    "atlas/mouse_mirna_avg_std.parquet": {
+      "sha256": "b939962f6b5be1d52fb042fe08b57794ad83ef23db08e95ea05fdbbe07656ca3",
+      "url": "https://web.ccb.uni-saarland.de/mirnatissueatlas_2025/download_file/mirna_avg_std_mouse/"
+    },
+    "mirgenedb/human_3p.fa": {
+      "sha256": "7d859668e246cfe45ab9c3272988eabf05ae80fbcb07a6aacc54394ca1eae374",
+      "url": "https://www.mirgenedb.org/fasta/hsa?prime=3"
+    },
+    "mirgenedb/human_5p.fa": {
+      "sha256": "93a0393f492d8f3667c0b30e31755cbe3fc22d105b68cf077db6bef179b7bd0f",
+      "url": "https://www.mirgenedb.org/fasta/hsa?prime=5"
+    },
+    "mirgenedb/human_mature.fa": {
+      "sha256": "d1499ef63043414d57165c26fb95858c9547eca1ded54aacbbdc1385bda6f322",
+      "url": "https://www.mirgenedb.org/fasta/hsa?mat=1"
+    },
+    "mirgenedb/mouse_3p.fa": {
+      "sha256": "2e388ace095913adcd851bf6d4048253824fa54bde88333414842a3405f3bfe9",
+      "url": "https://www.mirgenedb.org/fasta/mmu?prime=3"
+    },
+    "mirgenedb/mouse_5p.fa": {
+      "sha256": "ee16ac4f93547fa75dd702b7e98f0c994c6f4d63882c71137cafa097a046bcde",
+      "url": "https://www.mirgenedb.org/fasta/mmu?prime=5"
+    },
+    "mirgenedb/mouse_mature.fa": {
+      "sha256": "2640e677670ca58c1bd3488f5418d1424ea485cae124e418ddc72cfd0ded1e64",
+      "url": "https://www.mirgenedb.org/fasta/mmu?mat=1"
+    },
+    "scanmirdata/scanMiRData_1.16.0.tar.gz": {
+      "sha256": "268b0ceb69b2220266103032746e3dfe8dc219914afc2586354195c3ee021a96",
+      "url": "https://bioconductor.org/packages/3.22/data/experiment/src/contrib/scanMiRData_1.16.0.tar.gz"
+    }
+  }
+}

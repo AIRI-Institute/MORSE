@@ -1,0 +1,372 @@
+{
+  "schema_version": 1,
+  "paper_revision": "0154",
+  "purpose": "Ready inference checkpoints and assets only. No model fitting or training datasets.",
+  "assets": [
+    {
+      "id": "orthrus-te-full-fit",
+      "files": [
+        {
+          "path": "model_final.pt",
+          "sha256": "c380316fe282640d563b9254e9ab8031e129f9e768c9ce04c0c7955bb0ac6bab",
+          "source_names": [
+            "best.pt",
+            "model_final.pt",
+            "best_model.pt"
+          ]
+        }
+      ],
+      "license_status": "First-party ready checkpoint; published image retains applicable upstream backbone notices",
+      "paper": true,
+      "runtime_env": {
+        "ORTHRUS_CHECKPOINT": "{asset}/model_final.pt",
+        "ORTHRUS_MODEL_SOURCE": "{root}/orthrus-backbone",
+        "MORSE_EXPECTED_CHECKPOINT_SHA256": "c380316fe282640d563b9254e9ab8031e129f9e768c9ce04c0c7955bb0ac6bab"
+      },
+      "depends_on": [
+        "orthrus-backbone"
+      ],
+      "input_encoding": "continuous CDS mask excluding stop"
+    },
+    {
+      "id": "orthrus-te-held-out",
+      "files": [
+        {
+          "path": "best.pt",
+          "sha256": "70913fc29ba9c073100913b56f59542520ec18a473fae358ff19bd57ecddd604",
+          "source_names": [
+            "best.pt",
+            "model_final.pt",
+            "best_model.pt"
+          ]
+        }
+      ],
+      "license_status": "First-party ready checkpoint; published image retains applicable upstream backbone notices",
+      "paper": true,
+      "runtime_env": {
+        "ORTHRUS_CHECKPOINT": "{asset}/best.pt",
+        "ORTHRUS_MODEL_SOURCE": "{root}/orthrus-backbone",
+        "MORSE_EXPECTED_CHECKPOINT_SHA256": "70913fc29ba9c073100913b56f59542520ec18a473fae358ff19bd57ecddd604"
+      },
+      "depends_on": [
+        "orthrus-backbone"
+      ],
+      "input_encoding": "continuous CDS mask including terminal stop"
+    },
+    {
+      "id": "orthrus-half-life",
+      "files": [
+        {
+          "path": "model_final.pt",
+          "sha256": "fe4f816572626d127f54e64d4a724923bd5a080b4898f225898f69f91f28a40e",
+          "source_names": [
+            "best.pt",
+            "model_final.pt",
+            "best_model.pt"
+          ]
+        }
+      ],
+      "license_status": "First-party ready checkpoint; published image retains applicable upstream backbone notices",
+      "paper": true,
+      "runtime_env": {
+        "ORTHRUS_CHECKPOINT": "{asset}/model_final.pt",
+        "ORTHRUS_MODEL_SOURCE": "{root}/orthrus-backbone",
+        "MORSE_EXPECTED_CHECKPOINT_SHA256": "fe4f816572626d127f54e64d4a724923bd5a080b4898f225898f69f91f28a40e"
+      },
+      "depends_on": [
+        "orthrus-backbone"
+      ]
+    },
+    {
+      "id": "rinalmo-imrnads",
+      "files": [
+        {
+          "path": "best_model.pt",
+          "sha256": "923d1e9f843d12fe29a9515a95b6a32eae286017790dfeef1c82215446958f0a",
+          "source_names": [
+            "best.pt",
+            "model_final.pt",
+            "best_model.pt"
+          ]
+        }
+      ],
+      "license_status": "AGPL-3.0-or-later MultiMolecule dependency; its source archives and notices accompany the bundled ready checkpoint",
+      "paper": true,
+      "runtime_env": {
+        "RINALMO_CHECKPOINT": "{asset}/best_model.pt",
+        "MORSE_EXPECTED_CHECKPOINT_SHA256": "923d1e9f843d12fe29a9515a95b6a32eae286017790dfeef1c82215446958f0a"
+      }
+    },
+    {
+      "id": "orthrus-backbone",
+      "files": [
+        {
+          "path": "config.json",
+          "sha256": "a8b513b3d73356e7ac8a59516ebbf51bc03f635e6329ad32350c289f84c8a288",
+          "url": "https://huggingface.co/quietflamingo/orthrus-large-6-track/resolve/c17ac0db4611c95248001d6fb4bcd95e3293cec4/config.json"
+        },
+        {
+          "path": "orthrus_hf.py",
+          "sha256": "35fb82d090003c9bf91be1820d5cc0e22c1092d28d9805951d3f284d728cdbe4",
+          "download_sha256": "c856f3e0e033f220304023dd9cf93c51f3e892917e9f36176927c13444c78163",
+          "url": "https://huggingface.co/quietflamingo/orthrus-large-6-track/resolve/c17ac0db4611c95248001d6fb4bcd95e3293cec4/orthrus_hf.py",
+          "transform": "postponed_annotations"
+        },
+        {
+          "path": "pytorch_model.bin",
+          "sha256": "a188c974493679d9eb5d18b5ecc3148f3634cd785e20f8303d6f313f62f00c08",
+          "url": "https://huggingface.co/quietflamingo/orthrus-large-6-track/resolve/c17ac0db4611c95248001d6fb4bcd95e3293cec4/pytorch_model.bin"
+        }
+      ],
+      "license_status": "MIT upstream model card; preserve notices",
+      "paper": true,
+      "source_revision": "c17ac0db4611c95248001d6fb4bcd95e3293cec4"
+    },
+    {
+      "id": "ribodecode-translationmodel",
+      "files": [
+        {
+          "path": "TranslationModel-1.1.0-py3-none-any.whl",
+          "sha256": "22d4b398a399878f7573074fd1c381b2f3894bd3a62ede9cd27989dc47ac276a",
+          "url": "https://drive.usercontent.google.com/download?id=19Yyl8uUbjQn0TAA4E52ZUGBd_pb_RyW8&export=download&confirm=t"
+        },
+        {
+          "path": "env_file.csv",
+          "sha256": "9a85da49ff6d5de94cd920688d196b49af14b21e4e3fdfdda10e356edd277062",
+          "url": "https://raw.githubusercontent.com/wangfanfff/RiboDecode/fcf2d50decf99ebaf0ed2cd58d1dd9976a820470/env_file.csv"
+        }
+      ],
+      "license_status": "SSPL-1.0 in the registered author wheel; source/service/redistribution obligations require review; root MIT does not apply",
+      "paper": true,
+      "runtime_env": {
+        "PYTHONPATH": "{asset}/package",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "RIBODECODE_ENV_TEMPLATE": "{asset}/env_file.csv"
+      },
+      "source_revision": "fcf2d50decf99ebaf0ed2cd58d1dd9976a820470",
+      "license": "SSPL-1.0",
+      "license_notice": "licenses/TranslationModel-1.1.0-SSPL-1.0.txt",
+      "license_notice_sha256": "42baafb5997a6f54e6eb8dc186416e386cd178793d85e089d403e59f926bcd20",
+      "runtime_package": {
+        "wheel": "TranslationModel-1.1.0-py3-none-any.whl",
+        "directory": "package",
+        "package": "TranslationModel",
+        "dist_info": "TranslationModel-1.1.0.dist-info",
+        "identical_file_aliases": {
+          "TranslationModel/conditions/HeLa_normal_10552_RPKM_Hela.npz": {
+            "canonical_path": "TranslationModel/conditions/HeLa_normal_10552_RPKM_HeLa.npz",
+            "sha256": "7f6533bf2595a249f64088a28de0dacf8270676606532497cde5ba555f23eb5f",
+            "canonical_sha256": "7f6533bf2595a249f64088a28de0dacf8270676606532497cde5ba555f23eb5f"
+          }
+        }
+      },
+      "runtime_mounts": [
+        {
+          "source": "{asset}/package",
+          "target": "/opt/ribodecode",
+          "read_only": true
+        },
+        {
+          "source": "{asset}/env_file.csv",
+          "target": "/assets/env_file.csv",
+          "read_only": true
+        }
+      ]
+    },
+    {
+      "id": "ribonn-human-ensemble",
+      "files": [
+        {
+          "path": "weights.zip",
+          "md5": "dd088ee2feffcda6ce26124a471a140f",
+          "url": "https://zenodo.org/api/records/17258709/files/weights.zip/content",
+          "sha256": "2ce3bc1adb38ec6752c79147241a4fb2664e9804e806b3eab1287489a15d8b64"
+        },
+        {
+          "path": "ensemble.json",
+          "sha256": "8e0d62ca61964ec660a43389ab309361f0c388a906c68c48a9d5b928c5a10cee"
+        }
+      ],
+      "license_status": "Sanofi academic/non-commercial software and weights licenses",
+      "paper": true,
+      "kind": "ribonn-ensemble",
+      "runtime_env": {
+        "RIBONN_MODEL_DIR": "{asset}"
+      },
+      "source_revision": "dc896e1d1f78bf6b4e9bb7525c7852fcf25532e8",
+      "runtime_dependencies": [
+        "ribonn-inference-source"
+      ],
+      "runtime_mounts": [
+        {
+          "source": "{asset}",
+          "target": "/models",
+          "read_only": true
+        },
+        {
+          "source": "{root}/ribonn-inference-source",
+          "target": "/app/third_party/ribonn",
+          "read_only": true
+        }
+      ]
+    },
+    {
+      "id": "ribonn-inference-source",
+      "files": [
+        {
+          "path": "INFERENCE_EXTRACTION.json",
+          "repository_path": "scorers/ribonn/third_party/ribonn/INFERENCE_EXTRACTION.json",
+          "sha256": "a267df1b0c956c4f95dd684e5636af54cfa2656b576a85992b586ef08fdc921d"
+        },
+        {
+          "path": "LICENSE",
+          "repository_path": "scorers/ribonn/third_party/ribonn/LICENSE",
+          "sha256": "5a7572b7e61d99239428c326047e240a1693537e6cf12518309f4e1304007d60"
+        },
+        {
+          "path": "MODEL WEIGHTS LICENSE.txt",
+          "repository_path": "scorers/ribonn/third_party/ribonn/MODEL WEIGHTS LICENSE.txt",
+          "sha256": "ce6b253151d10e66606a52a1c99ac08854051d912f01ad1d01331941310cc49b"
+        },
+        {
+          "path": "MODIFICATIONS.md",
+          "repository_path": "scorers/ribonn/third_party/ribonn/MODIFICATIONS.md",
+          "sha256": "5c01bcae00181b4b91b9214303cdd6745d29f9929e9222afe8738d22e24eea77"
+        },
+        {
+          "path": "README.md",
+          "repository_path": "scorers/ribonn/third_party/ribonn/README.md",
+          "sha256": "d6f1f670a6b278d75f070626e79b800c80924333a55237dfd97b92fe794275ea"
+        },
+        {
+          "path": "UPSTREAM_REVISION",
+          "repository_path": "scorers/ribonn/third_party/ribonn/UPSTREAM_REVISION",
+          "sha256": "b551b8f706bcb06f92a062cbf232dc81e359528ff6f5e21fb3f743f1f28833e3"
+        },
+        {
+          "path": "src/__init__.py",
+          "repository_path": "scorers/ribonn/third_party/ribonn/src/__init__.py",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "src/model.py",
+          "repository_path": "scorers/ribonn/third_party/ribonn/src/model.py",
+          "sha256": "973324f2323f0eaaa819990f5e5da6fbffd418a0469339afca5828e0fb341ec0"
+        },
+        {
+          "path": "src/utils/__init__.py",
+          "repository_path": "scorers/ribonn/third_party/ribonn/src/utils/__init__.py",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "src/utils/helpers.py",
+          "repository_path": "scorers/ribonn/third_party/ribonn/src/utils/helpers.py",
+          "sha256": "cc9d31c5b8f1b96d2073b9352d3a4b05c0fc562fc6211f64ce846d2a7b7533e3"
+        }
+      ],
+      "license_status": "Sanofi academic/non-commercial software and weights notices retained in the bundled image and optional native asset",
+      "paper": false,
+      "source_revision": "dc896e1d1f78bf6b4e9bb7525c7852fcf25532e8",
+      "runtime_mounts": [
+        {
+          "source": "{asset}",
+          "target": "/app/third_party/ribonn",
+          "read_only": true
+        }
+      ]
+    },
+    {
+      "id": "cai-profiles",
+      "files": [
+        {
+          "path": "homo_sapiens_kazusa_93487_cds.json",
+          "repository_path": "scorers/cai/profiles/homo_sapiens_kazusa_93487_cds.json",
+          "sha256": "cc33880c49c3a85c7dc6b8845b9e270541e7f88f262986f468fc12a73cb0442d"
+        },
+        {
+          "path": "mus_musculus_kazusa_53036_cds.json",
+          "repository_path": "scorers/cai/profiles/mus_musculus_kazusa_53036_cds.json",
+          "sha256": "9a2bf2d6e80dd60d18efe7ab524a90b4fc6841744fd7c9b6d1f522719ca14bff"
+        }
+      ],
+      "license_status": "first-party MIT code; source data attribution/terms in THIRD_PARTY_NOTICES",
+      "paper": true
+    },
+    {
+      "id": "csi-profiles",
+      "files": [
+        {
+          "path": "homo_sapiens_consensus_wu2019_v1.json",
+          "repository_path": "scorers/csi/profiles/homo_sapiens_consensus_wu2019_v1.json",
+          "sha256": "b7e698e8c29c8a6355a4f6ebb6d54e7d14bdb446e900e35b67b79cd3762b07c3"
+        },
+        {
+          "path": "mus_musculus_mesc_slamseq_wu2019_v1.json",
+          "repository_path": "scorers/csi/profiles/mus_musculus_mesc_slamseq_wu2019_v1.json",
+          "sha256": "35f577ea0d9f477aacf5a6981b04dda77430b4b16acdf8e8136ae041c0d28b2e"
+        }
+      ],
+      "license_status": "first-party MIT code; source data attribution/terms in THIRD_PARTY_NOTICES",
+      "paper": true
+    },
+    {
+      "id": "sequence-feasibility-profiles",
+      "files": [
+        {
+          "path": "example_type_iis_motifs.json",
+          "repository_path": "scorers/manufacturability/manufacturability_scorer/profiles/example_type_iis_motifs.json",
+          "sha256": "178c01546b90046e920fdd35d7a1384f356f8ae7cad3324700a1e04dfa16eb41"
+        },
+        {
+          "path": "manufacturing_strategy_v1.json",
+          "repository_path": "scorers/manufacturability/manufacturability_scorer/profiles/manufacturing_strategy_v1.json",
+          "sha256": "0bf9545a6f29b75c3a1b20e1bae432a42df3125fa244829e964e44a0feaf7d06"
+        },
+        {
+          "path": "sequence_feasibility_v1.json",
+          "repository_path": "scorers/manufacturability/manufacturability_scorer/profiles/sequence_feasibility_v1.json",
+          "sha256": "d4e2c9baca0610f8db4399ce06100678d16161fdfb4f46932f1343c0aca3fd83"
+        }
+      ],
+      "license_status": "first-party MIT code; source data attribution/terms in THIRD_PARTY_NOTICES",
+      "paper": true
+    },
+    {
+      "id": "scanmir-panels",
+      "files": [
+        {
+          "path": "coverage.tsv",
+          "repository_path": "scorers/irna/panels/2026-08-21/coverage.tsv",
+          "sha256": "34a46bb6465e18e351cfea12d4389217f9f1e80c1793a5ace675a28ef6c8625d"
+        },
+        {
+          "path": "human/core_975.tsv",
+          "repository_path": "scorers/irna/panels/2026-08-21/human/core_975.tsv",
+          "sha256": "dbe84c7972becac445d40bc231cb95895f24a698cda8afa6eee863a9e4d365fa"
+        },
+        {
+          "path": "mouse/core_975.tsv",
+          "repository_path": "scorers/irna/panels/2026-08-21/mouse/core_975.tsv",
+          "sha256": "39d6d9544fa819a05f20e5712381619d053e043e25e425dff3f4a5e806c44757"
+        },
+        {
+          "path": "profiles.tsv",
+          "repository_path": "scorers/irna/panels/2026-08-21/profiles.tsv",
+          "sha256": "fa70b7ef3a931114c79b9f2c91a1e3547030cfb6ef9b35b680bf3e82074d9e92"
+        },
+        {
+          "path": "sources.json",
+          "repository_path": "scorers/irna/panels/2026-08-21/sources.json",
+          "sha256": "068d657bd0ade86f3717d6d04623fce28261b564646fef06d03a7ad42276ea50"
+        },
+        {
+          "path": "summary.json",
+          "repository_path": "scorers/irna/panels/2026-08-21/summary.json",
+          "sha256": "889a39639cb07cb547432ecda9cc7090979e2d09283e2485339e1e449eb47f86"
+        }
+      ],
+      "license_status": "first-party MIT code; source data attribution/terms in THIRD_PARTY_NOTICES",
+      "paper": true
+    }
+  ]
+}

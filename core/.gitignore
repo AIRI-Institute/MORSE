@@ -1,0 +1,16 @@
+.venv/
+.venv*/
+.DS_Store
+*.egg-info/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.codex_runs/
+notebook_runs/
+configs/.notebook-generated/
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/
+tmp/
+data/
+models/
+results/*

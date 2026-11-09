@@ -1,0 +1,13 @@
+id,scorer,metric,native_output,actual_native,expected_native,difference,orientation,rtol,atol,matches
+L1,cai,cai_ld,cai,0.7179622545853389,0.7179622545853389,0.0,1,1e-10,1e-12,True
+L1,csi,csi,csi_percentile,72.79536827195672,72.79536827195672,0.0,1,1e-10,1e-12,True
+L1,viennarna-body,mfe_body,mfe_per_nt,-0.3131680575284091,-0.3131680575284091,0.0,-1,1e-10,1e-12,True
+L1,viennarna-body,gc,gc_fraction,0.5465564738292011,0.5465564738292011,0.0,1,1e-10,1e-12,True
+L1,manufacturability,feasibility,feasibility_violation_count,64.0,64.0,0.0,-1,1e-10,1e-12,True
+L1,viennarna-cds,mfe_cds,mfe,-561.7999877929688,-561.7999877929688,0.0,-1,1e-10,1e-12,True
+L1,orthrus-te-held-out,te,translation_efficiency_score,0.2822580635547638,0.2822580635547638,0.0,1,1e-05,1e-05,True
+L1,ribonn,ribonn,ribonn_mean_te,0.3676227331161499,0.3676227331161499,0.0,1,1e-05,1e-05,True
+L1,half-life,half_life,half_life_score,0.09076354652643204,0.09076354652643204,0.0,1,1e-05,1e-05,True
+L1,ribodecode,ribodecode,ribodecode_translation_log,2.632950782775879,2.632950782775879,0.0,1,1e-05,1e-05,True
+L1,irna,mirna,irna_max_profile_risk,0.0584438875179781,0.0584438875179781,0.0,-1,1e-10,1e-12,True
+L1,immunogenicity,immunogenicity,rinalmo_window_logit_p95,3.240624999999998,3.240624999999998,0.0,-1,1e-05,1e-05,True

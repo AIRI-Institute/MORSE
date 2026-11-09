@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "kind": "static_inference_extraction_audit",
+  "upstream_revision": "dc896e1d1f78bf6b4e9bb7525c7852fcf25532e8",
+  "checks": {
+    "conv_block_ast_identical": true,
+    "constructor_network_statements_identical": true,
+    "forward_ast_identical_when_frozen_max_shift_zero": true,
+    "ensemble_prediction_arithmetic_source_identical": true
+  },
+  "conditions": [
+    "max_shift=0 (enforced by adapter and extracted network)",
+    "identical ready weights loaded strictly",
+    "FP32, TF32 disabled, unchanged ensemble averaging order"
+  ],
+  "limitations": "Static arithmetic/architecture equivalence does not replace execution on real checkpoints.",
+  "original_model_sha256": "5d7663ea6634529fd7ada8960a101a5f6c3d0f245fa489f85bdb0f65d425cf80",
+  "extracted_model_sha256": "973324f2323f0eaaa819990f5e5da6fbffd418a0469339afca5828e0fb341ec0",
+  "adapter_sha256": "74c39c7150808b9de646c4468cc3123628cdaebd4d55a14fa65038aca64fc6f0"
+}

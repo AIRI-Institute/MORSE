@@ -1,0 +1,8 @@
+id,scorer,metric,native_output,actual_native,expected_native,difference,orientation,rtol,atol,matches
+f3p_0b83430cae4240380488,cai,cai,cai,0.7687943421410989,0.7687943421410989,0.0,1,1e-10,1e-12,True
+f3p_0b83430cae4240380488,viennarna-cds,cds_mfe,mfe,-102.69999694824219,-102.69999694824219,0.0,1,1e-10,1e-12,True
+f3p_0b83430cae4240380488,orthrus-te-held-out,orthrus_te_common_holdout,translation_efficiency_score,0.924384593963623,0.924384593963623,0.0,1,1e-05,1e-05,True
+f3p_0b83430cae4240380488,ribonn,ribonn_mean_te,ribonn_mean_te,1.420919418334961,1.420919418334961,0.0,1,1e-05,1e-05,True
+f3p_0b83430cae4240380488,half-life,half_life_score,half_life_score,0.45817747712135315,0.45817747712135315,0.0,1,1e-05,1e-05,True
+f3p_0b83430cae4240380488,irna,irna_max_profile_risk,irna_max_profile_risk,0.169723381970266,0.169723381970266,0.0,1,1e-10,1e-12,True
+f3p_0b83430cae4240380488,immunogenicity,rinalmo_window_logit_p95,rinalmo_window_logit_p95,3.3687499999999986,3.3687499999999986,0.0,1,1e-05,1e-05,True

@@ -1,0 +1,64 @@
+schema_version: 2
+id: ribodecode
+name: RiboDecode Translation
+version: 2.1.1
+description: >-
+  Coding-sequence translation model for a selected cellular context. It returns
+  the direct model log score and its inverse-transformed translation proxy.
+  Non-AUG starts may be outside the model's training distribution.
+runtime:
+  type: container
+  image: ghcr.io/shpakb/morse-ribodecode:2.1.1
+  dockerfile: Dockerfile
+  build_contexts:
+    assets: ${MORSE_ASSETS_DIR}/container-image-inputs/ribodecode-2.1.1
+  env:
+    PYTHONPATH: /opt/ribodecode
+    RIBODECODE_ENV_TEMPLATE: /assets/env_file.csv
+  timeout_seconds: 1800
+scope:
+  configurable: false
+  allowed_parts: [start_codon, cds]
+  allow_slices: false
+  allow_window: false
+  default:
+    type: parts
+    spans:
+      - part: start_codon
+      - part: cds
+outputs:
+  ribodecode_translation_log:
+    type: float
+    value_range: "(-∞, +∞)"
+    description: Direct RiboDecode translation log score; higher is better.
+    default_policy: {role: objective, direction: max}
+  ribodecode_translation:
+    type: float
+    value_range: "(0, +∞)"
+    description: Positive inverse-transformed proxy for translation output.
+    default_policy: {role: log}
+parameters:
+  cell_context:
+    type: string
+    default: HEK293T
+    choices: [HEK293T, A549, HeLa]
+    env: RIBODECODE_ENV
+    description: Built-in cellular RNA-seq context used by RiboDecode.
+  batch_size:
+    type: int
+    configurable_by: backend
+    backend_env: RIBODECODE_BATCH_SIZE
+    default: 256
+    min: 1
+    max: 65536
+    env: RIBODECODE_BATCH_SIZE
+    description: Number of start-codon-plus-CDS-body candidates in one inference batch.
+self_test:
+  sequence: ATGGCCGCCGCCGCCGCCGCCGCCGCCGCC
+  sequence_context:
+    part_ranges:
+      - {part: start_codon, start: 0, end: 3, part_start: 0, part_end: 3}
+      - {part: cds, start: 3, end: 30, part_start: 0, part_end: 27}
+  expected_outputs:
+    - ribodecode_translation_log
+    - ribodecode_translation

@@ -1,0 +1,150 @@
+{
+  "F3B": {
+    "cost_ideal": [
+      -0.5205689144343203,
+      -1.8804781436920166,
+      -247.5,
+      0.12666238761814666
+    ],
+    "cost_signs": [
+      1,
+      -1,
+      1,
+      -1
+    ],
+    "cost_span": [
+      0.26837593197817994,
+      0.703242301940918,
+      159.5999984741211,
+      0.3390823679404925
+    ],
+    "metrics": [
+      "mfe_per_nt",
+      "translation_efficiency_score",
+      "cds_mfe",
+      "cai_log"
+    ],
+    "normalization_source_sha256": "37f7f8bbcb45cb26f0644bd18ab90da537756ee9792dfd13d7ef168628648c4e",
+    "reference": 1.1,
+    "rule": "Maximum single-candidate box hypervolume; stable candidate_id breaks ties. Use the same frozen original Figure 3b scale for all three runs.",
+    "specialists": [
+      "Body",
+      "TE",
+      "CDS",
+      "CAI"
+    ]
+  },
+  "F3C": {
+    "cost_ideal": [
+      -56.388051542978445,
+      -4.4331278800964355
+    ],
+    "cost_signs": [
+      -1,
+      -1
+    ],
+    "cost_span": [
+      11.441081736115194,
+      0.1981658935546875
+    ],
+    "metrics": [
+      "csi_percentile",
+      "ribodecode_translation_log"
+    ],
+    "normalization_source_sha256": "37f7f8bbcb45cb26f0644bd18ab90da537756ee9792dfd13d7ef168628648c4e",
+    "reference": 1.1,
+    "rule": "Maximum single-candidate box hypervolume; stable candidate_id breaks ties. Use the frozen preceding Figure 3c normalization in all runs.",
+    "specialists": [
+      "CSI",
+      "Ribo"
+    ]
+  },
+  "F2": {
+    "metrics": [
+      "mfe_per_nt",
+      "csi_percentile",
+      "translation_efficiency_score",
+      "ribodecode_translation_log"
+    ],
+    "cost_signs": [
+      1,
+      -1,
+      -1,
+      -1
+    ],
+    "cost_ideal": [
+      -0.5075098572983572,
+      -95.8579200280015,
+      -2.5354061126708984,
+      -4.064733982086182
+    ],
+    "cost_span": [
+      0.304184445245813,
+      88.96685348681495,
+      1.5138498544692993,
+      1.3350481986999512
+    ],
+    "reference": 1.1,
+    "sources": [
+      {
+        "path": "experiments/figure2_manufacturing_strategy_20260918/run_filtered/run_log.jsonl.gz",
+        "sha256": "46a561b275e6cf1d08d3ac9bf3c8b665b8851d812f0941c0830d8a1aaa350585"
+      },
+      {
+        "path": "experiments/figure2_manufacturing_strategy_20260918/run_logging_only/run_log.jsonl.gz",
+        "sha256": "3c7eca4885614a05cf8c46fb4c904daf4c57ca9da24d909171cfba07ac4fec79"
+      }
+    ],
+    "rule": "feasible cumulative archive, four specialists and maximum single-point HV; frozen pooled OLD runs; same scale for all new runs"
+  },
+  "F4": {
+    "metrics": [
+      "tie_score",
+      "translation_efficiency_score",
+      "ribodecode_translation_log"
+    ],
+    "cost_signs": [
+      -1,
+      -1,
+      -1
+    ],
+    "cost_ideal": [
+      -0.0541703887283802,
+      -2.696453809738159,
+      -4.596639633178711
+    ],
+    "cost_span": [
+      0.44163571670651436,
+      1.5567958354949951,
+      1.9703118801116943
+    ],
+    "reference": 1.05,
+    "sources": [
+      {
+        "path": "experiments/figures45_revision_20260910/completed_20260911/figure4/run1_results/run_log.jsonl.gz",
+        "sha256": "0045378cad879e0f7e9173f22890681d0b41858828ead55c15aecec754cd7782",
+        "reuse_generations": [
+          1,
+          500
+        ]
+      },
+      {
+        "path": "experiments/figures45_revision_20260910/completed_20260911/figure4/run2_results/run_log.jsonl.gz",
+        "sha256": "f737d18c8b74ee99e2eea32455a744d07908cec110105c466399b6bf75d3951c",
+        "reuse_generations": [
+          1,
+          500
+        ]
+      },
+      {
+        "path": "experiments/figures45_revision_20260910/completed_20260911/figure4/run3_results/run_log.jsonl.gz",
+        "sha256": "65ce506409607ed4079c6759eaa5d0739449b362b1db6227bdcf0fa3689b1aeb",
+        "reuse_generations": [
+          1,
+          500
+        ]
+      }
+    ],
+    "rule": "specialists and maximin empirical-CDF rank per run; common frozen old reference; reuse only first 500 generations"
+  }
+}

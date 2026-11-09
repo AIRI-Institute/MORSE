@@ -1,0 +1,39 @@
+schema_version: 4
+name: quickstart
+# Results folder.
+output_dir: ../../outputs/quickstart
+
+# Input RNA and parts.
+construct:
+  fasta: sequence.fasta
+  coordinates:  # 0-based; end excluded.
+    five_prime_utr: [0, 63]
+    cds: [63, 420]
+    three_prime_utr: [420, 458]
+    poly_a: [458, 558]
+
+  # Unlisted parts stay fixed.
+  changes:
+    cds: synonymous
+
+# Search settings.
+optimizer:
+  algorithm: nsga2
+  population_size: 16
+  generations: 8
+  seed: 43
+
+# Prepared scorer commands.
+scorers:
+  - name: sequence_metrics
+    command: '"${MORSE_PYTHON}" -m morse.resources.simple_scorer'
+    scope: [start_codon, cds_body]
+    metrics:  # Goals, limits and logs.
+      cpg_per_kb:
+        role: optimize
+        direction: min
+      gc_distance:
+        role: optimize
+        direction: min
+      gc_fraction:
+        role: log

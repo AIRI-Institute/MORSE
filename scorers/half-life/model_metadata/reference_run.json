@@ -1,0 +1,51 @@
+{
+  "task": "half_life",
+  "status": "deployment_validated",
+  "model_id": "quietflamingo/orthrus-large-6-track",
+  "model_revision": "c17ac0db4611c95248001d6fb4bcd95e3293cec4",
+  "recipe": {
+    "backbone_lr": 3e-05,
+    "head_lr": 0.0003,
+    "weight_decay": 0.0001,
+    "loss": "huber",
+    "head": "layernorm",
+    "splice_dropout": 0.75
+  },
+  "cross_validation": {
+    "n": 10998,
+    "folds": 4,
+    "best_epochs": [
+      4,
+      5,
+      5,
+      4
+    ],
+    "oof_spearman": 0.6349539621408323,
+    "oof_pearson": 0.6421163971310426,
+    "oof_rmse": 0.7799330711179173,
+    "oof_mae": 0.6079066298448196
+  },
+  "final_fit": {
+    "n": 12939,
+    "epochs": 5,
+    "source_checkpoint_sha256": "e1214362051930d6e89072e85899612ba4d1ea57fd138792b343981173c3ab05",
+    "deployment_checkpoint_sha256": "fe4f816572626d127f54e64d4a724923bd5a080b4898f225898f69f91f28a40e"
+  },
+  "deployment": {
+    "default_asset_dir": "${MORSE_ASSETS_DIR}/orthrus-half-life",
+    "backbone_code_sha256": "35fb82d090003c9bf91be1820d5cc0e22c1092d28d9805951d3f284d728cdbe4",
+    "optimizer_state_removed": true,
+    "gpu_smoke_test": {
+      "date": "2026-07-23",
+      "gpu": "NVIDIA A100 80GB PCIe",
+      "sequence_length_nt": 483,
+      "cold_load_seconds": 1.3236,
+      "first_single_ms": 244.2529,
+      "warm_single_ms": 6.1026,
+      "batch_size": 32,
+      "batch_ms": 39.2712,
+      "per_candidate_ms": 1.2272,
+      "note": "Indicative timing on a shared GPU with concurrent workloads."
+    }
+  }
+}

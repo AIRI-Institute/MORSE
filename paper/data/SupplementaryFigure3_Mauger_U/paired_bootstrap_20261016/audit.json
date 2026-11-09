@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "independent_statistics": {
+    "agent": "methods_audit",
+    "independent_statistic_reference": "Pure-Python average ranks and exact integer composites; Spearman from tied-rank Pearson formula.",
+    "observed_statistics_match": true,
+    "saved_bootstrap_resamples_checked": 32,
+    "all_39_jackknife_samples_checked": true,
+    "maximum_statistic_discrepancy": 0,
+    "independent_BCa_intervals_checked": 48,
+    "maximum_interval_endpoint_discrepancy": 1.1e-14,
+    "maximum_acceleration_discrepancy": 2.02e-16,
+    "pairing_rebuild_ties_products_and_multiplicity_verified": true
+  },
+  "independent_unchanged_sources": {
+    "agent": "supplement_crosscheck",
+    "number_of_independent_preanalysis_hashes": 17,
+    "all_unchanged": true,
+    "family_matches_source_protocol": true,
+    "maximum_baseline_rho_discrepancy": 2.22e-16
+  },
+  "primary_conclusion": "Corrected BCa positive only for AR vs RiboNN/Orthrus TE/RiboDecode and AT vs RiboDecode; AR vs CAI and overall all-component superiority unsupported.",
+  "method_sensitivity": "Corrected percentile interval for AR vs RiboNN includes zero; main BCa interval does not. Reported explicitly.",
+  "current_manuscript_revision": "0078",
+  "protected_sources_unchanged": true
+}

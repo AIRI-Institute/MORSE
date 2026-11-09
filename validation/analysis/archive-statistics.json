@@ -1,0 +1,481 @@
+{
+  "status": "pass",
+  "tables": [
+    "Native_score_summary.csv",
+    "Run_termination_records.csv",
+    "SupplementaryTable10_codon_hamming.csv",
+    "SupplementaryTable1_scorers.csv",
+    "SupplementaryTable2_protocols.csv",
+    "SupplementaryTable3_paired_bootstrap.csv",
+    "SupplementaryTable4_feasibility.json",
+    "SupplementaryTable5_generation220.csv",
+    "SupplementaryTable5_summary.csv",
+    "SupplementaryTable6_uridine.csv",
+    "SupplementaryTable7_native_comparisons.csv",
+    "SupplementaryTable8_additional_scores.csv",
+    "SupplementaryTable9_UTRs.csv"
+  ],
+  "source": "frozen individual numeric observations",
+  "new_model_inference": false,
+  "mauger_reconstruction": {
+    "n_constructs": 39,
+    "score_rows": 14,
+    "rank_heatmap_exact": true,
+    "all_correlations_match": true,
+    "all_permutation_pvalues_match": true,
+    "permutations": 99999
+  },
+  "archive_audit": {
+    "unique_fig5_transcripts": 104239,
+    "checks": [
+      {
+        "run_id": "F2_filtered_s7",
+        "recorded_evaluations": 14078,
+        "selected": {
+          "mfe_per_nt": "cand_013398",
+          "csi_percentile": "cand_006587",
+          "translation_efficiency_score": "cand_007950",
+          "ribodecode_translation_log": "cand_010759",
+          "best_hv": "cand_010070"
+        },
+        "status": "pass"
+      },
+      {
+        "run_id": "F2_logging_only_s7",
+        "recorded_evaluations": 23738,
+        "selected": {
+          "mfe_per_nt": "cand_023204",
+          "csi_percentile": "cand_012518",
+          "translation_efficiency_score": "cand_011766",
+          "ribodecode_translation_log": "cand_010220",
+          "best_hv": "cand_012518"
+        },
+        "status": "pass"
+      },
+      {
+        "run_id": "F3C_morse_s7",
+        "recorded_evaluations": 18295,
+        "selected": {
+          "csi_percentile": "cand_018225",
+          "ribodecode_translation_log": "cand_016321",
+          "best_hv": "cand_018198"
+        },
+        "status": "pass"
+      },
+      {
+        "run_id": "F3A_morse_s7",
+        "recorded_evaluations": 12800,
+        "selected": {
+          "mfe_per_nt": "cand_010182",
+          "csi_percentile": "cand_012535",
+          "balanced": "cand_010182"
+        },
+        "status": "pass"
+      },
+      {
+        "run_id": "F3A_vaxpress_s7",
+        "recorded_evaluations": 12800,
+        "selected": {
+          "mfe_per_nt": "alpha1.0_event2508",
+          "csi_percentile": "alpha0.25_event2428",
+          "balanced": "alpha1.0_event1677"
+        },
+        "status": "pass"
+      },
+      {
+        "run_id": "F4_morse_s7",
+        "recorded_evaluations": 26744,
+        "selected": {
+          "ribonn_mean_te": "cand_016686",
+          "translation_efficiency_score": "cand_017712",
+          "ribodecode_translation_log": "cand_023483",
+          "maximin": "cand_024555"
+        },
+        "status": "pass"
+      },
+      {
+        "run_id": "F2_filtered_s43",
+        "recorded_evaluations": 22268,
+        "selected": {
+          "mfe_per_nt": "cand_019083",
+          "csi_percentile": "cand_019023",
+          "translation_efficiency_score": "cand_017246",
+          "ribodecode_translation_log": "cand_014883",
+          "best_hv": "cand_019247"
+        },
+        "status": "pass"
+      },
+      {
+        "run_id": "F3C_morse_s43",
+        "recorded_evaluations": 25835,
+        "selected": {
+          "csi_percentile": "cand_015069",
+          "ribodecode_translation_log": "cand_020614",
+          "best_hv": "cand_024586"
+        },
+        "status": "pass"
+      },
+      {
+        "run_id": "F3A_morse_s43",
+        "recorded_evaluations": 12800,
+        "selected": {
+          "mfe_per_nt": "cand_012791",
+          "csi_percentile": "cand_011644",
+          "balanced": "cand_012791"
+        },
+        "status": "pass"
+      },
+      {
+        "run_id": "F3A_vaxpress_s43",
+        "recorded_evaluations": 12800,
+        "selected": {
+          "mfe_per_nt": "alpha0.75_event2535",
+          "csi_percentile": "alpha0.25_event2063",
+          "balanced": "alpha0.75_event2535"
+        },
+        "status": "pass"
+      },
+      {
+        "run_id": "F4_morse_s43",
+        "recorded_evaluations": 23680,
+        "selected": {
+          "ribonn_mean_te": "cand_022770",
+          "translation_efficiency_score": "cand_019793",
+          "ribodecode_translation_log": "cand_020467",
+          "maximin": "cand_016732"
+        },
+        "status": "pass"
+      },
+      {
+        "run_id": "F3C_morse_s101",
+        "recorded_evaluations": 22632,
+        "selected": {
+          "csi_percentile": "cand_016115",
+          "ribodecode_translation_log": "cand_020723",
+          "best_hv": "cand_018668"
+        },
+        "status": "pass"
+      },
+      {
+        "run_id": "F3A_morse_s101",
+        "recorded_evaluations": 12800,
+        "selected": {
+          "mfe_per_nt": "cand_012783",
+          "csi_percentile": "cand_009058",
+          "balanced": "cand_012783"
+        },
+        "status": "pass"
+      },
+      {
+        "run_id": "F3A_vaxpress_s101",
+        "recorded_evaluations": 12800,
+        "selected": {
+          "mfe_per_nt": "alpha0.75_event2257",
+          "csi_percentile": "alpha0.0_event2407",
+          "balanced": "alpha0.75_event2257"
+        },
+        "status": "pass"
+      },
+      {
+        "run_id": "F4_morse_s101",
+        "recorded_evaluations": 18366,
+        "selected": {
+          "ribonn_mean_te": "cand_017710",
+          "translation_efficiency_score": "cand_014197",
+          "ribodecode_translation_log": "cand_017295",
+          "maximin": "cand_014228"
+        },
+        "status": "pass"
+      },
+      {
+        "run_id": "F3C_morse_s137",
+        "recorded_evaluations": 18744,
+        "selected": {
+          "csi_percentile": "cand_014116",
+          "ribodecode_translation_log": "cand_012225",
+          "best_hv": "cand_016792"
+        },
+        "status": "pass"
+      },
+      {
+        "run_id": "F3A_morse_s137",
+        "recorded_evaluations": 12800,
+        "selected": {
+          "mfe_per_nt": "cand_012473",
+          "csi_percentile": "cand_010378",
+          "balanced": "cand_012473"
+        },
+        "status": "pass"
+      },
+      {
+        "run_id": "F3A_vaxpress_s137",
+        "recorded_evaluations": 12800,
+        "selected": {
+          "mfe_per_nt": "alpha1.0_event2475",
+          "csi_percentile": "alpha0.5_event2208",
+          "balanced": "alpha1.0_event1688"
+        },
+        "status": "pass"
+      },
+      {
+        "run_id": "F3C_morse_s211",
+        "recorded_evaluations": 14078,
+        "selected": {
+          "csi_percentile": "cand_013621",
+          "ribodecode_translation_log": "cand_009678",
+          "best_hv": "cand_013332"
+        },
+        "status": "pass"
+      },
+      {
+        "run_id": "F3A_morse_s211",
+        "recorded_evaluations": 12800,
+        "selected": {
+          "mfe_per_nt": "cand_012332",
+          "csi_percentile": "cand_009778",
+          "balanced": "cand_012332"
+        },
+        "status": "pass"
+      },
+      {
+        "run_id": "F3A_vaxpress_s211",
+        "recorded_evaluations": 12800,
+        "selected": {
+          "mfe_per_nt": "alpha1.0_event2490",
+          "csi_percentile": "alpha0.0_event2533",
+          "balanced": "alpha1.0_event2490"
+        },
+        "status": "pass"
+      },
+      {
+        "run_id": "F2_logging_only_s43",
+        "recorded_evaluations": 31986,
+        "selected": {
+          "mfe_per_nt": "cand_001801",
+          "csi_percentile": "cand_001801",
+          "translation_efficiency_score": "cand_002289",
+          "ribodecode_translation_log": "cand_002112",
+          "best_hv": "cand_006042"
+        },
+        "status": "pass"
+      },
+      {
+        "run_id": "F2_filtered_s101",
+        "recorded_evaluations": 20538,
+        "selected": {
+          "mfe_per_nt": "cand_019099",
+          "csi_percentile": "cand_010843",
+          "translation_efficiency_score": "cand_016682",
+          "ribodecode_translation_log": "cand_016531",
+          "best_hv": "cand_018814"
+        },
+        "status": "pass"
+      },
+      {
+        "run_id": "F3B_cds_only_s7",
+        "recorded_evaluations": 11516,
+        "selected": {
+          "mfe_per_nt": "cand_005567",
+          "translation_efficiency_score": "cand_008707",
+          "cds_mfe": "cand_000001",
+          "cai_log": "cand_010942",
+          "best_hv": "cand_009268"
+        },
+        "status": "pass"
+      },
+      {
+        "run_id": "F3B_cds_utrs_s7",
+        "recorded_evaluations": 12149,
+        "selected": {
+          "mfe_per_nt": "cand_010467",
+          "translation_efficiency_score": "cand_009419",
+          "cds_mfe": "cand_002711",
+          "cai_log": "cand_011184",
+          "best_hv": "cand_008857"
+        },
+        "status": "pass"
+      },
+      {
+        "run_id": "F3B_cds_only_s43",
+        "recorded_evaluations": 11903,
+        "selected": {
+          "mfe_per_nt": "cand_011457",
+          "translation_efficiency_score": "cand_007206",
+          "cds_mfe": "cand_001715",
+          "cai_log": "cand_005674",
+          "best_hv": "cand_010365"
+        },
+        "status": "pass"
+      },
+      {
+        "run_id": "F3B_cds_utrs_s43",
+        "recorded_evaluations": 12601,
+        "selected": {
+          "mfe_per_nt": "cand_011643",
+          "translation_efficiency_score": "cand_012478",
+          "cds_mfe": "cand_009107",
+          "cai_log": "cand_012199",
+          "best_hv": "cand_004792"
+        },
+        "status": "pass"
+      },
+      {
+        "run_id": "F2_logging_only_s101",
+        "recorded_evaluations": 17020,
+        "selected": {
+          "mfe_per_nt": "cand_013419",
+          "csi_percentile": "cand_013745",
+          "translation_efficiency_score": "cand_016756",
+          "ribodecode_translation_log": "cand_012878",
+          "best_hv": "cand_014854"
+        },
+        "status": "pass"
+      },
+      {
+        "run_id": "F3B_cds_only_s101",
+        "recorded_evaluations": 14460,
+        "selected": {
+          "mfe_per_nt": "cand_011276",
+          "translation_efficiency_score": "cand_013341",
+          "cds_mfe": "cand_000001",
+          "cai_log": "cand_006486",
+          "best_hv": "cand_013241"
+        },
+        "status": "pass"
+      },
+      {
+        "run_id": "F3B_cds_utrs_s101",
+        "recorded_evaluations": 12987,
+        "selected": {
+          "mfe_per_nt": "cand_011876",
+          "translation_efficiency_score": "cand_008358",
+          "cds_mfe": "cand_000204",
+          "cai_log": "cand_008004",
+          "best_hv": "cand_002768"
+        },
+        "status": "pass"
+      },
+      {
+        "run_id": "F2_filtered_s137",
+        "recorded_evaluations": 19131,
+        "selected": {
+          "mfe_per_nt": "cand_013833",
+          "csi_percentile": "cand_015879",
+          "translation_efficiency_score": "cand_007949",
+          "ribodecode_translation_log": "cand_009105",
+          "best_hv": "cand_010479"
+        },
+        "status": "pass"
+      },
+      {
+        "run_id": "F2_logging_only_s137",
+        "recorded_evaluations": 27452,
+        "selected": {
+          "mfe_per_nt": "cand_000844",
+          "csi_percentile": "cand_000844",
+          "translation_efficiency_score": "cand_001329",
+          "ribodecode_translation_log": "cand_001329",
+          "best_hv": "cand_001329"
+        },
+        "status": "pass"
+      },
+      {
+        "run_id": "F3B_cds_only_s137",
+        "recorded_evaluations": 13436,
+        "selected": {
+          "mfe_per_nt": "cand_012242",
+          "translation_efficiency_score": "cand_012267",
+          "cds_mfe": "cand_000842",
+          "cai_log": "cand_002114",
+          "best_hv": "cand_009002"
+        },
+        "status": "pass"
+      },
+      {
+        "run_id": "F3B_cds_utrs_s137",
+        "recorded_evaluations": 13375,
+        "selected": {
+          "mfe_per_nt": "cand_006748",
+          "translation_efficiency_score": "cand_010034",
+          "cds_mfe": "cand_000135",
+          "cai_log": "cand_006510",
+          "best_hv": "cand_011928"
+        },
+        "status": "pass"
+      },
+      {
+        "run_id": "F4_morse_s137",
+        "recorded_evaluations": 16959,
+        "selected": {
+          "ribonn_mean_te": "cand_016493",
+          "translation_efficiency_score": "cand_013708",
+          "ribodecode_translation_log": "cand_015821",
+          "maximin": "cand_015962"
+        },
+        "status": "pass"
+      },
+      {
+        "run_id": "F2_filtered_s211",
+        "recorded_evaluations": 22775,
+        "selected": {
+          "mfe_per_nt": "cand_016755",
+          "csi_percentile": "cand_016747",
+          "translation_efficiency_score": "cand_009933",
+          "ribodecode_translation_log": "cand_020447",
+          "best_hv": "cand_012052"
+        },
+        "status": "pass"
+      },
+      {
+        "run_id": "F2_logging_only_s211",
+        "recorded_evaluations": 20285,
+        "selected": {
+          "mfe_per_nt": "cand_001165",
+          "csi_percentile": "cand_001273",
+          "translation_efficiency_score": "cand_001078",
+          "ribodecode_translation_log": "cand_001141",
+          "best_hv": "cand_001165"
+        },
+        "status": "pass"
+      },
+      {
+        "run_id": "F3B_cds_only_s211",
+        "recorded_evaluations": 13565,
+        "selected": {
+          "mfe_per_nt": "cand_013043",
+          "translation_efficiency_score": "cand_010546",
+          "cds_mfe": "cand_001704",
+          "cai_log": "cand_012309",
+          "best_hv": "cand_006807"
+        },
+        "status": "pass"
+      },
+      {
+        "run_id": "F3B_cds_utrs_s211",
+        "recorded_evaluations": 14268,
+        "selected": {
+          "mfe_per_nt": "cand_010413",
+          "translation_efficiency_score": "cand_009758",
+          "cds_mfe": "cand_000001",
+          "cai_log": "cand_012914",
+          "best_hv": "cand_010564"
+        },
+        "status": "pass"
+      },
+      {
+        "run_id": "F4_morse_s211",
+        "recorded_evaluations": 18494,
+        "selected": {
+          "ribonn_mean_te": "cand_015114",
+          "translation_efficiency_score": "cand_016844",
+          "ribodecode_translation_log": "cand_015257",
+          "maximin": "cand_012949"
+        },
+        "status": "pass"
+      }
+    ],
+    "all_selected_candidate_ids_recomputed": true
+  },
+  "bootstrap": "200000 paired reconstructing resamples, seed20261016",
+  "bootstrap_intervals_match_archived": true
+}

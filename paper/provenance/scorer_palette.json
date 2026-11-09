@@ -1,0 +1,164 @@
+{
+  "version": "publication_0112_shared_te_no_radar_points",
+  "manuscript_edited": false,
+  "scorers": {
+    "ribonn": {
+      "label": "RiboNN",
+      "family": "translation",
+      "hex": "#507FB1",
+      "previous_hex": "#245F9E",
+      "description": "Translation-efficiency ensemble",
+      "contrast_to_white": 4.190187929901425
+    },
+    "orthrus_te_fullfit": {
+      "label": "Orthrus TE",
+      "family": "translation",
+      "hex": "#337F82",
+      "previous_hex": "#005F63",
+      "description": "Full-fit TE checkpoint",
+      "contrast_to_white": 4.667858119946776
+    },
+    "orthrus_te_holdout": {
+      "label": "Orthrus TE",
+      "family": "translation",
+      "hex": "#337F82",
+      "previous_hex": "#247E78",
+      "description": "Separate held-out-split TE checkpoint",
+      "contrast_to_white": 4.667858119946776
+    },
+    "ribodecode": {
+      "label": "RiboDecode · ribosome load",
+      "family": "translation",
+      "hex": "#4395B5",
+      "previous_hex": "#147BA2",
+      "description": "Conditional Ribo-seq prediction",
+      "contrast_to_white": 3.3844351002123343
+    },
+    "csi": {
+      "label": "CSI",
+      "family": "stability",
+      "hex": "#659773",
+      "previous_hex": "#3F7D50",
+      "description": "Codon-dependent stability index",
+      "contrast_to_white": 3.3721154874173944
+    },
+    "half_life": {
+      "label": "Orthrus half-life",
+      "family": "stability",
+      "hex": "#8D9355",
+      "previous_hex": "#71782A",
+      "description": "Transcript half-life score",
+      "contrast_to_white": 3.262284486101408
+    },
+    "cai": {
+      "label": "CAI",
+      "family": "codon_usage",
+      "hex": "#B98145",
+      "previous_hex": "#A86216",
+      "description": "Codon adaptation index",
+      "contrast_to_white": 3.339219617473744
+    },
+    "scanmir": {
+      "label": "scanMiR",
+      "family": "mirna",
+      "hex": "#C26D95",
+      "previous_hex": "#B3497A",
+      "description": "miRNA repression",
+      "contrast_to_white": 3.550111177442262
+    },
+    "rinalmo": {
+      "label": "RiNALMo",
+      "family": "immunomodulation",
+      "hex": "#C76C65",
+      "previous_hex": "#B9473F",
+      "description": "RNA immunomodulatory signal",
+      "contrast_to_white": 3.644969753508865
+    },
+    "gc": {
+      "label": "GC",
+      "family": "composition",
+      "hex": "#85929F",
+      "previous_hex": "#667787",
+      "description": "Sequence composition",
+      "contrast_to_white": 3.177243204064663
+    },
+    "feasibility": {
+      "label": "Sequence feasibility",
+      "family": "requirements",
+      "hex": "#7F858D",
+      "previous_hex": "#5F6670",
+      "description": "Sequence-feasibility violations",
+      "contrast_to_white": 3.7220618045774247
+    },
+    "mfe": {
+      "label": "MFE",
+      "family": "structure",
+      "hex": "#9870B1",
+      "description": "ViennaRNA folding energy; region and length normalization specified by the experiment",
+      "contrast_to_white": 3.971546210873052
+    }
+  },
+  "aliases": {
+    "native_frequency_cai": "cai",
+    "cai": "cai",
+    "cai_log": "cai",
+    "csi_percentile": "csi",
+    "mfe_per_nt": "mfe",
+    "cds_mfe": "mfe",
+    "translation_efficiency_score": "orthrus_te_fullfit",
+    "orthrus_te_fullfit": "orthrus_te_fullfit",
+    "orthrus_te_common_holdout": "orthrus_te_holdout",
+    "ribonn_mean_te": "ribonn",
+    "ribodecode_translation_log": "ribodecode",
+    "orthrus_half_life": "half_life",
+    "half_life_score": "half_life",
+    "irna_max_profile_risk": "scanmir",
+    "rinalmo_window_logit_p95": "rinalmo",
+    "gc_fraction": "gc",
+    "gc_compliance": "gc",
+    "sequence_feasibility": "feasibility",
+    "body_mfe": "mfe",
+    "mfe": "mfe"
+  },
+  "service": {
+    "recorded_radar_label": "#7B818B",
+    "initial": "#9AA4B2",
+    "morse": "#17212F",
+    "vaxpress": "#9A6B35",
+    "hv": "#17212F",
+    "feasible_fraction": "#939BA5",
+    "AR": "#28313D",
+    "AT": "#677787",
+    "grid": "#DEE4EC",
+    "ink": "#17212F"
+  },
+  "lightening_formula": "RGB_new=0.8*RGB_previous+0.2*white; rounded to8bit; no saturation increase",
+  "radar_rules": {
+    "objective_label": "scorer colour",
+    "recorded_label": "service.recorded_radar_label",
+    "curves": "construct/method identity",
+    "colour_does_not_change_objective_membership": true,
+    "point_markers": "none",
+    "summary": "mean with radial sample-SD whiskers",
+    "profile_keys": "Line-only keys for initial references and compromises; specialist colours provided by scorer scopes or labelled construct maps."
+  },
+  "other_rules": {
+    "CAI_profiles": "same colour; identify reference profile in caption",
+    "CSI_species": "same colour; identify species in caption",
+    "heatmap_cells": "shared quantitative colour scale; scorer colours for row labels or membership markers",
+    "composites": "service colours; no new scorer identity",
+    "correlation_pairs": "separate pair legend; do not pretend a pair is one scorer",
+    "MFE_scopes": "Same MFE colour #9870B1; distinguish input scopes and units in methods, captions and tables, without separate scorer identities.",
+    "Orthrus_TE_checkpoints": "Same #337F82 display colour; actual checkpoint assignments retained in Methods.",
+    "legend_frequency": "Define each scorer colour once per figure; scorer scopes can supply the objective key. Retain keys for distinct data encodings such as methods, conditions, correlation pairs and pipelines."
+  },
+  "publication_revision": "0112",
+  "manuscript_palette_applied": true,
+  "display_label_policy": "MFE uses one name and colour. Orthrus TE uses one name and colour across checkpoint variants. Scopes, units and actual checkpoints remain defined in Methods. Radar profiles use mean±sample SD with no point markers.",
+  "removed_colour_0109": {
+    "former_key": "cds_mfe",
+    "hex": "#AE7BBE",
+    "replacement_key": "mfe",
+    "replacement_hex": "#9870B1"
+  }
+}

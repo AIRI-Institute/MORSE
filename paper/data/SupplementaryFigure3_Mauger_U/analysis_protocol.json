@@ -1,0 +1,128 @@
+{
+  "source": "output/mauger_ribonn_20261002",
+  "endpoint": "U_bar_height_pt",
+  "chemistry": "unmodified uridine U",
+  "normalization": "q_j = average_rank(oriented_score_j)/n; positive scores in [1/n,1]. No protein labels used in normalization.",
+  "hv": "Single-candidate dominated hypervolume against reference (0,...,0) in maximization space: HV = product_j q_j.",
+  "hv_implementation": "Exact products of integer twice-ranks, divided by (2n)^k; preserve ties and avoid floating-order artifacts.",
+  "combinations": {
+    "All Relevant": [
+      "ribonn",
+      "te",
+      "ribodecode",
+      "half_life",
+      "csi",
+      "cai_ld",
+      "mfe_body",
+      "mfe_cds",
+      "gc"
+    ],
+    "all translation": [
+      "ribonn",
+      "te",
+      "ribodecode"
+    ]
+  },
+  "excluded_from_all_relevant": [
+    "mirna",
+    "immunogenicity",
+    "feasibility"
+  ],
+  "individual_scorers_retained": [
+    "ribonn",
+    "te",
+    "ribodecode",
+    "half_life",
+    "csi",
+    "cai_ld",
+    "mfe_body",
+    "mfe_cds",
+    "mirna",
+    "immunogenicity",
+    "feasibility",
+    "gc"
+  ],
+  "scorer_specs": {
+    "ribonn": {
+      "label": "RiboNN (human ensemble)",
+      "prediction_file": "ribonn",
+      "output": "ribonn_mean_te",
+      "sign": 1
+    },
+    "te": {
+      "label": "TE–Orthrus (updated)",
+      "prediction_file": "orthrus",
+      "output": "translation_efficiency_score",
+      "sign": 1
+    },
+    "ribodecode": {
+      "label": "RiboDecode",
+      "prediction_file": "ribodecode",
+      "output": "ribodecode_translation_log",
+      "sign": 1
+    },
+    "half_life": {
+      "label": "Orthrus half-life",
+      "prediction_file": "half_life",
+      "output": "half_life_score",
+      "sign": 1
+    },
+    "csi": {
+      "label": "CSI (human percentile)",
+      "prediction_file": "csi",
+      "output": "csi_percentile",
+      "sign": 1
+    },
+    "cai_ld": {
+      "label": "CAI (LinearDesign human)",
+      "prediction_file": "cai_ld",
+      "output": "cai",
+      "sign": 1
+    },
+    "mfe_body": {
+      "label": "−MFE/nt (transcript body)",
+      "prediction_file": "vienna_body",
+      "output": "mfe_per_nt",
+      "sign": -1
+    },
+    "mfe_cds": {
+      "label": "−MFE (CDS)",
+      "prediction_file": "vienna_cds",
+      "output": "mfe",
+      "sign": -1
+    },
+    "mirna": {
+      "label": "−scanMiR repression",
+      "prediction_file": "irna",
+      "output": "irna_max_profile_risk",
+      "sign": -1
+    },
+    "immunogenicity": {
+      "label": "−RiNALMo signal (p95)",
+      "prediction_file": "immunogenicity",
+      "output": "rinalmo_window_logit_p95",
+      "sign": -1
+    },
+    "feasibility": {
+      "label": "−Feasibility violations",
+      "prediction_file": "feasibility",
+      "output": "feasibility_violation_count",
+      "sign": -1
+    },
+    "gc": {
+      "label": "GC fraction (raw)",
+      "prediction_file": "vienna_body",
+      "output": "gc_fraction",
+      "sign": 1
+    }
+  },
+  "permutations": 99999,
+  "seed": 20261129,
+  "p_value_method": "Fixed-score two-sided permutation; observed ordering is included; minimum p=1/100000.",
+  "directions": "Lower MFE/repression/immune signal/feasibility violations are favourable; negate before ranking. All other signs fixed from the previous analysis.",
+  "gc": "Raw GC retained as requested; no monotonic biological optimum inferred.",
+  "plot_color": "Within-row percentile of the displayed score or aggregate; HV reranked for color.",
+  "digitization": "Experimental output recovered from published vector bars; inference conditional on these digitized ranks.",
+  "model_inference": false,
+  "fig4_note": "Same three scorer versions as revision0066; empirical-rank HV normalization follows this validation plot, not the optimization archive normalization."
+}

@@ -1,0 +1,12 @@
+# Only these files can enter the build context.
+*
+!Dockerfile
+!.dockerignore
+!scorer.R
+!server.R
+!LICENSE
+!THIRD_PARTY_NOTICES.md
+!licenses/
+!licenses/GPL-3.0.txt
+!panels/
+!panels/**

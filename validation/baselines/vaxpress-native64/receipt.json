@@ -1,0 +1,68 @@
+{
+  "status": "pass",
+  "mode": "diagnostic-native-64-events",
+  "events": 64,
+  "unique_cds": 58,
+  "last_batch_scored": 4,
+  "last_batch_discarded_unscored": 16,
+  "csi_codons": 117,
+  "transcript_body_length": 470,
+  "image": "sha256:437be15aa6588191452dd76c5e1afe6f48473c9adfe4cc0f93fa7caab2482c3e",
+  "schema_version": 1,
+  "validation_scope": "A real native VaxPress run for seed7, alpha0, capped at64 scored events. This is a budget/adapter smoke check, not a full 2560-event paper baseline or the complete25-run sweep.",
+  "full_paper_baseline_replay": false,
+  "seed": 7,
+  "alpha": 0.0,
+  "processes": 4,
+  "native_summary": {
+    "seed": 7,
+    "alpha": 0.0,
+    "events": 64,
+    "unique_cds": 58,
+    "budget": 64,
+    "budget_reached": true,
+    "stop_reason": "event_budget",
+    "elapsed_seconds": 21.521179538220167,
+    "best_fitness": 0.5141204485496761,
+    "best_mfe_per_nt": -0.3144680915994847,
+    "best_csi_percentile": 51.41204485496761
+  },
+  "independent_checks": {
+    "event_rows": 64,
+    "unique_cds": 58,
+    "scored_batches": [
+      20,
+      20,
+      20,
+      4
+    ],
+    "unscored_final_proposals": 16,
+    "best_fitness_matches_event_log": true,
+    "alpha_zero_fitness_equals_csi_fraction": true,
+    "csi_codons_all": 117,
+    "transcript_body_length_all": 470,
+    "current_sources_match_runtime_hashes": true
+  },
+  "runtime": {
+    "python": "3.12.16",
+    "viennarna": "2.7.2",
+    "image": "sha256:437be15aa6588191452dd76c5e1afe6f48473c9adfe4cc0f93fa7caab2482c3e"
+  },
+  "protocol_sha256": "570ed4e72630116df841c6690cb1cbf227aff7d621cf901814e5c7e58a394219",
+  "source_sha256": {
+    "paper/adapters/run_vaxpress_shared.py": "731b555e1629c3181cecaee4908906322b459397bfd2e1e0abd66586841a9741",
+    "paper/adapters/shared_scores.py": "64748bc8eee36675cb9cb124821a4deace04cd0d2157f31c79521849e5ccb5b9",
+    "scorers/csi/model.py": "221c4f64b4b7e0a2395bfb72a9c1628308d81b793ba9beb5598100930bbe5aef",
+    "scorers/csi/profiles/homo_sapiens_consensus_wu2019_v1.json": "b7e698e8c29c8a6355a4f6ebb6d54e7d14bdb446e900e35b67b79cd3762b07c3",
+    "scorers/viennarna/scorer.py": "ec286ee825ab69d10ad2628bc03e6a10ce9f2e95aab24839e2ce64b9392e1f72"
+  },
+  "source_artifact_sha256": {
+    "execution.json": "86dd257c9e9aa21ff6822edbb39534656df86a32f652cdfe1695aa3bf2665382",
+    "protocol.json": "570ed4e72630116df841c6690cb1cbf227aff7d621cf901814e5c7e58a394219",
+    "command.json": "3b861bb29d739d4cf3aaae84e77eae594c17bb59fb31145ed02afa7737fcb106",
+    "native64/experiment_provenance.json": "f4e9eb3384d3c78e39b02cec0dc99ad1f686fa6e550c543069411060b0b43cc3",
+    "native64/summary.json": "59bb2af0237b08e6836c3fa07ff4226b957d11907a80553515c3f143557aa10e",
+    "native64/evaluations.jsonl": "169426fc54ea748f1aae31b1b4dafaa620bacd79ba9ee80d9238a60018c16c1e",
+    "native64/budget_batches.jsonl": "51e0e827ca884979c3d0720413b965426ab683f7438e85c08f1dfa5c30041002"
+  }
+}

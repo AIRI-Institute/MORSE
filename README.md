@@ -1,0 +1,133 @@
+# MORSE
+
+**Multi-Objective RNA Sequence Evolution**
+
+MORSE is a configurable multi-objective framework for joint search over synonymous
+coding variants and untranslated regions selected from defined libraries.
+Researchers specify scorer inputs and assign outputs as objectives, constraints
+or recorded measurements. Search retains feasible nondominated candidates for
+selection after optimization.
+
+Use MORSE to refine existing mRNA designs, explore trade-offs between predictors
+and run experiments with your own sequences, scorer modules and constraints.
+
+[![MORSE workflow: assemble permitted sequence variants, score the selected regions, and retain feasible alternatives for researcher selection.](paper/reference/diagrams/Figure1_design_workflow.png)](paper/reference/Figure1_design_workflow.pdf)
+
+## Install
+
+Install Git and [uv](https://docs.astral.sh/uv/getting-started/installation/),
+then clone MORSE and set up the Python environment:
+
+```sh
+git clone https://github.com/AIRI-Institute/MORSE.git
+cd MORSE
+uv sync --python 3.13 --all-packages --extra paper --frozen
+```
+
+`uv sync` creates a virtual environment in `.venv` and installs MORSE. Activate
+it to use the `morse` command directly:
+
+```sh
+source .venv/bin/activate
+morse run --config examples/quickstart/experiment.yaml
+```
+
+## Quick start
+
+Run the bundled CPU example:
+
+```sh
+uv run morse validate --config examples/quickstart/experiment.yaml
+uv run morse run --config examples/quickstart/experiment.yaml
+```
+
+Results are saved in `outputs/quickstart/`: candidate sequences in FASTA,
+score tables and `report.md`.
+
+## Configure an experiment
+
+Start with the [commented configuration template](examples/experiment.template.yaml)
+or the [working MAGE-A1 example](examples/vaccines/magea1/experiment.yaml).
+The YAML defines the input sequence and part coordinates, allowed changes,
+scorer commands, metric roles and search settings. CDS is required; UTRs and
+poly(A) are optional.
+
+To create a configuration from your own CDS FASTA:
+
+```sh
+uv run morse init --cds antigen.fasta --output-dir experiments/my-run
+```
+
+Edit `experiments/my-run/experiment.yaml`, then check the configuration,
+score the starting construct and launch optimization:
+
+```sh
+uv run morse validate --config experiments/my-run/experiment.yaml
+uv run morse score --config experiments/my-run/experiment.yaml
+uv run morse run --config experiments/my-run/experiment.yaml
+```
+
+Use `optimize` metrics with `direction: min` or `max`, `threshold` metrics
+with bounds, and `log` metrics to record additional measurements.
+See the [researcher guide](docs/researcher-guide.md) for sequence assembly,
+UTR libraries and search options, and [examples/](examples/) for complete configs.
+
+## Connect scorers
+
+Each scorer is called through a Bash command in the YAML. The command can run
+a local program, a Docker container or a client for an existing service.
+
+List the available scorers, inspect an interface and generate its YAML section:
+
+```sh
+uv run morse scorers
+uv run morse scorers describe cai
+uv run morse scorers template cai \
+  --command 'docker run --rm -i ghcr.io/shpakb/morse-cai:2.2.0'
+```
+
+Replace the experiment's `scorers` section with the generated section and
+run `morse score` to check the connection. Add further scorers to the same list.
+
+The [scorer catalog and setup guide](docs/scorers.md) lists container images,
+runtime requirements and instructions for connecting your own scorer.
+
+## Colab and Jupyter
+
+The [notebook](core/notebooks/MORSE_Server_Colab.ipynb) provides a graphical
+interface for editing experiment YAML, launching and monitoring runs, and
+viewing results. It supports local execution and a
+[remote MORSE server](core/docs/colab-backend.md).
+
+For local notebook use, install the notebook dependencies:
+
+```sh
+uv sync --all-packages --extra paper --extra notebook --frozen
+```
+
+## Reproduce the paper
+
+The [paper directory](paper/README.md) contains study configurations, results
+and figure-generation scripts. Recompute the analysis and figures from the
+provided data:
+
+```sh
+uv run morse paper analyze --output outputs/paper
+uv run morse paper figures --output outputs/paper
+```
+
+To repeat an optimization, prepare its configured scorers and pass the study's
+YAML to MORSE:
+
+```sh
+uv run morse run --config paper/configs/f2_filtered_s7.yaml
+```
+
+See [the study guide](paper/README.md) and
+[paper scorer settings](paper/SCORERS.md) for the full experiment list and setup.
+
+## License
+
+MORSE code is distributed under the [MIT license](LICENSE).
+Third-party software, models and data retain their own licenses; see
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

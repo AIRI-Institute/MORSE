@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "scope": "Public MORSE namespace normalization; scientific observations and selection identities are preserved.",
+  "raw_source_policy": "Six source paths are normalized under shared_raw/morse. All 155 raw file contents retain their original SHA256, including historical metadata inside those files. The directory move does not rewrite any raw file.",
+  "raw_source_path_updates": [
+    {
+      "source_path_id": "sha256:ddbab2e445b0b5ee6fff78af046092d057fdd3f9c48edc1f1f6c06f0c72d27ae",
+      "public_path": "experiments/figure3_final_20260910/shared_raw/morse/runs/seed7/benchmark_prefix.jsonl",
+      "file_sha256": "c1ab781121bd588ef28382fe6f85c2e9c0aabcc5dbf44dfc1dd5a5ff951cd0aa"
+    },
+    {
+      "source_path_id": "sha256:d43790e4ab8dea0f48ed047731661e4d13325e628b99ef14ce95d9cfb868454a",
+      "public_path": "experiments/figure3_final_20260910/shared_raw/morse/runs/seed7/benchmark_summary.json",
+      "file_sha256": "72f9aa8ba52ff66d735662fae8397c5982c3a9344cf06fa633971b874a86e52b"
+    },
+    {
+      "source_path_id": "sha256:127d449486d0b9b108a5a6e9a743bf5aec3eff79bc5194335ba071a5265ce8fc",
+      "public_path": "experiments/figure3_final_20260910/shared_raw/morse/runs/seed43/benchmark_prefix.jsonl",
+      "file_sha256": "506cb11d8b74069837bfc13e976488785ac1d4489fee6f59d29ff6b4233b02b3"
+    },
+    {
+      "source_path_id": "sha256:719c34dad5bcf14ac2e43e4c6e910a269e5dab46f0ef0ce2f3ed2395697824e3",
+      "public_path": "experiments/figure3_final_20260910/shared_raw/morse/runs/seed43/benchmark_summary.json",
+      "file_sha256": "264a91b48cadc7f58181ad0f9d9ccc0b66977823ce1b931ecd6f7c606e656672"
+    },
+    {
+      "source_path_id": "sha256:19ecde730cffbb07d0a80af0ca3770a4503625c842c405d382f8b30e94da6f3b",
+      "public_path": "experiments/figure3_final_20260910/shared_raw/morse/runs/seed101/benchmark_prefix.jsonl",
+      "file_sha256": "78c5f2bf83ac4c46c77a6d845f5425c30cef98c9330a52fea282f3b97bb386ce"
+    },
+    {
+      "source_path_id": "sha256:d4b4b01531f67a5f62927675f7498f4a5badfb034807ed62ba4b103bdd242fe6",
+      "public_path": "experiments/figure3_final_20260910/shared_raw/morse/runs/seed101/benchmark_summary.json",
+      "file_sha256": "7a66b8956b2a0b9769541c5865f695af46aaed225aecafc7e82467e155708a02"
+    }
+  ],
+  "compact_metadata_policy": "Historical absolute local source-path keys are represented by opaque source-path SHA256 identifiers. Original source-file digest values and every numerical observation are unchanged. The compressed analysis-run metadata uses the same normalized public raw paths.",
+  "compact_metadata_changes": [
+    {
+      "path": "data/figure_display_coordinates_0105.json",
+      "imported_blob_sha256": "c0077650c047866219c42a0a429a1757f82fd3612e762924e14ecfe0dc815d3d",
+      "public_blob_sha256": "da02e9f5a95f3a8dd63c39086d44fa3f0f59747b96846b40bb23c6475c7c683a"
+    },
+    {
+      "path": "data/figure_display_coordinates_0109.json",
+      "imported_blob_sha256": "f14a3faeb2595a5b6ae18af7f3cdc9e410a55b4578b23b5baf648893d4ee9942",
+      "public_blob_sha256": "89d9899dff931381d741352853f7a9571b3185723738a3fe817e5071d0feaee8"
+    },
+    {
+      "path": "data/SupplementaryFigure3_Mauger_U/paired_bootstrap_20261016/results.json",
+      "imported_blob_sha256": "ea2c5141bd73d879211b40aec83c08751449609f32b7dc1a755a1b854f7ac080",
+      "public_blob_sha256": "509d2827dc0e4eccf0cee3eca3d0f6ce42b696dc536042b050d7f5c750f95696"
+    },
+    {
+      "path": "data/analysis_runs.json.gz",
+      "imported_blob_sha256": "abf82f7f08706bab2be14190ed3211b746370359e13f54b28c5e94894d0c70c9",
+      "public_blob_sha256": "91337aa1d459321d59b23a1f0c26ed2b7fb27ac81c15c26f26ce2572aff9c19d"
+    }
+  ],
+  "initialization_policy": "Branded experiment names are annotations. All 35 resolved experiments decode the same 64 frozen vectors to the same sequences. The launcher updates only the portable design-space fingerprint after this identity check and preserves native/supplied population policies and evaluation order.",
+  "validation": {
+    "json_numeric_value_lists_unchanged": 71,
+    "raw_file_sha256_verified": 155,
+    "resolved_configs": 35,
+    "frozen_vectors_decoded_identically": 2240
+  }
+}

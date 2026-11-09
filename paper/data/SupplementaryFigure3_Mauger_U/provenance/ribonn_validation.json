@@ -1,0 +1,15 @@
+{
+  "encoding_bitwise_equal": true,
+  "selected_models_equal": true,
+  "n_parity_sequences": 3,
+  "max_absolute_error": 1.1920928955078125e-07,
+  "load_seconds": 1.8758782930672169,
+  "mauger_sequences": 39,
+  "mauger_seconds": 0.8031257167458534,
+  "benchmark_n": 100,
+  "benchmark_seconds": 1.6694515347480774,
+  "mean_seconds_per_sequence": 0.016694515347480773,
+  "batch_size": 16,
+  "precision": "FP32; TF32 disabled",
+  "scorer_commit": "58864d5f8c0c06d669174873a818fa8a14c00220"
+}

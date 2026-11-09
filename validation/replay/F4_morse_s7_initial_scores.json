@@ -1,0 +1,413 @@
+{
+  "archive": {
+    "full_file_hash_verified": true,
+    "prefix_rows_read": 65,
+    "repository_path": "paper/artifacts/raw/experiments/figure4_ribonn_20261002/results/f4_ribonn_s7/run_log.jsonl.gz",
+    "sha256": "e8426f7249057964843e2e48464787f11931c2c58ca4b39b4658cc9823a3b71d"
+  },
+  "comparison": {
+    "all_float64_bit_patterns_match": true,
+    "audit_script_sha256": "ffc8c780beba60bb6091fff742760fcde14d38d91b1a67f32ca8cb09657c8899",
+    "exact_semantic_matches": 1472,
+    "fields": 23,
+    "float64_bit_patterns_checked": 384,
+    "metrics": {
+      "changed_codons": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 0.0,
+          "rtol": 0.0,
+          "source": "exact native-count/length/threshold policy"
+        },
+        "within_tolerance": 64
+      },
+      "gc_fraction": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0.0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 1e-12,
+          "rtol": 1e-12,
+          "source": "fixed declared metric policy"
+        },
+        "within_tolerance": 64
+      },
+      "poly_a_length": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 0.0,
+          "rtol": 0.0,
+          "source": "exact native-count/length/threshold policy"
+        },
+        "within_tolerance": 64
+      },
+      "ribodecode_translation": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0.0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 0.0001,
+          "rtol": 1e-05,
+          "source": "fixed declared metric policy"
+        },
+        "within_tolerance": 64
+      },
+      "ribodecode_translation_log": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0.0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 1e-05,
+          "rtol": 1e-05,
+          "source": "fixed declared metric policy"
+        },
+        "within_tolerance": 64
+      },
+      "ribonn_mean_te": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0.0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 1e-05,
+          "rtol": 1e-05,
+          "source": "fixed declared metric policy"
+        },
+        "within_tolerance": 64
+      },
+      "ribonn_model_count": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 0.0,
+          "rtol": 0.0,
+          "source": "exact native-count/length/threshold policy"
+        },
+        "within_tolerance": 64
+      },
+      "ribonn_model_sd": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0.0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 1e-05,
+          "rtol": 1e-05,
+          "source": "fixed declared metric policy"
+        },
+        "within_tolerance": 64
+      },
+      "start_codon": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "stop_codon": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "structural_binary": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 0.0,
+          "rtol": 0.0,
+          "source": "exact native-count/length/threshold policy"
+        },
+        "within_tolerance": 64
+      },
+      "structural_failures": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "structural_module_assembly_valid": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "structural_module_cds_valid": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "structural_module_five_prime_utr_valid": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "structural_module_manufacturability_valid": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "structural_module_poly_a_valid": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "structural_module_start_codon_valid": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "structural_module_stop_codon_valid": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "structural_module_three_prime_utr_valid": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "structural_valid": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "translation_efficiency_score": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0.0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 1e-05,
+          "rtol": 1e-05,
+          "source": "fixed declared metric policy"
+        },
+        "within_tolerance": 64
+      },
+      "valid": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      }
+    },
+    "paired_observations": 1472,
+    "tolerance_override": null,
+    "unresolved_fields": [],
+    "within_original_tolerances": 1472
+  },
+  "diagnostic_run": {
+    "evaluation_records": 128,
+    "generations": 2,
+    "population_history": [
+      {
+        "evaluations": 64,
+        "feasible_population_members": 64,
+        "generation": 1,
+        "new_feasible_evaluations": 64,
+        "population_size": 64
+      },
+      {
+        "evaluations": 64,
+        "feasible_population_members": 64,
+        "generation": 2,
+        "new_feasible_evaluations": 64,
+        "population_size": 64
+      }
+    ],
+    "population_member_records": 128,
+    "protocol_mode": "diagnostic-generation-override",
+    "seed": 7,
+    "status": "completed"
+  },
+  "evidence_sha256": {
+    "initial_population_check.json": "064444a40403eb9c49d0db63539ed85dafb59c776c42935953f7009436451759",
+    "plan.json": "1432f866b434839c6e2351b012a128e0e69753c6258fffb5ba5acd4ede298c95",
+    "resolved.yaml": "062818efa1c2a361d0fd0b039e882126490c3ee232425bef00a275f19b58e8e2",
+    "results/run_log.jsonl.gz": "8f6347825027aaa5e7f79b01e48b1c39dcb3532c9c697805ffe71d3e14aa11ea",
+    "results/run_provenance.json": "8429eb683fc7f5dc333645d6d8ee96c9c3262562da743f2ffffb12f048b59ecf",
+    "results/summary.json": "e7681685a1d96bcdb70be4a384e53bb3bb9e28bb815e4a931b7de008e213c49e"
+  },
+  "population": {
+    "audit_only": true,
+    "evaluation_order_matches": true,
+    "evaluation_order_sha256": "3d11bfeb7e86df6fd7d5c8177f53f53deb0d3f82e9465f000e40e77c79c6e23f",
+    "native_reference_members": 1,
+    "native_sampler": true,
+    "paired_full_transcripts": 64,
+    "random_candidates": 63,
+    "set_matches": true,
+    "supplied_candidates": 0
+  },
+  "reproduce_audit": "python scripts/compare_initial_scores.py --run-root PATH_TO_COPIED_RUN/F4_morse_s7 --raw-root paper/artifacts/raw --output NEW_REPORT.json",
+  "run_id": "F4_morse_s7",
+  "schema_version": 1,
+  "scope": "Initial-generation numerical inference replay; diagnostic search, not full trajectory reproduction.",
+  "scorers": [
+    {
+      "effective_device": "cuda:0",
+      "env": {
+        "RIBONN_DEVICE": "cuda:0"
+      },
+      "image_id": "sha256:bc3d16cd3fc58680c4a5335dcb9310723441a7ba398a66e851d63deb5a6b2f6b",
+      "reference_device": "cuda",
+      "request_sizes": [
+        1,
+        63
+      ],
+      "scorer": "ribonn"
+    },
+    {
+      "effective_device": "cuda:0",
+      "env": {
+        "ORTHRUS_DEVICE": "cuda:0"
+      },
+      "image_id": "sha256:0c8c9f08840a602ac208f7fe371572b28b250e52bd5628b18c9739ea14f4c1ea",
+      "reference_device": "cuda",
+      "request_sizes": [
+        1,
+        63
+      ],
+      "scorer": "orthrus_te"
+    },
+    {
+      "effective_device": "cpu",
+      "env": {
+        "CUDA_VISIBLE_DEVICES": "-1",
+        "RIBODECODE_BATCH_SIZE": "256",
+        "RIBODECODE_DEVICE": "cpu"
+      },
+      "image_id": "sha256:a90ce0fa8285d54a9aa8d934b64e8bd79d96843411509f2682e7708d87b481fd",
+      "reference_device": "cpu",
+      "request_sizes": [
+        1,
+        63
+      ],
+      "scorer": "ribodecode_hek293t"
+    }
+  ],
+  "source": {
+    "core_source": {
+      "bytes": 681423,
+      "files": 28,
+      "sha256": "595f51485224310c0bd2dcd8f79265c94207ed6350d8ac212213acacf8fe375e"
+    },
+    "git_commit": "8763d174066a00c1ad0d0d19e9c2ef7f60ebcbf5",
+    "launcher_files_sha256": {
+      "paper/adapters/initialization.py": "fe57766c746081e3dd774592d136b06558cb1b117bfb10de00beea7413d35370",
+      "paper/registry.json": "18bb4bbb19c4fcfea200ca661f5cba7e47e4a0474f825e0843d6dcb3b1aa76b9",
+      "paper/runtime.py": "6e5a52e0b419d32bba939aa7c595bee804fd31fb40892501bc402eb3c7c7f38c"
+    },
+    "launcher_protocol_sha256": "51c7a81d7e8f0da279f96ede82111ce786674aaf4de1eb5171d2840563dc4f26",
+    "overlay_sources_verified_against_commit": [
+      {
+        "bytes": 276,
+        "files": 6,
+        "repository_path": "paper/adapters/container_entrypoints",
+        "sha256": "8ef85661d04c144d2fa2038716f900918338eca25192424c048cfa7a1cc97923"
+      },
+      {
+        "bytes": 30797,
+        "files": 20,
+        "repository_path": "scorers/ribonn",
+        "sha256": "0907711ce013aa3db4e141ad2e5bbff1e63f7b271fdcc7607c10095f32401062"
+      },
+      {
+        "bytes": 58372,
+        "files": 20,
+        "repository_path": "scorers/translation-efficiency",
+        "sha256": "cbc720eb96c47fbd27d12684c192f4f1865a62760d10aff97fbc956752aff4af"
+      },
+      {
+        "bytes": 276,
+        "files": 6,
+        "repository_path": "paper/adapters/container_entrypoints",
+        "sha256": "8ef85661d04c144d2fa2038716f900918338eca25192424c048cfa7a1cc97923"
+      },
+      {
+        "bytes": 18845,
+        "files": 8,
+        "repository_path": "scorers/ribodecode",
+        "sha256": "ba3fc7e3819631dfd62cc07568d9994bd22dc721ca64db3efbf93d57b09c0b98"
+      },
+      {
+        "bytes": 276,
+        "files": 6,
+        "repository_path": "paper/adapters/container_entrypoints",
+        "sha256": "8ef85661d04c144d2fa2038716f900918338eca25192424c048cfa7a1cc97923"
+      }
+    ],
+    "remote_checkout_clean": true,
+    "source_overlay": true
+  },
+  "status": "pass"
+}

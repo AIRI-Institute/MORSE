@@ -1,0 +1,51 @@
+{
+  "date": "2026-11-05",
+  "status": "pass",
+  "publication": {
+    "remote_configured": false,
+    "uploaded": false
+  },
+  "cpu": {
+    "python": "3.13.3",
+    "platform": "macOS-15.6-arm64-arm-64bit-Mach-O",
+    "discovered_tests": 335,
+    "passed_tests": 330,
+    "skipped_tests": 5,
+    "all_selected_suites_passed": true,
+    "test_log_sha256": "c01f7ddcf05186c44fed46529d43236f01b8e22c4073eeadae62e0d58cf4d298",
+    "tested_source_revision": "dab55088c17b601fb6d5d8b13966261b322558dd"
+  },
+  "quickstart": {
+    "config": "examples/quickstart/experiment.yaml",
+    "status": "completed",
+    "summary_sha256": "c84594ab363688aaabe4e62708ff70c75604703994b6845cbb50d54f973e5ea9"
+  },
+  "paper_archive_analysis": "analysis/archive-statistics.json",
+  "figure_generation": "analysis/figures.json",
+  "fresh_search": "searches/fig4a-seed7-full.json",
+  "fresh_initial_scores": [
+    "replay/F2_filtered_s7_initial_scores.json",
+    "replay/F4_morse_s7_initial_scores.json"
+  ],
+  "all_40_searches_freshly_rerun": false,
+  "training_code_included": false,
+  "server_cpu": {
+    "hardware": "olig, x86_64 Linux",
+    "python": "3.10.12",
+    "tested_source_revision": "dab55088c17b601fb6d5d8b13966261b322558dd",
+    "discovered_tests": 335,
+    "passed_tests": 330,
+    "skipped_tests": 5,
+    "all_selected_suites_passed": true,
+    "test_log_sha256": "b768c7d8b6125882df52518da03243efba4dcdab61da95a396d15e9fd034e783",
+    "paper_verify": "pass",
+    "quickstart": "completed"
+  },
+  "clean_clone": {
+    "source_revision": "dab55088c17b601fb6d5d8b13966261b322558dd",
+    "paper_verify": "pass",
+    "eight_figures": "pass, generated with warnings as errors",
+    "independent_init_validate_run": "pass, EGFP full CDS, 8 members, 2 generations",
+    "tracked_worktree_clean_after_checks": true
+  }
+}

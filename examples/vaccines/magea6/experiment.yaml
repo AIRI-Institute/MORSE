@@ -1,0 +1,39 @@
+schema_version: 4
+name: magea6_example
+# Results folder.
+output_dir: ../../../outputs/magea6_example
+
+# Input RNA and parts.
+construct:
+  fasta: sequence.fasta
+  coordinates:  # 0-based; end excluded.
+    five_prime_utr: [0, 17]
+    cds: [17, 962]
+    three_prime_utr: [962, 1023]
+    poly_a: [1023, 1093]
+
+  # Unlisted parts stay fixed.
+  changes:
+    cds: synonymous
+
+# Search settings.
+optimizer:
+  algorithm: nsga2
+  population_size: 16
+  generations: 4
+  seed: 43
+
+# Prepared scorer commands.
+scorers:
+  - name: sequence_metrics
+    command: '"${MORSE_PYTHON}" -m morse.resources.simple_scorer'
+    scope: [start_codon, cds_body]
+    metrics:  # Goals, limits and logs.
+      cpg_per_kb:
+        role: optimize
+        direction: min
+      gc_distance:
+        role: optimize
+        direction: min
+      gc_fraction:
+        role: log

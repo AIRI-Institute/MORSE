@@ -1,0 +1,44 @@
+{
+  "model": "orthrus-half-life",
+  "source_revision": "1b063532edff87782866df368965a33ad4c19893",
+  "image": "sha256:f38800a12100ff848ece332d28e8937fd4dcb7daf3bf825d91c64175250e1df4",
+  "request_sha256": "4fd6a853ca1fa3995df5a164922a25c02c201fc125a0bfb3b702f64357dabc03",
+  "sequences": 3,
+  "archived": {
+    "elapsed_seconds": 7.712707027792931,
+    "response": {
+      "request_id": "morse-ready-model-parity",
+      "outputs": [
+        {
+          "half_life_score": 0.45622313022613525
+        },
+        {
+          "half_life_score": 1.462702751159668
+        },
+        {
+          "half_life_score": 1.4861547946929932
+        }
+      ]
+    }
+  },
+  "current": {
+    "elapsed_seconds": 6.481079548597336,
+    "response": {
+      "request_id": "morse-ready-model-parity",
+      "outputs": [
+        {
+          "half_life_score": 0.45622313022613525
+        },
+        {
+          "half_life_score": 1.462702751159668
+        },
+        {
+          "half_life_score": 1.4861547946929932
+        }
+      ]
+    }
+  },
+  "maximum_absolute_difference": 0.0,
+  "tolerance": 1e-06,
+  "passed": true
+}

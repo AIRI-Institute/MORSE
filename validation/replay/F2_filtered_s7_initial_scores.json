@@ -1,0 +1,1012 @@
+{
+  "archive": {
+    "full_file_hash_verified": true,
+    "prefix_rows_read": 65,
+    "repository_path": "paper/artifacts/raw/experiments/publication_repeats_20260923/results/f2_filtered_s7/run_log.jsonl.gz",
+    "sha256": "1dc08e358e484872319f8187d9cee0ee8c176d7435dfbf43fda173645bbb4d9f"
+  },
+  "comparison": {
+    "all_float64_bit_patterns_match": true,
+    "audit_script_sha256": "ffc8c780beba60bb6091fff742760fcde14d38d91b1a67f32ca8cb09657c8899",
+    "exact_semantic_matches": 4288,
+    "fields": 67,
+    "float64_bit_patterns_checked": 960,
+    "metrics": {
+      "analyzed_length": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 0.0,
+          "rtol": 0.0,
+          "source": "exact native-count/length/threshold policy"
+        },
+        "within_tolerance": 64
+      },
+      "capping_start_violation_count": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 0.0,
+          "rtol": 0.0,
+          "source": "exact native-count/length/threshold policy"
+        },
+        "within_tolerance": 64
+      },
+      "changed_codons": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 0.0,
+          "rtol": 0.0,
+          "source": "exact native-count/length/threshold policy"
+        },
+        "within_tolerance": 64
+      },
+      "csi_codons": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 0.0,
+          "rtol": 0.0,
+          "source": "exact native-count/length/threshold policy"
+        },
+        "within_tolerance": 64
+      },
+      "csi_destabilizing_fraction": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0.0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 1e-12,
+          "rtol": 1e-12,
+          "source": "fixed declared metric policy"
+        },
+        "within_tolerance": 64
+      },
+      "csi_percentile": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0.0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 1e-12,
+          "rtol": 1e-12,
+          "source": "fixed declared metric policy"
+        },
+        "within_tolerance": 64
+      },
+      "csi_profile_id": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "csi_profile_sha256": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "csi_raw": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0.0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 1e-12,
+          "rtol": 1e-12,
+          "source": "fixed declared metric policy"
+        },
+        "within_tolerance": 64
+      },
+      "csi_window_min": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0.0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 1e-12,
+          "rtol": 1e-12,
+          "source": "fixed declared metric policy"
+        },
+        "within_tolerance": 64
+      },
+      "csi_window_p05": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0.0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 1e-12,
+          "rtol": 1e-12,
+          "source": "fixed declared metric policy"
+        },
+        "within_tolerance": 64
+      },
+      "direct_repeats_violation_count": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 0.0,
+          "rtol": 0.0,
+          "source": "exact native-count/length/threshold policy"
+        },
+        "within_tolerance": 64
+      },
+      "feasibility_config_json": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "feasibility_config_sha256": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "feasibility_exemptions_json": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "feasibility_failed_check_count": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 0.0,
+          "rtol": 0.0,
+          "source": "exact native-count/length/threshold policy"
+        },
+        "within_tolerance": 64
+      },
+      "feasibility_failed_checks_json": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "feasibility_pass": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "feasibility_profile_id": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "feasibility_profile_sha256": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "feasibility_raw_counts_json": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "feasibility_violation_count": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 0.0,
+          "rtol": 0.0,
+          "source": "exact native-count/length/threshold policy"
+        },
+        "within_tolerance": 64
+      },
+      "feasibility_violations_json": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "forbidden_motifs_violation_count": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 0.0,
+          "rtol": 0.0,
+          "source": "exact native-count/length/threshold policy"
+        },
+        "within_tolerance": 64
+      },
+      "gc_fraction": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0.0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 1e-12,
+          "rtol": 1e-12,
+          "source": "fixed declared metric policy"
+        },
+        "within_tolerance": 64
+      },
+      "global_gc_fraction": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0.0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 1e-12,
+          "rtol": 1e-12,
+          "source": "fixed declared metric policy"
+        },
+        "within_tolerance": 64
+      },
+      "global_gc_violation_count": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 0.0,
+          "rtol": 0.0,
+          "source": "exact native-count/length/threshold policy"
+        },
+        "within_tolerance": 64
+      },
+      "homopolymers_violation_count": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 0.0,
+          "rtol": 0.0,
+          "source": "exact native-count/length/threshold policy"
+        },
+        "within_tolerance": 64
+      },
+      "inverted_repeats_violation_count": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 0.0,
+          "rtol": 0.0,
+          "source": "exact native-count/length/threshold policy"
+        },
+        "within_tolerance": 64
+      },
+      "local_gc_max": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0.0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 1e-12,
+          "rtol": 1e-12,
+          "source": "fixed declared metric policy"
+        },
+        "within_tolerance": 64
+      },
+      "local_gc_min": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0.0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 1e-12,
+          "rtol": 1e-12,
+          "source": "fixed declared metric policy"
+        },
+        "within_tolerance": 64
+      },
+      "local_gc_violation_count": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 0.0,
+          "rtol": 0.0,
+          "source": "exact native-count/length/threshold policy"
+        },
+        "within_tolerance": 64
+      },
+      "local_gc_window_count": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 0.0,
+          "rtol": 0.0,
+          "source": "exact native-count/length/threshold policy"
+        },
+        "within_tolerance": 64
+      },
+      "max_homopolymer_a": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 0.0,
+          "rtol": 0.0,
+          "source": "exact native-count/length/threshold policy"
+        },
+        "within_tolerance": 64
+      },
+      "max_homopolymer_c": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 0.0,
+          "rtol": 0.0,
+          "source": "exact native-count/length/threshold policy"
+        },
+        "within_tolerance": 64
+      },
+      "max_homopolymer_g": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 0.0,
+          "rtol": 0.0,
+          "source": "exact native-count/length/threshold policy"
+        },
+        "within_tolerance": 64
+      },
+      "max_homopolymer_length": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 0.0,
+          "rtol": 0.0,
+          "source": "exact native-count/length/threshold policy"
+        },
+        "within_tolerance": 64
+      },
+      "max_homopolymer_u": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 0.0,
+          "rtol": 0.0,
+          "source": "exact native-count/length/threshold policy"
+        },
+        "within_tolerance": 64
+      },
+      "mfe": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0.0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 1e-05,
+          "rtol": 0.0,
+          "source": "fixed declared metric policy"
+        },
+        "within_tolerance": 64
+      },
+      "mfe_per_nt": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0.0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 1e-07,
+          "rtol": 0.0,
+          "source": "fixed declared metric policy"
+        },
+        "within_tolerance": 64
+      },
+      "mfe_structure": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "poly_a_length": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 0.0,
+          "rtol": 0.0,
+          "source": "exact native-count/length/threshold policy"
+        },
+        "within_tolerance": 64
+      },
+      "restriction_sites_violation_count": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 0.0,
+          "rtol": 0.0,
+          "source": "exact native-count/length/threshold policy"
+        },
+        "within_tolerance": 64
+      },
+      "ribodecode_translation": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0.0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 0.0001,
+          "rtol": 1e-05,
+          "source": "fixed declared metric policy"
+        },
+        "within_tolerance": 64
+      },
+      "ribodecode_translation_log": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0.0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 1e-05,
+          "rtol": 1e-05,
+          "source": "fixed declared metric policy"
+        },
+        "within_tolerance": 64
+      },
+      "start_codon": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "stop_codon": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "structural_binary": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 0.0,
+          "rtol": 0.0,
+          "source": "exact native-count/length/threshold policy"
+        },
+        "within_tolerance": 64
+      },
+      "structural_failures": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "structural_module_assembly_valid": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "structural_module_cds_valid": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "structural_module_five_prime_utr_valid": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "structural_module_manufacturability_valid": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "structural_module_poly_a_valid": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "structural_module_start_codon_valid": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "structural_module_stop_codon_valid": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "structural_module_three_prime_utr_valid": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "structural_valid": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "tandem_repeats_violation_count": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 0.0,
+          "rtol": 0.0,
+          "source": "exact native-count/length/threshold policy"
+        },
+        "within_tolerance": 64
+      },
+      "threshold_feasibility_violation_count_equals": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "threshold_feasibility_violation_count_max": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0.0,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 0.0,
+          "rtol": 0.0,
+          "source": "exact native-count/length/threshold policy"
+        },
+        "within_tolerance": 64
+      },
+      "threshold_feasibility_violation_count_min": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "threshold_feasibility_violation_count_observed": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 0.0,
+          "rtol": 0.0,
+          "source": "exact native-count/length/threshold policy"
+        },
+        "within_tolerance": 64
+      },
+      "threshold_feasibility_violation_count_reason": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "threshold_feasibility_violation_count_valid": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      },
+      "translation_efficiency_score": {
+        "exact_matches": 64,
+        "max_absolute_difference": 0.0,
+        "max_relative_difference": 0.0,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": {
+          "atol": 1e-05,
+          "rtol": 1e-05,
+          "source": "fixed declared metric policy"
+        },
+        "within_tolerance": 64
+      },
+      "valid": {
+        "exact_matches": 64,
+        "max_absolute_difference": null,
+        "max_relative_difference": null,
+        "paired_observations": 64,
+        "status": "pass",
+        "tolerance": "exact semantic equality",
+        "within_tolerance": 64
+      }
+    },
+    "paired_observations": 4288,
+    "tolerance_override": null,
+    "unresolved_fields": [],
+    "within_original_tolerances": 4288
+  },
+  "diagnostic_run": {
+    "evaluation_records": 512,
+    "generations": 8,
+    "population_history": [
+      {
+        "evaluations": 64,
+        "feasible_population_members": 0,
+        "generation": 1,
+        "new_feasible_evaluations": 0,
+        "population_size": 64
+      },
+      {
+        "evaluations": 64,
+        "feasible_population_members": 0,
+        "generation": 2,
+        "new_feasible_evaluations": 0,
+        "population_size": 64
+      },
+      {
+        "evaluations": 64,
+        "feasible_population_members": 1,
+        "generation": 3,
+        "new_feasible_evaluations": 1,
+        "population_size": 64
+      },
+      {
+        "evaluations": 64,
+        "feasible_population_members": 4,
+        "generation": 4,
+        "new_feasible_evaluations": 3,
+        "population_size": 64
+      },
+      {
+        "evaluations": 64,
+        "feasible_population_members": 13,
+        "generation": 5,
+        "new_feasible_evaluations": 9,
+        "population_size": 64
+      },
+      {
+        "evaluations": 64,
+        "feasible_population_members": 30,
+        "generation": 6,
+        "new_feasible_evaluations": 17,
+        "population_size": 64
+      },
+      {
+        "evaluations": 64,
+        "feasible_population_members": 64,
+        "generation": 7,
+        "new_feasible_evaluations": 41,
+        "population_size": 64
+      },
+      {
+        "evaluations": 64,
+        "feasible_population_members": 64,
+        "generation": 8,
+        "new_feasible_evaluations": 49,
+        "population_size": 64
+      }
+    ],
+    "population_member_records": 512,
+    "protocol_mode": "diagnostic-generation-override",
+    "seed": 7,
+    "status": "completed"
+  },
+  "evidence_sha256": {
+    "initial_population_check.json": "3a3b1484086f15cc9644af2c7aa63e00dd1db86dd18731a715322b287a7c66d2",
+    "plan.json": "35e438681c4fbbf346ad307436933ce9550163b5938da338b0543be35b878747",
+    "resolved.yaml": "7a5cc313d130ae40f7199c35a272f93b738354cfff89c5a797ddb2f6852130df",
+    "results/run_log.jsonl.gz": "b95aeb3f9ff496db092707f34be5650812098cac1feed6b2576399e1c88c8f65",
+    "results/run_provenance.json": "914538ec9dd985688f1b6b1332d2e2f94cf1ba8157e47f538a2b4c63000afd77",
+    "results/summary.json": "875c28005781919b94c950d52ee901ed094d3d96f362a8c8b25d651b94709b8b"
+  },
+  "population": {
+    "audit_only": true,
+    "evaluation_order_matches": true,
+    "evaluation_order_sha256": "7f1624c64b8c71ed79a965eb2000773310a2d4abcf741cf900150d53d0a848b2",
+    "native_reference_members": 1,
+    "native_sampler": true,
+    "paired_full_transcripts": 64,
+    "random_candidates": 63,
+    "set_matches": true,
+    "supplied_candidates": 0
+  },
+  "reproduce_audit": "python scripts/compare_initial_scores.py --run-root PATH_TO_COPIED_RUN/F2_filtered_s7 --raw-root paper/artifacts/raw --output NEW_REPORT.json",
+  "run_id": "F2_filtered_s7",
+  "schema_version": 1,
+  "scope": "Initial-generation numerical inference replay; diagnostic search, not full trajectory reproduction.",
+  "scorers": [
+    {
+      "effective_device": "cpu",
+      "env": {
+        "CUDA_VISIBLE_DEVICES": "-1"
+      },
+      "image_id": "sha256:4536d44ad1c59c9b09532bcf96b7facad96f1cd7f45abd9a5f5e6a8b836c4372",
+      "reference_device": "cpu",
+      "request_sizes": [
+        1,
+        63
+      ],
+      "scorer": "viennarna_transcript_body"
+    },
+    {
+      "effective_device": "cpu",
+      "env": {
+        "CUDA_VISIBLE_DEVICES": "-1"
+      },
+      "image_id": null,
+      "reference_device": "cpu",
+      "request_sizes": [
+        1,
+        63
+      ],
+      "scorer": "csi_human"
+    },
+    {
+      "effective_device": "cuda:0",
+      "env": {
+        "ORTHRUS_DEVICE": "cuda:0"
+      },
+      "image_id": "sha256:0c8c9f08840a602ac208f7fe371572b28b250e52bd5628b18c9739ea14f4c1ea",
+      "reference_device": "cuda",
+      "request_sizes": [
+        1,
+        63
+      ],
+      "scorer": "orthrus_translation_efficiency"
+    },
+    {
+      "effective_device": "cuda:0",
+      "env": {
+        "RIBODECODE_BATCH_SIZE": "8",
+        "RIBODECODE_DEVICE": "cuda:0"
+      },
+      "image_id": "sha256:a90ce0fa8285d54a9aa8d934b64e8bd79d96843411509f2682e7708d87b481fd",
+      "reference_device": "cuda",
+      "request_sizes": [
+        1,
+        63
+      ],
+      "scorer": "ribodecode_hek293t"
+    },
+    {
+      "effective_device": "cpu",
+      "env": {
+        "CUDA_VISIBLE_DEVICES": "-1"
+      },
+      "image_id": "sha256:cb878f6d61d711dba162aea64d9ec289eec5b0aebb25dc1012233b90f3b30d95",
+      "reference_device": "cpu",
+      "request_sizes": [
+        1,
+        63
+      ],
+      "scorer": "sequence_feasibility"
+    }
+  ],
+  "source": {
+    "core_source": {
+      "bytes": 681423,
+      "files": 28,
+      "sha256": "595f51485224310c0bd2dcd8f79265c94207ed6350d8ac212213acacf8fe375e"
+    },
+    "git_commit": "8763d174066a00c1ad0d0d19e9c2ef7f60ebcbf5",
+    "launcher_files_sha256": {
+      "paper/adapters/initialization.py": "fe57766c746081e3dd774592d136b06558cb1b117bfb10de00beea7413d35370",
+      "paper/registry.json": "18bb4bbb19c4fcfea200ca661f5cba7e47e4a0474f825e0843d6dcb3b1aa76b9",
+      "paper/runtime.py": "6e5a52e0b419d32bba939aa7c595bee804fd31fb40892501bc402eb3c7c7f38c"
+    },
+    "launcher_protocol_sha256": "1e1d1227712208c2b5cff448f7839ff20ec9a9145beeea6d65ca0b5ce608a018",
+    "overlay_sources_verified_against_commit": [
+      {
+        "bytes": 12144,
+        "files": 8,
+        "repository_path": "scorers/viennarna",
+        "sha256": "29dc948ee93f24d11ded977e4ab6fd0e495a3ce371af2d08846ba1636e227546"
+      },
+      {
+        "bytes": 276,
+        "files": 6,
+        "repository_path": "paper/adapters/container_entrypoints",
+        "sha256": "8ef85661d04c144d2fa2038716f900918338eca25192424c048cfa7a1cc97923"
+      },
+      {
+        "bytes": 2950,
+        "files": 1,
+        "repository_path": "scorers/csi/server.py",
+        "sha256": "9a6c848c1a02f035a7d873c193fbfc07e734374d3ab3b897ae858fd32dfa20b4"
+      },
+      {
+        "bytes": 9937,
+        "files": 1,
+        "repository_path": "scorers/csi/profiles/homo_sapiens_consensus_wu2019_v1.json",
+        "sha256": "b7e698e8c29c8a6355a4f6ebb6d54e7d14bdb446e900e35b67b79cd3762b07c3"
+      },
+      {
+        "bytes": 58372,
+        "files": 20,
+        "repository_path": "scorers/translation-efficiency",
+        "sha256": "cbc720eb96c47fbd27d12684c192f4f1865a62760d10aff97fbc956752aff4af"
+      },
+      {
+        "bytes": 276,
+        "files": 6,
+        "repository_path": "paper/adapters/container_entrypoints",
+        "sha256": "8ef85661d04c144d2fa2038716f900918338eca25192424c048cfa7a1cc97923"
+      },
+      {
+        "bytes": 18845,
+        "files": 8,
+        "repository_path": "scorers/ribodecode",
+        "sha256": "ba3fc7e3819631dfd62cc07568d9994bd22dc721ca64db3efbf93d57b09c0b98"
+      },
+      {
+        "bytes": 276,
+        "files": 6,
+        "repository_path": "paper/adapters/container_entrypoints",
+        "sha256": "8ef85661d04c144d2fa2038716f900918338eca25192424c048cfa7a1cc97923"
+      },
+      {
+        "bytes": 138959,
+        "files": 25,
+        "repository_path": "scorers/manufacturability",
+        "sha256": "ce9898129e6bdd9fafe16a05566d9b5129edd824415554a53c8acfd67eb79b94"
+      },
+      {
+        "bytes": 276,
+        "files": 6,
+        "repository_path": "paper/adapters/container_entrypoints",
+        "sha256": "8ef85661d04c144d2fa2038716f900918338eca25192424c048cfa7a1cc97923"
+      }
+    ],
+    "remote_checkout_clean": true,
+    "source_overlay": true
+  },
+  "status": "pass"
+}

@@ -1,0 +1,16 @@
+species	profile_id	biotype	organ_system	tissue	sample_count	in_core	in_extended
+human	pbmc	tissue	blood	PBMC	290	True	True
+human	dendritic_cells	tissue	immune_system	dendritic_cells	116	True	True
+human	macrophage	tissue	immune_system	macrophage	125	True	True
+human	mononuclear_cells	tissue	immune_system	mononuclear_cells	65	True	True
+human	limb_muscle	tissue	limb_muscle	limb_muscle	80	True	True
+human	liver	tissue	liver	liver	1114	False	True
+human	skin	tissue	skin	skin	209	False	True
+mouse	pbmc	tissue	blood	PBMC	90	True	True
+mouse	macrophage	tissue	immune_system	macrophage	197	True	True
+mouse	inflammatory_monocyte	tissue	immune_system	monocyte_ly_6chi	18	True	True
+mouse	limb_muscle	tissue	limb_muscle	limb_muscle	165	True	True
+mouse	spleen	tissue	spleen	spleen	184	True	True
+mouse	lymph_node	tissue	spleen	lymph_node	22	True	True
+mouse	liver	tissue	liver	liver	1339	False	True
+mouse	skin	tissue	skin	skin	290	False	True
