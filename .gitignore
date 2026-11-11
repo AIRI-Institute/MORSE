@@ -13,8 +13,8 @@ test_*.py
 *_test.py
 conftest.py
 /scripts/run_tests.py
-/docs/guide.ru.local.md
-/docs/scorer.ru.local.md
+/docs/инструкция_morse.md
+/docs/инструкция_скорер.md
 .venv/
 .cache/
 .env
