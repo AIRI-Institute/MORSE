@@ -11,6 +11,7 @@ JSONL contract.
 self-test. Inspect it with `morse scorers describe cai`. Prepare the runtime
 before starting an experiment, then put its Bash command in the experiment YAML.
 CAI runs with MORSE's Python interpreter and needs no additional packages.
+Its installed entry points are `python -m scorers.cai.server` and `morse-cai`.
 
 ## Method
 
@@ -51,7 +52,7 @@ For an experiment, prefer building a profile from a predefined set of highly
 expressed CDS sequences in the target cell or tissue:
 
 ```bash
-python build_profile.py reference_cds.fasta \
+python -m scorers.cai.build_profile reference_cds.fasta \
   --output profiles/human_apc_high_expression_v1.json \
   --profile-id human_apc_high_expression_v1 \
   --taxon "Homo sapiens" \
@@ -95,7 +96,7 @@ only a batch of sequences; profile parameters are fixed once at startup:
 
 ```yaml
 - name: cai_human
-  command: '"${MORSE_PYTHON}" /path/to/morse/scorers/cai/server.py'
+  command: '"${MORSE_PYTHON}" -m scorers.cai.server'
   timeout_seconds: 120
   scope: [start_codon, cds_body]
   metrics:
@@ -108,10 +109,9 @@ only a batch of sequences; profile parameters are fixed once at startup:
     cai_profile_sha256: {value_type: string, role: log}
 ```
 
-Replace `/path/to/morse` with the checkout path. `MORSE_PYTHON` is supplied by
-MORSE. Each batch is one JSON request followed by EOF; the scorer returns one
-JSON response and exits. Record the script, `model.py` and selected profile in
-the scorer's `provenance_paths` when using caching or resume.
+`MORSE_PYTHON` is supplied by MORSE. The module and default profile are installed
+with MORSE, so this command works from any directory. Each batch is one JSON
+request followed by EOF; the scorer returns one JSON response and exits.
 
 `cds_body` excludes the start and stop; schema-4 `cds` includes both. This scope
 sends the start codon and body without a terminal stop to the scorer.
@@ -119,7 +119,7 @@ sends the start codon and body without a terminal stop to the scorer.
 Choose a custom profile in the command:
 
 ```yaml
-  command: 'CAI_PROFILE=/absolute/path/profile.json "${MORSE_PYTHON}" /path/to/morse/scorers/cai/server.py'
+  command: 'CAI_PROFILE=/absolute/path/profile.json "${MORSE_PYTHON}" -m scorers.cai.server'
 ```
 
 For an already prepared container, use `docker exec -i CONTAINER python

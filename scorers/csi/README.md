@@ -15,25 +15,30 @@ contexts:
 ```yaml
 scorers:
   - name: csi_human
-    command: 'CSI_PROFILE=/path/to/morse/scorers/csi/profiles/homo_sapiens_consensus_wu2019_v1.json "${MORSE_PYTHON}" /path/to/morse/scorers/csi/server.py'
+    command: 'CSI_PROFILE=/absolute/path/homo_sapiens_consensus_wu2019_v1.json "${MORSE_PYTHON}" -m scorers.csi.server'
     scope: [start_codon, cds_body]
     metrics:
       csi_percentile: {role: optimize, direction: max}
       csi_raw: {role: log}
 
   - name: csi_mouse
-    command: 'CSI_PROFILE=/path/to/morse/scorers/csi/profiles/mus_musculus_mesc_slamseq_wu2019_v1.json "${MORSE_PYTHON}" /path/to/morse/scorers/csi/server.py'
+    command: 'CSI_PROFILE=/absolute/path/mus_musculus_mesc_slamseq_wu2019_v1.json "${MORSE_PYTHON}" -m scorers.csi.server'
     scope: [start_codon, cds_body]
     metrics:
       csi_percentile: {role: optimize, direction: max}
       csi_raw: {role: log}
 ```
 
-Replace `/path/to/morse` with the checkout path. CSI has no extra Python
-dependencies. MORSE supplies `MORSE_PYTHON`, sends one JSON request and EOF per
-batch, and reads one response. Add `server.py`, `model.py` and the chosen profile
-to `provenance_paths` when using caching or resume. Startup environment settings
-belong in the command or prepared service; MORSE does not install the runtime.
+CSI and its default human profile are installed with MORSE and need no extra
+Python dependencies. The module command works from any directory. Replace the
+profile paths with your JSON files. To locate the bundled profiles directory:
+
+```sh
+python -c 'from importlib.resources import files; print(files("scorers.csi") / "profiles")'
+```
+
+MORSE supplies `MORSE_PYTHON`, sends one JSON request and EOF per batch, and
+reads one response. Startup environment settings belong in the command.
 
 Core exposes these as `csi_human.csi_percentile`, `csi_human.csi_raw`,
 `csi_mouse.csi_percentile`, and `csi_mouse.csi_raw`. The scorer itself always returns
@@ -72,8 +77,10 @@ clinical efficacy, so those remain separate objectives and validation layers.
 ## Direct inference
 
 ```bash
-printf '%s\n' '{"request_id":1,"sequences":["ATGTTCTTT"]}' | python server.py
+printf '%s\n' '{"request_id":1,"sequences":["ATGTTCTTT"]}' | python -m scorers.csi.server
 ```
+
+`morse-csi` is the equivalent command in an activated MORSE environment.
 
 ## CPU container
 

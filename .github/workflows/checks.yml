@@ -9,6 +9,62 @@ jobs:
         with:
           version: "0.10.2"
       - run: uv sync --all-packages --extra paper --frozen
+      - name: Check installed native scorer packages
+        run: |
+          uv build --all-packages --wheel --no-build-logs --out-dir "$RUNNER_TEMP/morse-wheels"
+          uv venv "$RUNNER_TEMP/morse-installed"
+          research_wheels=("$RUNNER_TEMP"/morse-wheels/morse_research-*.whl)
+          uv pip install --python "$RUNNER_TEMP/morse-installed/bin/python" \
+            "$RUNNER_TEMP"/morse-wheels/*.whl "${research_wheels[0]}[mfe]"
+          cd "$RUNNER_TEMP"
+          "$RUNNER_TEMP/morse-installed/bin/python" -I - <<'PY'
+          import importlib
+          import json
+          import math
+          import os
+          import shlex
+          from pathlib import Path
+          import subprocess
+          import sys
+          import RNA
+
+          executable = Path(sys.prefix) / "bin/morse"
+          env = dict(os.environ)
+          commands = {
+              "viennarna": "scorers.viennarna.scorer",
+              "cai": "scorers.cai.server",
+              "csi": "scorers.csi.server",
+              "manufacturability": "manufacturability_scorer.feasibility_server",
+          }
+          for scorer, module in commands.items():
+              installed = importlib.import_module(module)
+              assert Path(installed.__file__).is_relative_to(Path(sys.prefix))
+              interface = json.loads(subprocess.check_output(
+                  [str(executable), "scorers", "describe", scorer, "--json"], text=True))
+              request = interface["request_example"]
+              result = subprocess.run([sys.executable, "-m", module],
+                  input=json.dumps(request) + "\n", text=True,
+                  capture_output=True, check=True, env=env)
+              response = json.loads(result.stdout)
+              assert response["request_id"] == request["request_id"]
+              assert len(response["outputs"]) == len(request["sequences"])
+              assert set(interface["metrics"]) <= set(response["outputs"][0])
+              if scorer == "viennarna":
+                  settings = RNA.md()
+                  settings.max_bp_span = 300
+                  _, expected = RNA.fold_compound(request["sequences"][0], settings).mfe()
+                  assert math.isclose(response["outputs"][0]["mfe"], expected, abs_tol=1e-6)
+              print(scorer, "installed JSONL scorer OK")
+          from morse.scorers import BashCommandScorer
+          sequence = "G" * 40 + "A" * 350 + "C" * 40
+          energies = []
+          for span in (0, 300):
+              scorer = BashCommandScorer(shlex.join([sys.executable, "-m", "scorers.viennarna.scorer"]),
+                  parameters={"max_bp_span": span, "compute_ensemble": False})
+              energies.append(scorer.score([sequence])[0]["mfe"])
+          assert energies[0] < energies[1], energies
+          print("Installed MORSE forwards MFE parameters correctly")
+          PY
       - name: Validate the CPU example
         run: uv run morse validate --config examples/quickstart/experiment.yaml
       - name: Run a real CPU optimization

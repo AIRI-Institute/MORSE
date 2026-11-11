@@ -13,7 +13,8 @@ Replace the FASTA with your own single coding sequence. Add repeated
 See [the researcher guide](../../docs/researcher-guide.md) for real inference
 scorers, explicit scope/objective policies, provenance, multiple seeds and resume.
 
-The generated configuration uses a Bash `command` string and a `metrics`
+The generated configuration uses a Bash `command` string, optional calculation
+`parameters` and a `metrics`
 mapping with `optimize`, `threshold` or `log` roles. Prepare any replacement
 scorer environment, model, container or HTTP service before `morse run`.
 Inspect its interface with `morse scorers describe ID` and generate a section

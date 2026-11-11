@@ -34,12 +34,10 @@ scorers:
   - name: viennarna_full
     timeout_seconds: 1800
     scope: [five_prime_utr, cds, three_prime_utr]
-    command: |-
-      docker exec -i \
-        -e VIENNARNA_ENABLE_PF=0 \
-        -e VIENNARNA_MAX_BP_SPAN=200 \
-        "${MORSE_VIENNARNA_CONTAINER:-morse-viennarna}" \
-        python3 /app/scorer.py
+    command: '"${MORSE_PYTHON}" -m scorers.viennarna.scorer'
+    parameters:
+      max_bp_span: 300
+      compute_ensemble: false
     metrics:  # Goals, limits and logs.
       mfe_per_nt:
         role: optimize

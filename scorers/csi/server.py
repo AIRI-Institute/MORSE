@@ -7,7 +7,10 @@ import traceback
 from pathlib import Path
 from typing import Any
 
-from model import CsiScorer, load_profile
+if __package__:
+    from .model import CsiScorer, load_profile
+else:
+    from model import CsiScorer, load_profile
 
 DEFAULT_PROFILE = (
     Path(__file__).with_name("profiles") / "homo_sapiens_consensus_wu2019_v1.json"

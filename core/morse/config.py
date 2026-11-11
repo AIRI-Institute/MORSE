@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, replace
+import copy
+from dataclasses import dataclass, field, replace
 from math import cos, isfinite, pi
 import os
 import re
@@ -36,6 +37,10 @@ class ScorerConfig:
     output_prefix: str | None = None
     provenance_paths: tuple[str, ...] = ()
     namespace: str | None = None
+    parameters: dict[str, Any] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "parameters", parse_scorer_parameters(self.parameters))
 
 
 @dataclass(frozen=True)
@@ -396,6 +401,7 @@ class RunConfig:
                     "output_prefix": scorer.output_prefix,
                     "namespace": scorer.namespace,
                     "provenance_paths": list(scorer.provenance_paths) or None,
+                    "parameters": copy.deepcopy(scorer.parameters) or None,
                     "scope": scorer_scope_to_dict(scorer.scope),
                     "metrics": _metrics_to_dict(scorer.outputs) if scorer.outputs else None,
                 }.items()
@@ -652,6 +658,7 @@ def _parse_scorer_config(raw: dict[str, Any], default_name: str) -> ScorerConfig
         "provenance_paths",
         "scope",
         "namespace",
+        "parameters",
     }
     unknown = sorted(set(raw) - allowed_fields)
     if unknown:
@@ -719,7 +726,45 @@ def _parse_scorer_config(raw: dict[str, Any], default_name: str) -> ScorerConfig
         docker_args=docker_args,
         provenance_paths=tuple(provenance_paths),
         namespace=None if raw.get("namespace") is None else str(raw["namespace"]),
+        parameters=parse_scorer_parameters(raw.get("parameters", {})),
     )
+
+
+def parse_scorer_parameters(raw: Any) -> dict[str, Any]:
+    """Copy a scorer's finite JSON object without coercing keys or values."""
+    if not isinstance(raw, dict):
+        raise ValueError("scorer.parameters must be a mapping")
+    active: set[int] = set()
+
+    def copy_value(value: Any, location: str) -> Any:
+        if value is None or type(value) in {str, bool, int}:
+            return value
+        if type(value) is float:
+            if not isfinite(value):
+                raise ValueError(f"{location} must be finite")
+            return value
+        if isinstance(value, (dict, list)):
+            if id(value) in active:
+                raise ValueError(f"{location} must not contain circular references")
+            active.add(id(value))
+            try:
+                if isinstance(value, dict):
+                    result = {}
+                    for key, item in value.items():
+                        if not isinstance(key, str) or not key.strip():
+                            raise ValueError(f"{location} keys must be non-empty strings")
+                        result[key] = copy_value(item, f"{location}.{key}")
+                    return result
+                return [copy_value(item, f"{location}[{index}]")
+                        for index, item in enumerate(value)]
+            finally:
+                active.remove(id(value))
+        raise ValueError(
+            f"{location} must contain only JSON values "
+            "(objects, arrays, strings, finite numbers, booleans or null)"
+        )
+
+    return copy_value(raw, "scorer.parameters")
 
 
 def _parse_command(raw_command: Any, mode: str) -> str | list[str] | None:

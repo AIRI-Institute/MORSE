@@ -12,7 +12,10 @@ import shutil
 import subprocess
 from pathlib import Path
 
-from model import load_profile
+if __package__:
+    from .model import load_profile
+else:
+    from model import load_profile
 
 
 REPO = "cai"

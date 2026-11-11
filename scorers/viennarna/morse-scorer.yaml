@@ -53,11 +53,14 @@ outputs:
 parameters:
   max_bp_span:
     type: int
-    default: 200
+    default: 300
     min: 0
     max: 100000
-    env: VIENNARNA_MAX_BP_SPAN
-    description: Maximum span between paired nucleotides; 0 disables the limit.
+    description: Maximum span between paired nucleotides, in nt; 0 disables the limit.
+  compute_ensemble:
+    type: bool
+    default: false
+    description: Calculate ensemble free energy and diversity in addition to MFE.
 self_test:
   sequence: AUGGCCGCCGCCGCCGCCUAA
   sequence_context:

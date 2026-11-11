@@ -25,7 +25,7 @@ morse-core = "morse.cli:main"
 morse-backend = "morse.backend:main"
 
 [tool.setuptools]
-packages = ["morse"]
+packages = ["morse", "morse.resources"]
 
 [tool.setuptools.package-data]
 morse = ["resources/*.py"]

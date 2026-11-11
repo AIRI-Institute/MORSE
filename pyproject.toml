@@ -24,17 +24,28 @@ paper = [
   "scipy==1.15.3",
 ]
 notebook = ["morse-core[notebook]==0.4.0"]
+mfe = ["ViennaRNA==2.7.2"]
 
 [project.scripts]
 morse = "morse_tools.cli:main"
+morse-mfe = "scorers.viennarna.scorer:main"
+morse-cai = "scorers.cai.server:main"
+morse-csi = "scorers.csi.server:main"
+
+[tool.setuptools]
+include-package-data = false
 
 [tool.setuptools.packages.find]
-include = ["morse_tools*", "paper*", "assets*"]
+include = ["morse_tools*", "paper*", "assets*", "scorers", "scorers.cai", "scorers.csi", "scorers.viennarna"]
 exclude = ["paper.raw*", "paper.reference*", "paper.data*"]
 
 [tool.setuptools.package-data]
 assets = ["*.json"]
 paper = ["*.json", "*.yaml"]
+scorers = ["*/morse-scorer*.yaml"]
+"scorers.cai" = ["profiles/*.json", "LICENSE"]
+"scorers.csi" = ["profiles/*.json", "LICENSE"]
+"scorers.viennarna" = ["LICENSE", "ViennaRNA-COPYING.txt", "requirements-portable.txt"]
 
 [tool.uv.workspace]
 members = ["core", "warm-starter", "scorers/manufacturability"]

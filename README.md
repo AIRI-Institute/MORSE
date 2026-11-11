@@ -32,6 +32,25 @@ source .venv/bin/activate
 morse run --config examples/quickstart/experiment.yaml
 ```
 
+For native MFE scoring on CPU, include the `mfe` extra:
+
+```sh
+uv sync --python 3.13 --all-packages --extra paper --extra mfe --frozen
+```
+
+For notebook use, also include `--extra notebook` in this command.
+
+With Python 3.10–3.13, a pip alternative is:
+
+```sh
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install ./core ./warm-starter ./scorers/manufacturability '.[mfe]'
+```
+
+The pip command installs compatible dependencies; use the uv lock for reference
+reproduction. See the [MFE setup and YAML example](scorers/viennarna/README.md#native-cpu-setup).
+
 ## Quick start
 
 Run the bundled CPU example:
@@ -49,7 +68,7 @@ score tables and `report.md`.
 Start with the [commented configuration template](examples/experiment.template.yaml)
 or the [working MAGE-A1 example](examples/vaccines/magea1/experiment.yaml).
 The YAML defines the input sequence and part coordinates, allowed changes,
-scorer commands, metric roles and search settings. CDS is required; UTRs and
+scorer commands, parameters, metric roles and search settings. CDS is required; UTRs and
 poly(A) are optional.
 
 To create a configuration from your own CDS FASTA:
@@ -76,6 +95,8 @@ UTR libraries and search options, and [examples/](examples/) for complete config
 
 Each scorer is called through a Bash command in the YAML. The command can run
 a local program, a Docker container or a client for an existing service.
+Put calculation settings in the scorer's optional `parameters` mapping; MORSE
+sends them in the JSON request. See the [MFE example](scorers/viennarna/README.md#native-cpu-setup).
 
 List the available scorers, inspect an interface and generate its YAML section:
 
@@ -83,7 +104,7 @@ List the available scorers, inspect an interface and generate its YAML section:
 uv run morse scorers
 uv run morse scorers describe cai
 uv run morse scorers template cai \
-  --command 'docker run --rm -i ghcr.io/shpakb/morse-cai:2.2.0'
+  --command '"${MORSE_PYTHON}" -m scorers.cai.server'
 ```
 
 Replace the experiment's `scorers` section with the generated section and
@@ -102,7 +123,7 @@ viewing results. It supports local execution and a
 For local notebook use, install the notebook dependencies:
 
 ```sh
-uv sync --all-packages --extra paper --extra notebook --frozen
+uv sync --all-packages --extra paper --extra mfe --extra notebook --frozen
 ```
 
 ## Reproduce the paper

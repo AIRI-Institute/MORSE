@@ -9,7 +9,7 @@ from typing import Any
 
 import yaml
 
-from morse.scorer_manifest import load_scorer_manifest
+from morse.scorer_manifest import load_scorer_manifest, request_parameter_specs
 from morse.schema4 import scope_expression, scope_from_internal
 
 
@@ -49,13 +49,20 @@ def scorer_template(manifest: dict[str, Any], command: str | None) -> dict[str, 
     """Return a pasteable section using the scorer's declared default policies."""
     if command is not None and not command.strip():
         raise ValueError("--command must be a non-empty Bash command")
-    return {"scorers": [{
+    section = {
         "name": manifest["id"],
         "command": command if command is not None else "REPLACE_WITH_YOUR_SCORER_COMMAND",
+    }
+    defaults = {key: copy.deepcopy(spec["default"])
+                for key, spec in request_parameter_specs(manifest).items() if "default" in spec}
+    if defaults:
+        section["parameters"] = defaults
+    section.update({
         "timeout_seconds": manifest["runtime"]["timeout_seconds"],
         "scope": scope_from_internal(manifest["scope"]["default"]),
         "metrics": _metrics(manifest),
-    }]}
+    })
+    return {"scorers": [section]}
 
 
 def scorer_interface(manifest: dict[str, Any]) -> dict[str, Any]:
@@ -72,20 +79,28 @@ def scorer_interface(manifest: dict[str, Any]) -> dict[str, Any]:
         for field in ("unit", "value_range"):
             if field in output:
                 metrics[name][field] = output[field]
+    parameter_specs = request_parameter_specs(manifest)
+    defaults = {key: copy.deepcopy(spec["default"])
+                for key, spec in parameter_specs.items() if "default" in spec}
+    request_example = {
+        "request_id": 1,
+        "sequences": [manifest["self_test"]["sequence"]],
+        "sequence_contexts": [manifest["self_test"]["sequence_context"]],
+    }
+    if defaults:
+        request_example["parameters"] = defaults
     return {
         "id": manifest["id"], "name": manifest["name"], "version": manifest["version"],
         "description": manifest["description"], "scope": scope,
         "metrics": metrics,
+        "parameters": parameter_specs,
         "protocol": {
             "stdin": "One JSON request followed by EOF per batch",
             "stdout": "One JSON object with the same request_id and an outputs list in input order",
             "stderr": "Diagnostics",
+            "parameters": "Optional JSON object containing scorer-specific run settings",
         },
-        "request_example": {
-            "request_id": 1,
-            "sequences": [manifest["self_test"]["sequence"]],
-            "sequence_contexts": [manifest["self_test"]["sequence_context"]],
-        },
+        "request_example": request_example,
     }
 
 
@@ -147,7 +162,14 @@ def main(argv: list[str], *, root: Path) -> int:
                         print(f"    Range: {metric['value_range']}")
                 print("\nProtocol: JSON request on stdin, then EOF; JSON response on stdout.")
                 print("Response: same request_id; outputs has one metric object per sequence, in input order.")
-                print("Model and runtime settings belong to scorer preparation.")
+                if interface["parameters"]:
+                    print("\nParameters:")
+                    for name, spec in interface["parameters"].items():
+                        default = f"; default: {json.dumps(spec['default'])}" if "default" in spec else ""
+                        print(f"  {name} [{spec['type']}{default}]")
+                        print(f"    {spec['description']}")
+                    print("Set these in the scorer's YAML parameters section.")
+                print("Scorer dependencies must already be installed.")
         return 0
     except (OSError, ValueError) as exc:
         parser.error(str(exc))

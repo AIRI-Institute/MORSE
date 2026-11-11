@@ -28,6 +28,16 @@ SUPPORTED_PARAMETER_OWNERS = {"experiment", "backend"}
 ENVIRONMENT_NAME_PATTERN = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
 
 
+def request_parameter_specs(manifest: Mapping[str, Any]) -> dict[str, dict[str, Any]]:
+    """Parameters sent in JSON, excluding legacy environment and asset setup."""
+    return {
+        name: copy.deepcopy(spec)
+        for name, spec in manifest.get("parameters", {}).items()
+        if spec.get("configurable_by", "experiment") == "experiment"
+        and not any(spec.get(key) for key in ("env", "mount", "backend_env"))
+    }
+
+
 def load_scorer_manifest(path: str | Path) -> dict[str, Any]:
     manifest_path = Path(path)
     try:

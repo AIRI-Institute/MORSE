@@ -42,8 +42,9 @@ def build_notebook() -> dict[str, Any]:
             For this private repository, use an authenticated Git environment or
             provide an existing checkout through `MONOREPO_ROOT`. Keep credentials
             out of notebook fields. Locally install the optional
-            widgets with `uv sync --all-packages --extra paper --extra notebook --frozen`.
-            For pip installations, use `morse-core[notebook]` from this checkout.
+            widgets with `uv sync --all-packages --extra paper --extra mfe --extra notebook --frozen`.
+            The optional installer prepares MORSE, notebook widgets and native
+            CPU scorers from this checkout.
             """),
         _cell("code", "bootstrap_environment", """
             # @title Locate or install this MORSE revision
@@ -89,7 +90,13 @@ def build_notebook() -> dict[str, Any]:
                     raise RuntimeError("Could not resolve the cloned MORSE commit")
                 RESOLVED_MONOREPO_COMMIT = None
             if INSTALL_NOTEBOOK_DEPENDENCIES:
-                subprocess.run([sys.executable, "-m", "pip", "install", "-q", "-e", str(ROOT / "core") + "[notebook]"], check=True)
+                subprocess.run([
+                    sys.executable, "-m", "pip", "install", "-q",
+                    "-e", str(ROOT / "core") + "[notebook]",
+                    "-e", str(ROOT / "warm-starter"),
+                    "-e", str(ROOT / "scorers/manufacturability"),
+                    "-e", str(ROOT) + "[mfe]",
+                ], check=True)
             STATE_ROOT = Path.home() / "MORSE"
             if IS_COLAB and MOUNT_GOOGLE_DRIVE:
                 from google.colab import drive
@@ -130,10 +137,13 @@ def build_notebook() -> dict[str, Any]:
             FASTA choices. Leave absent UTRs and poly(A) blank. Select changes and search
             settings. Add scorer metadata from the local catalog, then enter the
             Bash command prepared on the machine that will execute the run.
+            Enter calculation settings in **Parameters** as a YAML mapping, for
+            example `max_bp_span: 300` and `compute_ensemble: false` for native MFE.
 
             For each metric choose `optimize` with `min`/`max`, `threshold` with
             bounds or `equals`, or `log`. A command reads one JSON batch from stdin
-            followed by EOF and writes one JSON response. Use `curl --data-binary @-`
+            followed by EOF and writes one JSON response. Parameters are included
+            in that request. Use `curl --data-binary @-`
             for a prepared HTTP service or `docker exec -i` for a running container.
 
             **Generate YAML** updates the editable full configuration below the

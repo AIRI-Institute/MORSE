@@ -36,7 +36,7 @@ def _require_checkout_resources(root: Path, command: str) -> None:
             f"morse {command} requires the complete monorepo checkout and its data files. "
             f"Resources were not found under {root}. Install with uv from that checkout, "
             "or set MORSE_ROOT to its absolute path. A standalone wheel supports "
-            "independent init/run experiments; it does not contain the paper bundle or scorer sources."
+            "independent experiments and native CPU scorers; the full paper bundle requires a checkout."
         )
 
 

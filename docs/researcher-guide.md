@@ -144,7 +144,7 @@ morse scorers describe --manifest /path/to/morse-scorer.yaml
 morse scorers template --manifest /path/to/morse-scorer.yaml --command './my-scorer-client.sh'
 ```
 
-Descriptions show metric names, types and scopes. Templates provide a run YAML
+Descriptions show metric names, types, scopes and calculation parameters. Templates provide a run YAML
 section for your command; review its scope and metric roles. Scorer manifests
 are installation/interface metadata, not a request to launch an image during
 optimization. Use each scorer's README and the asset registry to prepare its
@@ -158,16 +158,19 @@ JSON object on stdout with the same `request_id` and one output dictionary per
 input sequence, in the same order:
 
 ```json
-{"request_id":1,"sequences":["ATGGCTCGT"]}
+{"request_id":1,"sequences":["ATGGCTCGT"],"parameters":{"target_gc":0.5}}
 ```
 
 ```json
 {"request_id":1,"outputs":[{"cpg_per_kb":111.11111111111111,"gc_fraction":0.5555555555555556,"gc_distance":0.05555555555555558}]}
 ```
 
-MORSE routes the requested sequence scope before invoking the command. The
-request can also contain `sequence_contexts` with physical-part ranges; forward
-these intact when calling a model that uses them. Send logs to stderr. An error
+MORSE routes the requested sequence scope before invoking the command. Optional
+`parameters` comes from the scorer's YAML section and holds JSON-compatible
+calculation settings. The adapter validates its supported names, types and ranges.
+An omitted or empty mapping sends no `parameters` field. The request can also
+contain `sequence_contexts` with physical-part ranges; forward both fields intact
+when calling a model that uses them. Send logs to stderr. An error
 object such as `{"request_id":1,"error":"message"}`, a nonzero exit, an invalid
 response or a timeout stops scoring.
 
@@ -177,6 +180,8 @@ A local script, relative to the configuration directory:
 scorers:
   - name: sequence_metrics
     command: '"${MORSE_PYTHON}" scorer.py'
+    parameters:
+      target_gc: 0.5
     provenance_paths: [scorer.py]
     scope: [start_codon, cds_body]
     metrics:

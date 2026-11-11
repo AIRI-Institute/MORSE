@@ -6,13 +6,22 @@ import json
 from pathlib import Path
 from typing import Iterator
 
-from model import (
-    DNA_CODON_TABLE,
-    STOP_CODONS,
-    normalize_dna,
-    profile_from_mapping,
-    split_codons,
-)
+if __package__:
+    from .model import (
+        DNA_CODON_TABLE,
+        STOP_CODONS,
+        normalize_dna,
+        profile_from_mapping,
+        split_codons,
+    )
+else:
+    from model import (
+        DNA_CODON_TABLE,
+        STOP_CODONS,
+        normalize_dna,
+        profile_from_mapping,
+        split_codons,
+    )
 
 
 def main() -> int:

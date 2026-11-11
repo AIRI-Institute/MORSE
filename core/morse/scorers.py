@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import json
 import math
 import os
@@ -85,7 +86,8 @@ class BashCommandScorer:
 
     def __init__(self, command: str, timeout_seconds: float = 120,
                  name: str | None = None, env: dict[str, str] | None = None,
-                 workdir: str | None = None) -> None:
+                 workdir: str | None = None,
+                 parameters: dict[str, Any] | None = None) -> None:
         if not isinstance(command, str) or not command.strip():
             raise ValueError("Bash scorer command must be a non-empty string")
         if not math.isfinite(timeout_seconds) or timeout_seconds <= 0:
@@ -95,6 +97,8 @@ class BashCommandScorer:
         self.name = name or "Bash command"
         self.env = env or {}
         self.workdir = workdir
+        from morse.config import parse_scorer_parameters
+        self.parameters = parse_scorer_parameters({} if parameters is None else parameters)
         self._request_id = 0
         self._process: subprocess.Popen[str] | None = None
 
@@ -111,6 +115,8 @@ class BashCommandScorer:
         request = {"request_id": self._request_id, "sequences": sequences}
         if sequence_contexts is not None:
             request["sequence_contexts"] = sequence_contexts
+        if self.parameters:
+            request["parameters"] = copy.deepcopy(self.parameters)
         environment = _merged_env(self.env)
         environment.setdefault("MORSE_PYTHON", sys.executable)
         try:
@@ -125,7 +131,7 @@ class BashCommandScorer:
         self._process = process
         try:
             try:
-                stdout, stderr = process.communicate(json.dumps(request) + "\n", timeout=self.timeout_seconds)
+                stdout, stderr = process.communicate(json.dumps(request, allow_nan=False) + "\n", timeout=self.timeout_seconds)
             except subprocess.TimeoutExpired as exc:
                 self._kill_owned_group(process)
                 _, stderr = process.communicate()
@@ -181,12 +187,15 @@ class PersistentProcessScorer:
         name: str | None = None,
         env: dict[str, str] | None = None,
         workdir: str | None = None,
+        parameters: dict[str, Any] | None = None,
     ) -> None:
         self.command = command
         self.timeout_seconds = timeout_seconds
         self.name = name or " ".join(shlex.quote(part) for part in command)
         self.env = env or {}
         self.workdir = workdir
+        from morse.config import parse_scorer_parameters
+        self.parameters = parse_scorer_parameters({} if parameters is None else parameters)
         self._process: subprocess.Popen[str] | None = None
         self._request_id = 0
 
@@ -197,6 +206,8 @@ class PersistentProcessScorer:
         self,
         sequences: list[str],
         sequence_contexts: list[dict[str, object]] | None,
+        *,
+        parameters: dict[str, Any] | None = None,
     ) -> list[dict[str, Any]]:
         if not sequences:
             return []
@@ -204,6 +215,11 @@ class PersistentProcessScorer:
             raise ValueError(
                 "sequence_contexts must contain one context per input sequence"
             )
+        if parameters is None:
+            request_parameters = self.parameters
+        else:
+            from morse.config import parse_scorer_parameters
+            request_parameters = parse_scorer_parameters(parameters)
         process = self._ensure_process()
         if process.stdin is None or process.stdout is None:
             raise RuntimeError(f"Persistent scorer {self.name!r} has closed pipes")
@@ -218,7 +234,9 @@ class PersistentProcessScorer:
                 else {}
             ),
         }
-        process.stdin.write(json.dumps(request) + "\n")
+        if request_parameters:
+            request["parameters"] = copy.deepcopy(request_parameters)
+        process.stdin.write(json.dumps(request, allow_nan=False) + "\n")
         process.stdin.flush()
 
         line = self._readline_with_timeout(process)
@@ -390,7 +408,7 @@ def make_raw_scorer(config: ScorerConfig, *, legacy_python: str | None = None) -
             raise ValueError(f"Bash scorer {config.name!r} must define a command string")
         return BashCommandScorer(
             config.command, timeout_seconds=config.timeout_seconds, name=config.name,
-            env=config.env, workdir=config.workdir,
+            env=config.env, workdir=config.workdir, parameters=config.parameters,
         )
     if config.mode == "persistent-container":
         if config.image is None:
@@ -398,6 +416,7 @@ def make_raw_scorer(config: ScorerConfig, *, legacy_python: str | None = None) -
         return PersistentProcessScorer(
             docker_run_command(config.image, env=config.env, docker_args=config.docker_args),
             timeout_seconds=config.timeout_seconds, name=config.name,
+            parameters=config.parameters,
         )
     if config.mode == "persistent-process":
         if not config.command:
@@ -407,7 +426,7 @@ def make_raw_scorer(config: ScorerConfig, *, legacy_python: str | None = None) -
             command[0] = legacy_python
         return PersistentProcessScorer(
             command, timeout_seconds=config.timeout_seconds, name=config.name,
-            env=config.env, workdir=config.workdir,
+            env=config.env, workdir=config.workdir, parameters=config.parameters,
         )
     raise ValueError(f"Unsupported scorer mode: {config.mode}")
 

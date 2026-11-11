@@ -6,6 +6,7 @@ snapshots in ``provenance_paths`` when these cannot be inferred from their comma
 """
 from __future__ import annotations
 
+import copy
 import hashlib
 import importlib.metadata
 import importlib.util
@@ -78,7 +79,7 @@ def scorer_provenance(scorer: ScorerConfig) -> dict[str, Any]:
         # source or state. Only explicitly declared host inputs are hashed.
         shell = Path(BASH_EXECUTABLE)
         environment = {"MORSE_PYTHON": os.environ.get("MORSE_PYTHON", sys.executable), **(scorer.env or {})}
-        return {
+        result = {
             "name": scorer.name, "mode": scorer.mode,
             "command": scorer.command, "workdir": str(base), "env": environment,
             "shell": {"path": str(shell), **content_digest(shell)},
@@ -87,6 +88,9 @@ def scorer_provenance(scorer: ScorerConfig) -> dict[str, Any]:
             "external_runtime_identity_verified": False,
             "verification_scope": "Exact Bash command, working directory, declared environment and declared host input files only. External service/container code, model assets and state are not verified.",
         }
+        if scorer.parameters:
+            result["parameters"] = copy.deepcopy(scorer.parameters)
+        return result
     command = list(scorer.command or [])
     if command:
         executable = command[0]
@@ -148,6 +152,8 @@ def scorer_provenance(scorer: ScorerConfig) -> dict[str, Any]:
             paths[f"mount:{index}"] = candidate
     inputs = {name: {"path": str(path.resolve()), **content_digest(path)} for name, path in sorted(paths.items())}
     result: dict[str, Any] = {"name": scorer.name, "mode": scorer.mode, "inputs": inputs}
+    if scorer.parameters:
+        result["parameters"] = copy.deepcopy(scorer.parameters)
     if scorer.image:
         result["image"] = scorer.image
         result["image_id"] = resolve_image_id(scorer.image)

@@ -1,6 +1,7 @@
 # Research configuration examples
 
-These schema-4 examples declare prepared Bash scorer commands and `metrics`.
+These schema-4 examples declare prepared Bash scorer commands, calculation
+`parameters` and `metrics`.
 They preserve the example objectives, thresholds, scopes, seeds and search
 settings. They are independent research templates, not the frozen paper runs.
 See `paper/` for the publication's exact protocols.
@@ -11,15 +12,15 @@ The dependency-free process example can run immediately after installation:
 morse run --config core/configs/mlana_cds_single_cpg_ga.yaml
 ```
 
-The remaining examples call containers that you prepare and start before
-optimization. The commands use `docker exec -i`; they never create containers,
-install dependencies or download checkpoints. Existing scorer parameters are
-passed explicitly with `docker exec -e`.
+The remaining examples use native MFE and prepared containers for other models.
+Install native MFE with `uv sync --all-packages --extra paper --extra mfe --frozen`.
+Its YAML `parameters` specifies `max_bp_span: 300` and `compute_ensemble: false`.
+Container commands use `docker exec -i`; they never create containers, install
+dependencies or download checkpoints. Their setup settings remain in `docker exec -e`.
 
 | Container variable | Default name | Script already present inside it |
 |---|---|---|
 | `MORSE_CAI_CONTAINER` | `morse-cai` | `/app/server.py` |
-| `MORSE_VIENNARNA_CONTAINER` | `morse-viennarna` | `/app/scorer.py` |
 | `MORSE_TRANSLATION_EFFICIENCY_CONTAINER` | `morse-translation-efficiency` | `/app/server.py` |
 | `MORSE_HALF_LIFE_CONTAINER` | `morse-half-life` | `/app/server.py` |
 | `MORSE_IMMUNOGENICITY_CONTAINER` | `morse-immunogenicity` | `/app/server.py` |

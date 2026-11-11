@@ -23,56 +23,79 @@ physical accuracy is determined by the ViennaRNA model and its parameters.
 ## Interface
 
 Input: sequence-batch JSONL request `{"request_id": ..., "sequences": [...]}`.
-Core resolves the scope before invoking the runtime. `VIENNARNA_ENABLE_PF=0`
-disables the expensive ensemble calculation; `VIENNARNA_MAX_BP_SPAN` limits
-the maximum paired-base span, and `0` leaves it unlimited. The default scope is
-`full_sequence`; the manifest allows any parts, part-relative slices, and
-windows with explicit upstream/downstream context. The runtime always receives
-only the sequence already resolved by Core.
+Core resolves the scope before invoking the runtime. Optional request
+`parameters` contains calculation settings:
+
+- `max_bp_span`: maximum paired-base span in nucleotides; default 300, or 0 for unrestricted pairing.
+- `compute_ensemble`: calculate partition-function metrics; default `false`.
+
+The default scope is `full_sequence`; the manifest allows any parts,
+part-relative slices, and windows with explicit upstream/downstream context.
+The runtime receives only the sequence already resolved by Core.
 
 Outputs: `mfe` (kcal/mol), `mfe_per_nt`, `gc_fraction`, `mfe_structure`,
 `ensemble_free_energy` (kcal/mol), and `ensemble_diversity`.
 
 ## Native CPU setup
 
-Install the official `ViennaRNA==2.7.2` Python wheel into the environment used
-for the scorer. From the monorepo root:
+From the monorepo root, install MORSE with the `mfe` extra. This includes
+`ViennaRNA==2.7.2`:
 
 ```sh
-uv pip install --python .venv/bin/python -r scorers/viennarna/requirements-portable.txt
+uv sync --python 3.13 --all-packages --extra paper --extra mfe --frozen
 ```
 
-For an experiment, use a Bash command and explicit metric policies. Replace
-`/path/to/morse` with the checkout path:
+For a pip-based virtual environment, install the local packages together:
+
+```sh
+python -m pip install ./core ./warm-starter ./scorers/manufacturability '.[mfe]'
+```
+
+Use the installed module in the experiment YAML:
 
 ```yaml
 scorers:
   - name: viennarna
-    command: 'VIENNARNA_ENABLE_PF=0 VIENNARNA_MAX_BP_SPAN=200 "${MORSE_PYTHON}" /path/to/morse/scorers/viennarna/scorer.py'
+    command: '"${MORSE_PYTHON}" -m scorers.viennarna.scorer'
+    parameters:
+      max_bp_span: 300
+      compute_ensemble: false
     timeout_seconds: 1800
-    scope: {type: full_sequence}
+    scope: full_sequence
     metrics:
-      mfe_per_nt: {role: optimize, direction: min}
-      mfe: {role: log}
+      mfe: {role: optimize, direction: min}
+      mfe_per_nt: {role: log}
       gc_fraction: {role: log}
       mfe_structure: {role: log, value_type: structure}
 ```
 
 `MORSE_PYTHON` defaults to MORSE's interpreter. MORSE sends one JSON request and
-EOF per batch; the adapter returns one JSON response. Add `scorer.py` to
-`provenance_paths` when using caching or resume. Partition-function outputs are
-disabled in this example; enable them explicitly for ensemble metrics.
+EOF per batch; the adapter returns one JSON response. The command works outside
+the checkout as well. `morse-mfe` is the equivalent command in an activated
+environment. A direct check is:
+
+```sh
+printf '%s\n' '{"request_id":1,"sequences":["AUGGCCGCCGCCGCCGCCUAA"],"parameters":{"max_bp_span":300,"compute_ensemble":false}}' \
+  | python -m scorers.viennarna.scorer
+```
+
+Set `max_bp_span: 0` for unrestricted pairing. Set `compute_ensemble: true`
+when requesting `ensemble_free_energy` or `ensemble_diversity`.
 
 ## Reproducibility
 
 The paper uses a pinned container. Native CPU execution uses the same ViennaRNA
-API; retain the configured version, span limit and partition-function setting.
+API; retain the configured version, span limit and ensemble setting.
+The published 2.2.0 image uses the older `VIENNARNA_MAX_BP_SPAN` and
+`VIENNARNA_ENABLE_PF` environment variables. Use the updated native adapter or
+a new source build for JSON `parameters`; frozen paper configs retain their
+original container commands.
 Container preparation and optional archiving are separate from optimization:
 
 ```bash
 # Run from the monorepo root.
-docker build --platform linux/amd64 -t ghcr.io/shpakb/morse-viennarna:2.2.0 scorers/viennarna
-python scorers/viennarna/prepare_assets.py --docker-image ghcr.io/shpakb/morse-viennarna:2.2.0
+docker build --platform linux/amd64 -t morse-viennarna:local scorers/viennarna
+python scorers/viennarna/prepare_assets.py --docker-image morse-viennarna:local
 ```
 
 The image preserves the adapter's MIT notice and ViennaRNA's exact upstream

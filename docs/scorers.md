@@ -44,18 +44,51 @@ CAI and CSI retain their dependency-free native Python defaults in the catalog.
 morse scorers
 morse scorers describe cai
 morse scorers describe cai --json
-morse scorers template cai --command 'docker exec -i morse-cai python3 /app/server.py'
+morse scorers template cai --command '"${MORSE_PYTHON}" -m scorers.cai.server'
 morse scorers describe --manifest /path/to/morse-scorer.yaml
 morse scorers template --manifest /path/to/morse-scorer.yaml --command './my-client.sh'
 ```
 
 These commands read interface metadata without loading a model. Prepare the
-scorer process or container first, then place its Bash `command`, `scope` and `metrics`
+scorer process or container first, then place its Bash `command`, `scope`, optional `parameters` and `metrics`
 in the run YAML. Each command receives one JSON request and EOF, and returns one
 JSON response with matching `request_id` and ordered `outputs`. A local script,
 `docker exec -i` or an HTTP client with `curl --data-binary @-` can implement this
 contract. MORSE does not prepare or manage external services and containers.
 See `docs/researcher-guide.md` for complete examples.
+
+`parameters` is a mapping of calculation settings passed in the JSON request.
+Values can be JSON scalars, lists or objects; the adapter validates its supported
+names and ranges. Existing adapters that do not accept this field can still be
+used without `parameters`.
+
+## Native Python scorers
+
+CAI, CSI and sequence feasibility are installed with MORSE. For native MFE,
+include the `mfe` extra when setting up the environment:
+
+```sh
+uv sync --python 3.13 --all-packages --extra paper --extra mfe --frozen
+```
+
+The installed modules work from any directory:
+
+| Scorer | JSONL command |
+|---|---|
+| CAI | `python -m scorers.cai.server` or `morse-cai` |
+| CSI | `python -m scorers.csi.server` or `morse-csi` |
+| MFE | `python -m scorers.viennarna.scorer` or `morse-mfe` |
+| Sequence feasibility | `python -m manufacturability_scorer.feasibility_server` |
+
+In YAML, use `"${MORSE_PYTHON}"` in place of `python` to select MORSE's environment.
+CAI and CSI include their default profiles. Custom profiles are selected with
+`CAI_PROFILE` and `CSI_PROFILE`. See the [MFE YAML example](../scorers/viennarna/README.md#native-cpu-setup).
+When caching or resuming, list the adapter and selected profile files in
+`provenance_paths`.
+GPU scorer runtimes keep their separate dependencies and containers.
+For native MFE, configure `max_bp_span` and `compute_ensemble` in `parameters`;
+see the linked YAML example. The published ViennaRNA 2.2.0 container uses the
+older environment-variable interface; use the updated native adapter for JSON parameters.
 
 ## Optional native assets and source builds
 

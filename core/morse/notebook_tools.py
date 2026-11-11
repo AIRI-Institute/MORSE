@@ -27,7 +27,7 @@ from morse.codon import normalize_dna, translate_dna
 from morse.construct import PART_ORDER, STOP_CODONS
 from morse.input_bundle import input_references as _input_references, relative_input_name as _safe_input_name
 from morse.run_spec import load_run_spec
-from morse.scorer_manifest import load_scorer_manifest
+from morse.scorer_manifest import load_scorer_manifest, request_parameter_specs
 from morse.visualization import render_sequence_scope_svg
 
 EXPECTED_BACKEND_API_VERSION = 6
@@ -317,21 +317,35 @@ def load_manifest_catalog(root: str | Path) -> dict[str, dict[str, Any]]:
             if output["type"] != "float":
                 policy["value_type"] = output["type"]
             metrics[name] = policy
-        result[manifest["id"]] = {
+        entry = {
             "name": manifest["id"], "command": "REPLACE_WITH_YOUR_SCORER_COMMAND",
             "timeout_seconds": manifest["runtime"]["timeout_seconds"],
             "scope": scope_from_internal(manifest["scope"]["default"]), "metrics": metrics,
         }
+        parameters = {
+            name: copy.deepcopy(spec["default"])
+            for name, spec in request_parameter_specs(manifest).items()
+            if "default" in spec
+        }
+        if parameters:
+            entry["parameters"] = parameters
+        result[manifest["id"]] = entry
     return result
 
 
 class ScorerEditor:
-    """A command, scope and metric policies; no runtime setup controls."""
+    """A prepared command, calculation parameters, scope and metric policies."""
     def __init__(self, scorer: Mapping[str, Any]):
         import ipywidgets as w
         from morse.schema4 import scope_expression
         self.name = w.Text(value=str(scorer["name"]), description="Name")
         self.command = w.Textarea(value=str(scorer["command"]), description="Bash", layout=w.Layout(width="100%", height="70px"))
+        parameters = scorer.get("parameters", {})
+        self.parameters = w.Textarea(
+            value=yaml.safe_dump(parameters, sort_keys=False, allow_unicode=True) if parameters else "",
+            description="Parameters", placeholder="parameter_name: value",
+            layout=w.Layout(width="100%", height="80px"),
+        )
         scope = scorer["scope"]
         self.scope = w.Text(value=scope_expression(scope), description="Scope", layout=w.Layout(width="100%"))
         self.timeout = w.IntText(value=int(scorer.get("timeout_seconds", 120)), description="Timeout (s)")
@@ -358,9 +372,10 @@ class ScorerEditor:
             role.observe(update, names="value")
             update()
             rows.append(w.HBox([w.Label(name, layout=w.Layout(width="190px")), role, direction, lower, upper, equals]))
-        self.widget = w.VBox([self.enabled, self.name, self.command, self.scope, self.timeout, *rows])
+        self.widget = w.VBox([self.enabled, self.name, self.command, self.parameters, self.scope, self.timeout, *rows])
 
     def configuration(self) -> dict[str, Any]:
+        from morse.config import parse_scorer_parameters
         from morse.schema4 import scope_to_internal
         if not self.command.value.strip() or self.command.value == "REPLACE_WITH_YOUR_SCORER_COMMAND":
             raise ValueError(f"Set the prepared Bash command for {self.name.value}")
@@ -377,8 +392,12 @@ class ScorerEditor:
                 metric["value_type"] = value_type
             metrics[name] = metric
         scope_to_internal(self.scope.value)
-        return {"name": self.name.value, "command": self.command.value, "timeout_seconds": self.timeout.value,
-                "scope": self.scope.value.strip(), "metrics": metrics}
+        result = {"name": self.name.value, "command": self.command.value, "timeout_seconds": self.timeout.value,
+                  "scope": self.scope.value.strip(), "metrics": metrics}
+        parameters = parse_scorer_parameters(yaml.safe_load(self.parameters.value) if self.parameters.value.strip() else {})
+        if parameters:
+            result["parameters"] = parameters
+        return result
 
 
 class ExperimentEditor:
