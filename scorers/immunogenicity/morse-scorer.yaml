@@ -83,7 +83,7 @@ parameters:
     type: string
     configurable_by: backend
     backend_env: IMMUNOGENICITY_DEVICE
-    default: cpu
+    default: auto
     choices: [auto, cpu, cuda]
     env: RINALMO_DEVICE
     description: PyTorch device used for inference inside the container.
@@ -92,23 +92,22 @@ parameters:
     default: 27
     min: 1
     max: 10000
-    env: RINALMO_WINDOW_SIZE
     description: Length of each RNA window in nucleotides.
   window_stride:
     type: int
     default: 3
     min: 1
     max: 10000
-    env: RINALMO_WINDOW_STRIDE
     description: Step between the starts of adjacent windows, in nucleotides.
+  window_offsets:
+    type: array
+    default: []
+    description: Non-negative window-start offsets; an empty list uses the standard zero offset.
   batch_size:
     type: int
-    configurable_by: backend
-    backend_env: IMMUNOGENICITY_BATCH_SIZE
     default: 256
     min: 1
     max: 65536
-    env: RINALMO_BATCH_SIZE
     description: Number of windows in one inference batch.
 self_test:
   sequence: AUGGCCGCCGCCGCCGCCGCCGCCGCCUAA

@@ -308,10 +308,14 @@ def construct_design_from_config(
     raw: dict[str, Any],
     base_dir: Path,
     mutable_parts: frozenset[str] | set[str],
+    *,
+    source_sequence: str | None = None,
 ) -> ConstructDesignSpace:
+    if source_sequence is not None and ("coordinates" not in raw or "parts" in raw):
+        raise ValueError("An explicit sequence requires construct.coordinates without construct.parts")
     from_coordinates = "fasta" in raw or "coordinates" in raw
     if from_coordinates:
-        raw = _parts_from_fasta_coordinates(raw, base_dir)
+        raw = _parts_from_fasta_coordinates(raw, base_dir, source_sequence=source_sequence)
     _reject_unknown_fields(
         raw,
         {"order", "allow_upstream_start_codons", "parts"},
@@ -401,7 +405,7 @@ def construct_design_from_config(
 
 
 def _parts_from_fasta_coordinates(
-    raw: dict[str, Any], base_dir: Path
+    raw: dict[str, Any], base_dir: Path, *, source_sequence: str | None = None
 ) -> dict[str, Any]:
     """Read one reference RNA and split it using explicit [start, end) ranges."""
     if "parts" in raw:
@@ -412,7 +416,7 @@ def _parts_from_fasta_coordinates(
         "construct",
     )
     fasta = raw.get("fasta")
-    if not isinstance(fasta, str) or not fasta.strip():
+    if source_sequence is None and (not isinstance(fasta, str) or not fasta.strip()):
         raise ValueError("construct.fasta must be a non-empty path")
     coordinates = _mapping(raw.get("coordinates"), "construct.coordinates")
     input_order = ("five_prime_utr", "cds", "three_prime_utr", "poly_a")
@@ -425,10 +429,13 @@ def _parts_from_fasta_coordinates(
             details.append("unknown " + ", ".join(extra))
         raise ValueError("construct.coordinates is invalid: " + "; ".join(details))
 
-    path = Path(fasta).expanduser()
-    if not path.is_absolute():
-        path = base_dir / path
-    sequence = normalize_dna(read_fasta(path).sequence)
+    if source_sequence is None:
+        path = Path(fasta).expanduser()
+        if not path.is_absolute():
+            path = base_dir / path
+        sequence = normalize_dna(read_fasta(path).sequence)
+    else:
+        sequence = normalize_dna(source_sequence)
     segments: dict[str, str] = {}
     cursor = 0
     for part in input_order:

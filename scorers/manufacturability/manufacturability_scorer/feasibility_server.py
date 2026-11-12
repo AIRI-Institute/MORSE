@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import copy
 import json
 import os
 import sys
@@ -22,8 +23,10 @@ def handle_request(
     request: dict[str, Any],
     scorer: SequenceFeasibilityScorer,
 ) -> dict[str, Any]:
+    if not isinstance(request, dict):
+        raise ValueError("Request must be a JSON object")
     unknown = sorted(
-        set(request) - {"request_id", "sequences", "sequence_contexts"}
+        set(request) - {"request_id", "sequences", "sequence_contexts", "parameters", "params"}
     )
     if unknown:
         raise ValueError("Unknown request fields: " + ", ".join(unknown))
@@ -32,10 +35,39 @@ def handle_request(
         isinstance(sequence, str) for sequence in sequences
     ):
         raise ValueError("Request must define a list of sequences")
+    effective = _for_request(request, scorer)
     return {
         "request_id": request.get("request_id"),
-        "outputs": [scorer.score_sequence(sequence) for sequence in sequences],
+        "outputs": [effective.score_sequence(sequence) for sequence in sequences],
+        "parameters": {"preset": effective.profile_id, **effective.parameters},
     }
+
+
+def _for_request(
+    request: dict[str, Any], baseline: SequenceFeasibilityScorer,
+) -> SequenceFeasibilityScorer:
+    if "parameters" in request and "params" in request:
+        raise ValueError("Use either parameters or params, not both")
+    parameters = request.get("parameters", request.get("params", {}))
+    if not isinstance(parameters, dict):
+        raise ValueError("parameters must be a mapping")
+    if not parameters:
+        return baseline
+    parameters = copy.deepcopy(parameters)
+    preset = parameters.pop("preset", baseline.profile_id)
+    if not isinstance(preset, str):
+        raise ValueError("preset must be a string")
+    if preset == baseline.profile_id:
+        defaults = baseline.parameters
+    else:
+        defaults = getattr(baseline, "_startup_overrides", None)
+        if defaults is None:
+            original = SequenceFeasibilityScorer(baseline.profile_id).parameters
+            defaults = {
+                key: value for key, value in baseline.parameters.items()
+                if key not in original or value != original[key]
+            }
+    return SequenceFeasibilityScorer(preset, **{**defaults, **parameters})
 
 
 def error_response(line: str, message: str) -> dict[str, Any]:
@@ -70,7 +102,9 @@ def from_environment(
             )
         except (ValueError, TypeError) as exc:
             raise ValueError(f"Invalid startup parameter {name}") from exc
-    return SequenceFeasibilityScorer(preset, **overrides)
+    scorer = SequenceFeasibilityScorer(preset, **overrides)
+    scorer._startup_overrides = copy.deepcopy(overrides)
+    return scorer
 
 
 def main() -> int:

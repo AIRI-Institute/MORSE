@@ -35,7 +35,7 @@ optimizer:
 scorers:
   - name: sequence_metrics
     command: '"${MORSE_PYTHON}" -m morse.resources.simple_scorer'
-    # parameters: {}  # See scorer interface.
+    # parameters: {}  # Optional scorer settings.
     scope: cds  # Region sent to the scorer.
     # timeout_seconds: 180
     # workdir: .

@@ -59,9 +59,12 @@ parameters:
     type: int
     default: 16
     min: 1
-    max: 128
-    env: RIBONN_BATCH_SIZE
     description: Number of complete transcripts per model batch.
+  cpu_threads:
+    type: int
+    default: 2
+    min: 1
+    description: CPU threads used during this request; the previous thread count is restored afterwards.
 self_test:
   sequence: GGGACCAUGGCCGCCGCCGCCGCCGCCGCCUAACUGG
   sequence_context:

@@ -110,12 +110,15 @@ def resolve_paths(raw: dict[str, Any], base_dir: Path, *, output_base_dir: Path 
         raw["output_dir"] = _path(raw["output_dir"], output_base_dir or base_dir, "output_dir")
 
 
-def build_design(name: str, raw: dict[str, Any], base_dir: Path) -> ConstructDesignSpace:
+def build_design(
+    name: str, raw: dict[str, Any], base_dir: Path, *, source_sequence: str | None = None
+) -> ConstructDesignSpace:
     _reject(raw, {"fasta", "coordinates", "changes", "allow_upstream_start_codons"}, "construct")
     changes = _mapping(raw.get("changes", {}), "construct.changes")
     _reject(changes, set(PART_ORDER), "construct.changes")
     source_raw = {key: value for key, value in raw.items() if key != "changes"}
-    design = construct_design_from_config(name, source_raw, base_dir, set(changes))
+    design = construct_design_from_config(name, source_raw, base_dir, set(changes),
+                                         source_sequence=source_sequence)
     updates: dict[str, Any] = {}
     source = design.source_construct
     for part, choice in changes.items():

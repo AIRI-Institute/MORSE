@@ -93,12 +93,37 @@ outputs:
     description: Number of unique scanMiR affinity models in the selected panel.
     default_policy: {role: log}
 parameters:
+  profile_path:
+    type: path
+    default: panels/2026-08-21/human/core_975.tsv
+    description: Human or mouse expression panel TSV in the scorer filesystem; bundled paths select their species automatically.
   species:
     type: string
-    default: human
     choices: [human, mouse]
-    env: IRNA_SPECIES
-    description: Human or mouse core_975 expression panel and scanMiR model collection.
+    description: Optional species override; inferred from profile_path, otherwise inherited from the runtime (human by default).
+  profiles:
+    type: array
+    nullable: true
+    default: null
+    description: Profile names from the selected species; null uses all bundled profiles.
+  max_log_kd:
+    type: float
+    default: -1.0
+    description: Maximum retained site log affinity.
+  min_site_distance:
+    type: int
+    default: 7
+    min: 1
+    description: Minimum distance between sites of the same miRNA, in nucleotides.
+  canonical_only:
+    type: bool
+    default: true
+    description: Restrict scanMiR matching to canonical sites.
+  workers:
+    type: int
+    default: 4
+    min: 1
+    description: Number of scanMiR worker processes.
 self_test:
   sequence: AAAATAAGCTAAAAAAACGTACGT
   sequence_context:

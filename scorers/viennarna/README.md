@@ -12,7 +12,7 @@ secondary structure, ensemble free energy, and ensemble diversity.
 
 This is a JSONL adapter around
 [ViennaRNA Package 2.7.2](https://github.com/ViennaRNA/ViennaRNA), not a trained
-model. It uses `RNA.fold_compound().mfe()` and, unless disabled, the partition
+model. It uses `RNA.fold_compound().mfe()` and, when requested, the partition
 function. Primary method publication:
 [Lorenz et al., Algorithms for Molecular Biology, 2011](https://doi.org/10.1186/1748-7188-6-26).
 
@@ -28,6 +28,13 @@ Core resolves the scope before invoking the runtime. Optional request
 
 - `max_bp_span`: maximum paired-base span in nucleotides; default 300, or 0 for unrestricted pairing.
 - `compute_ensemble`: calculate partition-function metrics; default `false`.
+- `temperature`: folding temperature in Celsius; default `37.0`.
+- `dangles`: dangling-end model `0/1/2/3`; default `2`. Ensemble calculations support `0` or `2`.
+- `no_lonely_pairs`: exclude isolated pairs; default `false`.
+
+Set these in YAML `parameters`. Missing values retain the prepared runtime defaults;
+legacy `VIENNARNA_*` settings remain supported. See the
+[parameter reference](../../docs/scorer-parameters.md).
 
 The default scope is `full_sequence`; the manifest allows any parts,
 part-relative slices, and windows with explicit upstream/downstream context.
@@ -59,6 +66,7 @@ scorers:
     command: '"${MORSE_PYTHON}" -m scorers.viennarna.scorer'
     parameters:
       max_bp_span: 300
+      temperature: 37.0
       compute_ensemble: false
     timeout_seconds: 1800
     scope: full_sequence

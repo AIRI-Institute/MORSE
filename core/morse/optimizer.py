@@ -8,9 +8,10 @@ import os
 import pickle
 import time
 import warnings
+from collections import Counter
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
-from typing import Any, Protocol
+from typing import Any, Callable, Protocol
 
 import numpy as np
 import cloudpickle
@@ -511,6 +512,7 @@ class PopulationHistory(Callback):
         self.total_generations = total_generations
         self.started_at = time.monotonic()
         self.progress_history: list[dict[str, Any]] = []
+        self.latest_snapshot: dict[str, Any] | None = None
         self.hypervolume_tracker = (
             hypervolume_tracker or NormalizedHypervolumeTracker()
         )
@@ -570,6 +572,7 @@ class PopulationHistory(Callback):
                 hypervolume=hypervolume,
                 best_hypervolume=self.best_hypervolume,
             )
+            self.latest_snapshot = snapshot
             self.progress_history.append(_compact_progress_snapshot(snapshot))
             _write_progress_json(
                 self.progress_path,
@@ -740,6 +743,13 @@ def _generation_progress_snapshot(
         "thresholds": thresholds,
         "logged_metrics": logged_metrics,
         "scorer_timings": list(timings.values()),
+        "utr_frequencies": {
+            field: dict(sorted(Counter(
+                getattr(record.construct, field).name
+                for record in population_records
+            ).items()))
+            for field in ("five_prime_utr", "three_prime_utr")
+        },
         "updated_at_unix": time.time(),
     }
 
@@ -761,6 +771,7 @@ def _numeric_progress_summary(
         return {
             "count": 0,
             "mean": None,
+            "std": None,
             "best": None,
             "median": None,
             "observed_min": None,
@@ -770,6 +781,7 @@ def _numeric_progress_summary(
     return {
         "count": len(numeric),
         "mean": float(np.mean(np.asarray(numeric, dtype=float))),
+        "std": float(np.std(np.asarray(numeric, dtype=float), ddof=0)),
         "best": best,
         "median": float(np.median(np.asarray(numeric, dtype=float))),
         "observed_min": min(numeric),
@@ -782,8 +794,14 @@ def _compact_progress_snapshot(snapshot: dict[str, Any]) -> dict[str, Any]:
         key: snapshot[key]
         for key in (
             "generation",
+            "total_generations",
+            "population_size",
             "evaluated_candidates",
+            "structural_valid_count",
+            "threshold_valid_count",
+            "hard_feasible_count",
             "hard_feasible_fraction",
+            "selection_feasible_count",
             "selection_feasible_fraction",
             "threshold_epsilon",
             "hypervolume",
@@ -792,6 +810,7 @@ def _compact_progress_snapshot(snapshot: dict[str, Any]) -> dict[str, Any]:
             "objectives",
             "thresholds",
             "logged_metrics",
+            "utr_frequencies",
         )
     }
 
@@ -1362,8 +1381,11 @@ def run_optimization(
     resume_from: Path | None = None,
     scoring_fingerprint: str | None = None,
     validator: Validator | None = None,
+    on_progress: Callable[[dict[str, Any]], None] | None = None,
     _interrupt_after_generations: int | None = None,
 ) -> RunResult:
+    if on_progress is not None and not callable(on_progress):
+        raise TypeError("on_progress must be callable or None")
     checkpoint_path = output_dir / CHECKPOINT_FILENAME
     exact_resume = bool(
         resume_from is not None
@@ -1559,6 +1581,25 @@ def run_optimization(
             problem,
             elapsed_seconds=time.monotonic() - history.started_at,
         )
+        if on_progress is not None and history.latest_snapshot is not None:
+            # Presentation observers may contain IPython handles or user closures.
+            # Keep them outside the algorithm, and notify only after a safe resume
+            # point exists. Mutating the payload must not affect the optimizer.
+            payload = {
+                "schema_version": 1,
+                **history.latest_snapshot,
+                "history": history.progress_history,
+            }
+            status = getattr(algorithm.termination, "status", None)
+            if callable(status):
+                early_status = status()
+                for key in ("hypervolume_history", "objective_history"):
+                    if early_status.get(key):
+                        early_status["stale_generations"] = early_status[key][-1].get("stale_generations")
+                payload["early_stopping"] = early_status
+            else:
+                payload["early_stopping"] = {"enabled": False}
+            on_progress(copy.deepcopy(payload))
         if (
             _interrupt_after_generations is not None
             and generations_this_process >= _interrupt_after_generations

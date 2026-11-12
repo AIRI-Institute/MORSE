@@ -659,6 +659,7 @@ def _parse_scorer_config(raw: dict[str, Any], default_name: str) -> ScorerConfig
         "scope",
         "namespace",
         "parameters",
+        "params",
     }
     unknown = sorted(set(raw) - allowed_fields)
     if unknown:
@@ -726,8 +727,15 @@ def _parse_scorer_config(raw: dict[str, Any], default_name: str) -> ScorerConfig
         docker_args=docker_args,
         provenance_paths=tuple(provenance_paths),
         namespace=None if raw.get("namespace") is None else str(raw["namespace"]),
-        parameters=parse_scorer_parameters(raw.get("parameters", {})),
+        parameters=scorer_parameters_from_mapping(raw),
     )
+
+
+def scorer_parameters_from_mapping(raw: Any) -> dict[str, Any]:
+    """Read calculation settings, accepting the shorter spelling as an alias."""
+    if "params" in raw and "parameters" in raw:
+        raise ValueError("Use scorer.parameters or scorer.params, not both")
+    return parse_scorer_parameters(raw.get("parameters", raw.get("params", {})))
 
 
 def parse_scorer_parameters(raw: Any) -> dict[str, Any]:

@@ -99,6 +99,7 @@ class BashCommandScorer:
         self.workdir = workdir
         from morse.config import parse_scorer_parameters
         self.parameters = parse_scorer_parameters({} if parameters is None else parameters)
+        self.resolved_parameters: dict[str, Any] | None = None
         self._request_id = 0
         self._process: subprocess.Popen[str] | None = None
 
@@ -153,6 +154,7 @@ class BashCommandScorer:
                 raise RuntimeError(f"Bash scorer {self.name!r} returned request_id {response.get('request_id')!r}, expected {self._request_id}")
             if "error" in response:
                 raise RuntimeError(f"Bash scorer {self.name!r} failed: {response['error']}")
+            self.resolved_parameters = _response_parameters(response)
             try:
                 return _outputs_from_batch_response(response, len(sequences))
             except RuntimeError as exc:
@@ -196,6 +198,7 @@ class PersistentProcessScorer:
         self.workdir = workdir
         from morse.config import parse_scorer_parameters
         self.parameters = parse_scorer_parameters({} if parameters is None else parameters)
+        self.resolved_parameters: dict[str, Any] | None = None
         self._process: subprocess.Popen[str] | None = None
         self._request_id = 0
 
@@ -253,6 +256,7 @@ class PersistentProcessScorer:
             )
         if "error" in raw:
             raise RuntimeError(f"Persistent scorer {self.name!r} failed: {raw['error']}")
+        self.resolved_parameters = _response_parameters(raw)
 
         return _outputs_from_batch_response(raw, len(sequences))
 
@@ -328,6 +332,14 @@ class CompositeScorer:
         self.name = "+".join(binding.name for binding in bindings)
         self.last_timings: list[ComponentTiming] = []
 
+    @property
+    def resolved_parameters(self) -> dict[str, Any]:
+        return {
+            binding.namespace or binding.name: copy.deepcopy(binding.scorer.resolved_parameters)
+            for binding in self.bindings
+            if getattr(binding.scorer, "resolved_parameters", None) is not None
+        }
+
     def score(self, candidates: list[ConstructCandidate]) -> list[ScoreResult]:
         self.last_timings = []
         merged: dict[str, dict[str, Any]] = {
@@ -381,6 +393,16 @@ class CompositeScorer:
             close = getattr(binding.scorer, "close", None)
             if callable(close):
                 close()
+
+
+def _response_parameters(response: dict[str, Any]) -> dict[str, Any] | None:
+    if "parameters" not in response:
+        return None
+    from morse.config import parse_scorer_parameters
+    try:
+        return parse_scorer_parameters(response["parameters"])
+    except ValueError as exc:
+        raise RuntimeError(f"Invalid resolved scorer parameters: {exc}") from exc
 
 
 def docker_run_command(

@@ -64,13 +64,21 @@ class RunSpec:
 
 
 def load_run_spec(path: Path, *, input_root: Path | None = None) -> RunSpec:
-    path = path.resolve()
+    path = Path(path).resolve()
+    return parse_run_spec(yaml.safe_load(path.read_text()), path=path, input_root=input_root)
+
+
+def resolve_run_mapping(
+    raw: dict[str, Any], *, path: Path, input_root: Path | None = None
+) -> dict[str, Any]:
+    """Copy and resolve config paths without opening its sequence or libraries."""
+    path = Path(path).resolve()
     base_dir = (
         input_root.expanduser().resolve()
         if input_root is not None
         else path.parent
     )
-    raw = expand_env_vars(yaml.safe_load(path.read_text()))
+    raw = expand_env_vars(copy.deepcopy(raw))
     if not isinstance(raw, dict):
         raise ValueError(f"Run config must be a YAML mapping: {path}")
     schema_version = int(raw.get("schema_version", 0))
@@ -111,21 +119,58 @@ def load_run_spec(path: Path, *, input_root: Path | None = None) -> RunSpec:
     _resolve_initial_population_path(resolved, base_dir)
     _resolve_initialization_paths(resolved, base_dir)
     _resolve_scorer_paths(resolved, base_dir)
+    return resolved
+
+
+def parse_run_spec(
+    raw: dict[str, Any],
+    *,
+    path: Path | None = None,
+    input_root: Path | None = None,
+    sequence: str | None = None,
+    require_mutable: bool = True,
+) -> RunSpec:
+    """Build the CLI's run specification from a mapping and optional input RNA."""
+    path = Path(path).resolve() if path is not None else Path.cwd() / "experiment.yaml"
+    if sequence is not None:
+        if not isinstance(sequence, str):
+            raise TypeError("sequence must be a string")
+        raw = copy.deepcopy(raw)
+        if not isinstance(raw, dict):
+            raise ValueError(f"Run config must be a YAML mapping: {path}")
+        construct = _mapping(raw.get("construct"), "construct")
+        if "coordinates" not in construct or "parts" in construct:
+            raise ValueError(
+                "An explicit sequence requires construct.coordinates; "
+                "construct.parts cannot be used with a sequence override"
+            )
+        # This path describes the input for snapshots. The parser neither reads
+        # nor writes it; the sequence is passed directly to the design builder.
+        construct["fasta"] = str(path.parent / "input.fasta")
+    resolved = resolve_run_mapping(raw, path=path, input_root=input_root)
+    schema_version = resolved["schema_version"]
+    name = resolved["name"]
+    base_dir = input_root.expanduser().resolve() if input_root is not None else path.parent
     part_sources = _parse_part_sources(resolved, path)
 
     if schema_version == 4:
         from morse.schema4 import build_design, engine_config
-        design_space = build_design(name, _mapping(resolved.get("construct"), "construct"), base_dir)
+        design_space = build_design(name, _mapping(resolved.get("construct"), "construct"),
+                                    base_dir, source_sequence=sequence)
         runtime_raw = engine_config(resolved)
     else:
         optimizer = _mapping(resolved.get("optimizer"), "optimizer")
-        mutable_parts = _parse_variables(optimizer.get("variables"))
+        mutable_parts = (
+            frozenset()
+            if not require_mutable and optimizer.get("variables") in (None, {})
+            else _parse_variables(optimizer.get("variables"))
+        )
         design_space = construct_design_from_config(
             name, _mapping(resolved.get("construct"), "construct"),
-            base_dir, mutable_parts=mutable_parts,
+            base_dir, mutable_parts=mutable_parts, source_sequence=sequence,
         )
         runtime_raw = resolved
-    if design_space.mutable_variable_count == 0:
+    if require_mutable and design_space.mutable_variable_count == 0:
         key = "construct.changes" if schema_version == 4 else "optimizer.variables"
         raise ValueError(f"{key} does not expose any mutable choices")
 

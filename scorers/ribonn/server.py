@@ -1,10 +1,11 @@
+import copy
 import json
 import sys
 import traceback
 
 
 def handle_request(predictor, request):
-    unknown = set(request) - {'request_id', 'sequences', 'sequence_contexts'}
+    unknown = set(request) - {'request_id', 'sequences', 'sequence_contexts', 'parameters', 'params'}
     if unknown:
         raise ValueError('Unknown request fields: ' + ', '.join(sorted(unknown)))
     sequences, contexts = request.get('sequences'), request.get('sequence_contexts')
@@ -12,7 +13,24 @@ def handle_request(predictor, request):
         raise ValueError('sequences must be a list of strings')
     if not isinstance(contexts, list) or len(sequences) != len(contexts) or not all(isinstance(c, dict) for c in contexts):
         raise ValueError('One explicit sequence context is required per sequence')
-    return {'request_id': request.get('request_id'), 'outputs': predictor.predict(sequences, contexts)}
+    if 'parameters' in request and 'params' in request:
+        raise ValueError('Use either parameters or params, not both')
+    raw = request.get('parameters', request.get('params', {}))
+    if not isinstance(raw, dict):
+        raise ValueError('parameters must be a mapping')
+    unknown = set(raw) - {'batch_size', 'cpu_threads'}
+    if unknown:
+        raise ValueError('Unknown RiboNN parameters: ' + ', '.join(sorted(map(str, unknown))))
+    parameters = {'batch_size': raw.get('batch_size', predictor.batch_size),
+                  'cpu_threads': raw.get('cpu_threads', getattr(predictor, 'cpu_threads', 2))}
+    for name, value in parameters.items():
+        if type(value) is not int or value < 1:
+            raise ValueError(name + ' must be a positive integer')
+    configured = copy.copy(predictor)
+    configured.batch_size = parameters['batch_size']
+    configured.cpu_threads = parameters['cpu_threads']
+    return {'request_id': request.get('request_id'), 'parameters': parameters,
+            'outputs': configured.predict(sequences, contexts)}
 
 
 def main():

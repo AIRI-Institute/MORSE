@@ -95,8 +95,10 @@ UTR libraries and search options, and [examples/](examples/) for complete config
 
 Each scorer is called through a Bash command in the YAML. The command can run
 a local program, a Docker container or a client for an existing service.
-Put calculation settings in the scorer's optional `parameters` mapping; MORSE
-sends them in the JSON request. See the [MFE example](scorers/viennarna/README.md#native-cpu-setup).
+Put calculation settings in the scorer's optional `parameters` mapping. Omitted
+settings keep the scorer's defaults.
+See the [parameter reference](docs/scorer-parameters.md) and a
+[CPU example](examples/scorer-parameters/experiment.yaml).
 
 List the available scorers, inspect an interface and generate its YAML section:
 
@@ -113,12 +115,34 @@ run `morse score` to check the connection. Add further scorers to the same list.
 The [scorer catalog and setup guide](docs/scorers.md) lists container images,
 runtime requirements and instructions for connecting your own scorer.
 
+## Python API
+
+Use the same experiment configuration from Python:
+
+```python
+import morse
+
+params = morse.load_config("experiment.yaml")
+result = morse.optimize(params=params, verbose=2)
+result.pareto
+```
+
+Pass an RNA string as the first argument to use it instead of the configured
+FASTA: `morse.optimize(rna_seq, params, verbose=2)`. The part coordinates remain
+in the configuration. Notebook progress can include metric, hypervolume and UTR
+frequency plots.
+
+See the [Python guide](docs/python-api.md) and the
+[CPU example notebook](core/notebooks/MORSE_Python_API.ipynb) for scoring,
+optimization, candidate selection and continuation.
+
 ## Colab and Jupyter
 
 The [notebook](core/notebooks/MORSE_Server_Colab.ipynb) provides a graphical
 interface for editing experiment YAML, launching and monitoring runs, and
-viewing results. It supports local execution and a
-[remote MORSE server](core/docs/colab-backend.md).
+viewing results through the Python API. Optimization runs in the notebook's
+active kernel; progress and plots update in the launch cell. To use server
+hardware, run the notebook with a kernel on that server.
 
 For local notebook use, install the notebook dependencies:
 

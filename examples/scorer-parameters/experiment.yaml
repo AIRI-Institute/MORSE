@@ -1,0 +1,62 @@
+schema_version: 4
+name: scorer_parameters
+output_dir: ../../outputs/scorer-parameters
+
+# RNA and physical parts.
+construct:
+  fasta: ../quickstart/sequence.fasta
+  coordinates:
+    five_prime_utr: [0, 63]
+    cds: [63, 420]
+    three_prime_utr: [420, 458]
+    poly_a: [458, 558]
+  changes:
+    cds: synonymous
+
+optimizer:
+  algorithm: nsga2
+  population_size: 8
+  generations: 3
+  seed: 43
+
+# All four scorers run on CPU.
+scorers:
+  - name: mfe
+    command: '"${MORSE_PYTHON}" -m scorers.viennarna.scorer'
+    scope: [five_prime_utr, cds, three_prime_utr]
+    parameters:
+      max_bp_span: 300  # nt; 0 is unlimited.
+      temperature: 37.0
+      compute_ensemble: false
+    metrics:
+      mfe: {role: optimize, direction: min}
+
+  - name: cai
+    command: '"${MORSE_PYTHON}" -m scorers.cai.server'
+    scope: [start_codon, cds_body]
+    parameters:
+      profile_path: profiles/homo_sapiens_kazusa_93487_cds.json
+      # Mouse: profiles/mus_musculus_kazusa_53036_cds.json
+    metrics:
+      cai: {role: optimize, direction: max}
+      cai_profile_id: {role: log, value_type: string}
+
+  - name: csi
+    command: '"${MORSE_PYTHON}" -m scorers.csi.server'
+    scope: [start_codon, cds_body]
+    parameters:
+      profile_path: profiles/homo_sapiens_consensus_wu2019_v1.json
+      # Mouse: profiles/mus_musculus_mesc_slamseq_wu2019_v1.json
+    metrics:
+      csi_raw: {role: log}
+      csi_profile_id: {role: log, value_type: string}
+
+  - name: feasibility
+    command: '"${MORSE_PYTHON}" -m manufacturability_scorer.feasibility_server'
+    scope: [five_prime_utr, cds, three_prime_utr]
+    parameters:
+      preset: sequence_feasibility_v1
+      local_gc_window: 50
+      forbidden_motifs: []
+    metrics:
+      feasibility_violation_count: {role: log, value_type: int}

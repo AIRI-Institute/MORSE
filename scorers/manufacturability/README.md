@@ -23,7 +23,7 @@ an experimental guarantee of synthesis, expression, or manufacturing success.
 The preset JSON records sources and distinguishes vendor-inspired thresholds
 from our design heuristics. Do not edit a released preset: add a new version.
 The output records both the preset-file SHA-256 and the resolved configuration
-SHA-256, including all startup overrides and exemptions.
+SHA-256, including all parameter overrides and exemptions.
 
 ### Manufacturing strategy preset
 
@@ -43,7 +43,7 @@ folding or proof of a hairpin. Zero gap includes reverse-complement palindromes
 of at least 40 nt. All qualifying arm pairs are recorded; a longer repeat may
 produce several overlapping 20-nt matches. Matches at the last nucleotide count.
 
-Restriction enzyme names are selected through `restriction_enzymes` (JSON list;
+Restriction enzyme names are selected through `restriction_enzymes` (YAML list;
 currently BsaI and BsmBI). Custom exact recognition words can instead use
 `forbidden_motifs`, explicitly supplying both orientations. Intentional assembly
 flanks can be exempted by check and coordinate when they are part of the routed
@@ -56,10 +56,9 @@ starting at transcript nucleotide +1: do not route a CDS-only or truncated 5'UTR
 scope when capping is active. The scorer checks sequence compatibility only,
 not actual capping chemistry, promoter integrity, or yield.
 
-Set `SEQUENCE_FEASIBILITY_PRESET=manufacturing_strategy_v1` before starting the
-scorer. Omit other overrides to inherit the selected preset; the literal value
-`preset` also means inheritance. All original numeric parameters keep their
-original defaults.
+Set `parameters.preset: manufacturing_strategy_v1` to select the extended checks.
+Omit other settings to inherit the selected preset. Existing startup environment
+overrides remain supported.
 Explicit overrides are validated and hashed. For direct Python use, omit an
 override to inherit it. The released v1 profile bytes and its default resolved
 configuration hash remain unchanged; its three new count outputs are zero.
@@ -72,13 +71,12 @@ the optimization and record the reason and final configuration. Never change
 thresholds mid-run or silently alter the protein. This scorer does not perform
 automatic protein-dependent relaxation; Core remains responsible for identity.
 
-`morse-scorer.yaml` documents the available startup parameters. Set them in the
-Bash command or prepared scorer environment before `morse run`. Parameters are
-fixed when the process starts; requests cannot override them. Each parameter
-maps to `SEQUENCE_FEASIBILITY_<NAME>` in uppercase. `preset` selects the
-registered preset. `enabled_checks`,
-`forbidden_motifs`, `restriction_enzymes`, and `exempt_regions` are JSON lists.
-Capping method and custom prefix are strings; remaining parameters are numeric. See the manifest for the complete list and bounds.
+Set calculation options in YAML `parameters`. `preset` selects the registered
+policy. `enabled_checks`, `forbidden_motifs`, `restriction_enzymes`, and
+`exempt_regions` are ordinary YAML lists. Missing values retain the selected
+preset and existing runtime settings. See the
+[parameter reference](../../docs/scorer-parameters.md#sequence-feasibility)
+for all names and defaults.
 
 For GC-only ablation, set `enabled_checks` to `["global_gc","local_gc"]`.
 For a matched record-only comparison, retain the same enabled checks and
@@ -91,13 +89,13 @@ mandatory responsibility.
 ```yaml
 scorers:
   - name: sequence_feasibility
-    command: >-
-      SEQUENCE_FEASIBILITY_PRESET=sequence_feasibility_v1
-      SEQUENCE_FEASIBILITY_LOCAL_GC_STRIDE=1
-      SEQUENCE_FEASIBILITY_HOMOPOLYMER_MAX_G=5
-      SEQUENCE_FEASIBILITY_HOMOPOLYMER_MAX_C=5
-      SEQUENCE_FEASIBILITY_FORBIDDEN_MOTIFS='["GGUCUC", "GAGACC"]'
-      "${MORSE_PYTHON}" -m manufacturability_scorer.feasibility_server
+    command: '"${MORSE_PYTHON}" -m manufacturability_scorer.feasibility_server'
+    parameters:
+      preset: sequence_feasibility_v1
+      local_gc_stride: 1
+      homopolymer_max_g: 5
+      homopolymer_max_c: 5
+      forbidden_motifs: [GGUCUC, GAGACC]
     scope: [five_prime_utr, cds, three_prime_utr]
     metrics:
       feasibility_violation_count: {role: threshold, max: 0, value_type: int}
@@ -108,8 +106,10 @@ The standard monorepo installation includes this package. In schema 4, `cds`
 includes the start and stop codons; the scope above excludes the annotated poly(A). MORSE supplies
 `MORSE_PYTHON` and sends one JSON request followed by EOF per batch. Include the
 selected preset and scorer sources in `provenance_paths` when using caching or
-resume. Changing a startup parameter requires a new scorer invocation or a
-separately prepared service; the optimizer does not configure external services.
+resume. Parameters apply to each request without changing later requests.
+For existing registry images, use the
+[updated adapter](../../docs/scorer-parameters.md#using-this-checkout-with-containers)
+or rebuild locally.
 
 ## Input scope and explicit exceptions
 

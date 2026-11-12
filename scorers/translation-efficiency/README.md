@@ -34,6 +34,9 @@ validation.
 ```yaml
 - name: translation_efficiency
   command: 'docker exec -i morse-translation-efficiency python /app/server.py'
+  parameters:
+    batch_size: 8
+    max_tokens: 32000
   timeout_seconds: 1800
   scope: [five_prime_utr, cds, three_prime_utr]
   metrics:
@@ -46,15 +49,22 @@ the exact ready checkpoint and pinned backbone at its default paths; model
 mounts are unnecessary. See the
 [scorer guide](../../docs/scorers.md) for runtime setup.
 
-Runtime settings: `ORTHRUS_CHECKPOINT`, `ORTHRUS_MODEL_SOURCE`,
-`ORTHRUS_DEVICE`, `ORTHRUS_BATCH_SIZE`, and `ORTHRUS_MAX_TOKENS`.
+Set `batch_size` and `max_tokens` in YAML `parameters`. The token budget limits
+padded tokens per batch without truncating sequences; `null` removes the budget.
+Missing values retain the prepared runtime defaults. Existing `ORTHRUS_*`
+environment settings remain supported. Device and model paths remain runtime
+setup options. See the [parameter reference](../../docs/scorer-parameters.md).
+
+The YAML uses the current source adapter; see [container setup](../../docs/scorer-parameters.md#using-this-checkout-with-containers)
+when preparing an existing registry image.
 
 For Google-hosted Colab and local CPU/GPU environments, the manifest exposes a
 portable venv profile. It loads the same deployment checkpoint with a
 state-dict-compatible, pure-PyTorch Mamba selective scan and requires no Docker,
 CUDA extension, Transformers, or backend server. `ORTHRUS_DEVICE=auto` selects
 CUDA when available. This reference path is reproducible but slower than the
-optimized server container.
+optimized server container. Portable defaults are `batch_size: 2` and
+`max_tokens: null`.
 
 ## Ready inference assets
 
@@ -83,7 +93,8 @@ The paper also uses `orthrus-te-held-out`, SHA-256
 `70913fc29ba9c073100913b56f59542520ec18a473fae358ff19bd57ecddd604`.
 Run it with `server_heldout.py` or `morse-scorer-heldout.yaml`.
 Its continuous CDS mask includes the terminal stop; the full-fit adapter excludes
-that stop from the mask. The checkpoints and adapters are not interchangeable.
+that stop from the mask. The checkpoints and adapters are not interchangeable. Its default `parameters`
+are `batch_size: 4` and `max_tokens: null`.
 
 ## Self-contained GPU images
 

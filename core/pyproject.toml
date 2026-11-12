@@ -18,7 +18,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-notebook = ["ipywidgets>=8.1"]
+notebook = ["ipywidgets>=8.1", "ipykernel>=6.29"]
 
 [project.scripts]
 morse-core = "morse.cli:main"

@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 from pathlib import Path
 import hashlib
 import json
@@ -20,7 +21,10 @@ class Predictor:
         self.batch_size = int(os.environ.get('RIBONN_BATCH_SIZE', '16'))
         if self.batch_size < 1:
             raise ValueError('Batch size must be positive')
-        torch.set_num_threads(int(os.environ.get('OMP_NUM_THREADS', '2')))
+        self.cpu_threads = int(os.environ.get('OMP_NUM_THREADS', '2'))
+        if self.cpu_threads < 1:
+            raise ValueError('CPU threads must be positive')
+        torch.set_num_threads(self.cpu_threads)
         # FP32 reference inference; no AMP, cropping, or stochastic shifts.
         torch.backends.cuda.matmul.allow_tf32 = False
         torch.backends.cudnn.allow_tf32 = False
@@ -48,6 +52,10 @@ class Predictor:
 
     @torch.inference_mode()
     def predict(self, sequences, sequence_contexts):
+        with _cpu_threads(self.cpu_threads):
+            return self._predict(sequences, sequence_contexts)
+
+    def _predict(self, sequences, sequence_contexts):
         outputs = []
         for offset in range(0, len(sequences), self.batch_size):
             x = torch.from_numpy(encode(sequences[offset:offset + self.batch_size],
@@ -64,3 +72,14 @@ class Predictor:
                             'ribonn_model_count': 50} for p, s in zip(predictions.cpu(), spread.cpu()))
         return outputs
 
+
+@contextmanager
+def _cpu_threads(count):
+    previous = torch.get_num_threads()
+    try:
+        if count != previous:
+            torch.set_num_threads(count)
+        yield
+    finally:
+        if count != previous:
+            torch.set_num_threads(previous)

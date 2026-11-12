@@ -28,14 +28,14 @@ not a calibrated absolute fold-change in antigen output because tissue-average
 RPMM is not a direct measurement of AGO-loaded miRNA concentration in the
 experimental system.
 
-## Fixed scan policy
+## Default scan policy
 
-- canonical sites only;
-- `maxLogKd = c(-1.0, -1.5)`;
-- minimum same-miRNA site distance: 7 nt;
+- `canonical_only: true`;
+- affinity cutoff `max_log_kd: -1.0`;
+- minimum same-miRNA site distance `min_site_distance: 7` nt;
 - match sequences and extended 3-prime alignment details are not retained;
 - full routed input is treated as UTR-like sequence by `scanMiR`, so the first
-  `maxLogKd` threshold applies throughout the current implementation;
+  affinity cutoff applies throughout the current implementation;
 - 3-prime pairing still contributes through the standard `scanMiR`
   aggregation model.
 
@@ -51,8 +51,15 @@ The bundled `2026-08-21` snapshot contains:
 | Human | 157 | PBMC, dendritic cells, macrophage, mononuclear cells, limb muscle | 96.8% |
 | Mouse | 170 | PBMC, macrophage, inflammatory monocyte, limb muscle, spleen, lymph node | 96.3% |
 
-The panel TSVs retain source identifiers, mature sequences, matching audit
-flags, per-profile RPMM, and normalized expression fractions. Exact source
+Select the file in YAML `parameters.profile_path`; human is the default:
+
+- `panels/2026-08-21/human/core_975.tsv`
+- `panels/2026-08-21/mouse/core_975.tsv`
+
+The bundled path also selects the matching species models. Set `profiles` to a
+list of target profile names, or `null` for all profiles in that panel. The panel
+TSVs retain source identifiers, mature sequences, matching audit flags,
+per-profile RPMM, and normalized expression fractions. Exact source
 checksums are recorded in `panels/2026-08-21/sources.json`.
 
 ## JSONL interface
@@ -99,8 +106,13 @@ source checksums and coverage audit, remains in `/app/panels/2026-08-21`.
 
 ## MORSE integration
 
-Select human or mouse models with `IRNA_SPECIES=human|mouse` in the scorer's
-startup environment. A native CPU runtime needs R, scanMiR 1.16.0,
+Select the human or mouse panel through `parameters.profile_path`. The other
+settings are `species: human`, `profiles: null`, `max_log_kd: -1.0`,
+`min_site_distance: 7`, `canonical_only: true`, and `workers: 4`. Missing values
+retain the prepared runtime settings, including existing `IRNA_*` overrides.
+See the [parameter reference](../../docs/scorer-parameters.md).
+
+A native CPU runtime needs R, scanMiR 1.16.0,
 scanMiRData 1.16.0, BiocParallel and jsonlite. The bundled panels contain
 expression weights; the affinity models come from scanMiRData's `hsa` and `mmu`
 collections.
@@ -109,19 +121,24 @@ For example, prepare one native process in a separate terminal, replacing
 `/path/to/morse` with the checkout path:
 
 ```sh
-morse scorers serve --command 'IRNA_SPECIES=mouse IRNA_WORKERS=1 Rscript /path/to/morse/scorers/irna/server.R' --port 8803
+morse scorers serve --command 'Rscript /path/to/morse/scorers/irna/server.R' --port 8803
 ```
 
 The optional adapter keeps this R process and its models loaded across batches.
 For an already prepared container, use
-`docker exec -i -e IRNA_SPECIES=mouse -e IRNA_WORKERS=1 CONTAINER Rscript /app/server.R`
+`docker exec -i CONTAINER Rscript /app/server.R`
 as the adapter's command instead. Prepare and start the container before the
-experiment; the optimizer only calls the endpoint:
+experiment, using the [container setup](../../docs/scorer-parameters.md#using-this-checkout-with-containers) for existing registry images.
+The optimizer only calls the endpoint:
 
 ```yaml
 scorers:
   - name: irna_mouse
     command: 'curl -fsS -H "Content-Type: application/json" --data-binary @- http://127.0.0.1:8803/score'
+    parameters:
+      profile_path: panels/2026-08-21/mouse/core_975.tsv
+      profiles: null
+      workers: 1
     timeout_seconds: 300
     scope: {type: full_sequence}
     metrics:

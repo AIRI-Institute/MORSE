@@ -168,7 +168,7 @@ def main(argv: list[str], *, root: Path) -> int:
                         default = f"; default: {json.dumps(spec['default'])}" if "default" in spec else ""
                         print(f"  {name} [{spec['type']}{default}]")
                         print(f"    {spec['description']}")
-                    print("Set these in the scorer's YAML parameters section.")
+                    print("Set these in the scorer's YAML parameters section. Omitted values retain the scorer's startup settings.")
                 print("Scorer dependencies must already be installed.")
         return 0
     except (OSError, ValueError) as exc:

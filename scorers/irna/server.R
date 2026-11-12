@@ -36,7 +36,8 @@ scorer <- load_irna_scorer(
   ),
   workers = integer_environment("IRNA_WORKERS", "4"),
   max_log_kd = numeric_environment("IRNA_MAX_LOG_KD", "-1.0"),
-  orf_max_log_kd = numeric_environment("IRNA_ORF_MAX_LOG_KD", "-1.5")
+  orf_max_log_kd = numeric_environment("IRNA_ORF_MAX_LOG_KD", "-1.5"),
+  source_root = script_dir
 )
 
 message(

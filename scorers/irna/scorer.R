@@ -35,7 +35,9 @@ load_irna_scorer <- function(
   panel_root = file.path("panels", "2026-08-21"),
   workers = 4L,
   max_log_kd = -1.0,
-  orf_max_log_kd = -1.5
+  orf_max_log_kd = -1.5,
+  panel_path = NULL,
+  source_root = getwd()
 ) {
   species <- tolower(trimws(species))
   if (!species %in% names(IRNA_SPECIES)) {
@@ -52,9 +54,19 @@ load_irna_scorer <- function(
   }
 
   species_config <- IRNA_SPECIES[[species]]
-  panel_path <- file.path(panel_root, species, "core_975.tsv")
+  if (is.null(panel_path)) {
+    panel_path <- file.path(panel_root, species, "core_975.tsv")
+  }
   if (!file.exists(panel_path)) {
     stop("IRNA panel does not exist: ", panel_path)
+  }
+  panel_path <- normalizePath(panel_path)
+  profile_md5 <- unname(tools::md5sum(panel_path))
+  bundled_path <- normalizePath(file.path(source_root, "panels", "2026-08-21", species, "core_975.tsv"), mustWork = FALSE)
+  panel_id <- if (identical(panel_path, bundled_path)) {
+    paste(species, "core_975", "2026-08-21", sep = "-")
+  } else {
+    paste(species, basename(panel_path), profile_md5, sep = "-")
   }
   panel <- read.delim(
     panel_path,
@@ -109,15 +121,21 @@ load_irna_scorer <- function(
   }
   list(
     species = species,
-    panel_id = paste(species, "core_975", "2026-08-21", sep = "-"),
-    panel_path = normalizePath(panel_path),
+    panel_id = panel_id,
+    panel_path = panel_path,
+    profile_md5 = profile_md5,
+    panel_root = normalizePath(panel_root),
+    source_root = normalizePath(source_root),
     profiles = species_config$profiles,
     models = models,
     expression_weights = expression_weights,
     workers = workers,
     bp = bp,
     max_log_kd = max_log_kd,
-    orf_max_log_kd = orf_max_log_kd
+    orf_max_log_kd = orf_max_log_kd,
+    min_site_distance = 7L,
+    canonical_only = TRUE,
+    asset_cache = new.env(parent = emptyenv())
   )
 }
 
@@ -151,9 +169,9 @@ score_irna_batch <- function(scorer, sequences) {
   hits <- findSeedMatches(
     normalized,
     scorer$models,
-    onlyCanonical = TRUE,
+    onlyCanonical = scorer$canonical_only,
     maxLogKd = c(scorer$max_log_kd, scorer$orf_max_log_kd),
-    minDist = 7L,
+    minDist = scorer$min_site_distance,
     keepMatchSeq = FALSE,
     p3.extra = FALSE,
     ret = "data.frame",
@@ -245,15 +263,137 @@ score_irna_request <- function(scorer, request) {
   if (!is.list(request) || is.null(names(request))) {
     stop("Request must be a JSON object")
   }
-  unknown <- setdiff(names(request), c("request_id", "sequences", "sequence_contexts"))
+  unknown <- setdiff(names(request), c("request_id", "sequences", "sequence_contexts", "parameters", "params"))
   if (length(unknown) > 0L) {
     stop("Unknown request fields: ", paste(sort(unknown), collapse = ", "))
   }
   if (is.null(request$sequences)) {
     stop("Request must define a list of sequences")
   }
+  if (all(c("parameters", "params") %in% names(request))) {
+    stop("Use only one of parameters and params")
+  }
+  parameters <- if ("parameters" %in% names(request)) {
+    request$parameters
+  } else if ("params" %in% names(request)) {
+    request$params
+  } else {
+    list()
+  }
+  if (any(c("parameters", "params") %in% names(request)) && (!is.list(parameters) || is.null(names(parameters)))) {
+    stop("parameters must be a JSON object")
+  }
+  effective <- resolve_irna_parameters(scorer, parameters)
   list(
     request_id = request$request_id,
-    outputs = score_irna_batch(scorer, request$sequences)
+    outputs = score_irna_batch(effective$scorer, request$sequences),
+    parameters = effective$parameters
+  )
+}
+
+
+resolve_irna_parameters <- function(scorer, parameters) {
+  if (!is.list(parameters) || (length(parameters) > 0L && is.null(names(parameters)))) {
+    stop("parameters must be a JSON object")
+  }
+  allowed <- c("profile_path", "species", "profiles", "max_log_kd", "min_site_distance", "canonical_only", "workers")
+  unknown <- setdiff(names(parameters), allowed)
+  if (length(unknown) > 0L) {
+    stop("Unknown scanMiR parameters: ", paste(sort(unknown), collapse = ", "))
+  }
+  species <- if ("species" %in% names(parameters)) parameters$species else scorer$species
+  if (!is.character(species) || length(species) != 1L || is.na(species) || !species %in% names(IRNA_SPECIES)) {
+    stop("species must be human or mouse")
+  }
+  profile_path <- if ("profile_path" %in% names(parameters)) parameters$profile_path else NULL
+  if (!is.null(profile_path)) {
+    if (!is.character(profile_path) || length(profile_path) != 1L || is.na(profile_path) || !nzchar(profile_path)) {
+      stop("profile_path must be a non-empty path")
+    }
+    candidates <- c(profile_path, file.path(scorer$source_root, profile_path), file.path(scorer$panel_root, profile_path))
+    matches <- candidates[file.exists(candidates)]
+    if (length(matches) == 0L) {
+      stop("scanMiR profile file does not exist: ", profile_path)
+    }
+    profile_path <- normalizePath(matches[[1L]])
+    inferred_species <- basename(dirname(profile_path))
+    if (inferred_species %in% names(IRNA_SPECIES)) {
+      if ("species" %in% names(parameters) && !identical(species, inferred_species)) {
+        stop("species conflicts with profile_path")
+      }
+      species <- inferred_species
+    }
+  } else {
+    if ("profile_path" %in% names(parameters)) {
+      stop("profile_path must be a non-empty path")
+    }
+    profile_path <- if (identical(species, scorer$species)) scorer$panel_path else normalizePath(file.path(scorer$panel_root, species, "core_975.tsv"), mustWork = TRUE)
+  }
+  profile_md5 <- if (!"profile_path" %in% names(parameters) && identical(species, scorer$species)) {
+    scorer$profile_md5
+  } else {
+    unname(tools::md5sum(profile_path))
+  }
+  positive_integer <- function(name, default, minimum = 1L) {
+    value <- if (name %in% names(parameters)) parameters[[name]] else default
+    if (!is.numeric(value) || length(value) != 1L || is.na(value) || !is.finite(value) || value != floor(value) || value < minimum || value > .Machine$integer.max) {
+      stop(name, " must be an integer >= ", minimum)
+    }
+    as.integer(value)
+  }
+  workers <- positive_integer("workers", scorer$workers)
+  min_site_distance <- positive_integer("min_site_distance", scorer$min_site_distance)
+  max_log_kd <- if ("max_log_kd" %in% names(parameters)) parameters$max_log_kd else scorer$max_log_kd
+  if (!is.numeric(max_log_kd) || length(max_log_kd) != 1L || is.na(max_log_kd) || !is.finite(max_log_kd)) {
+    stop("max_log_kd must be a finite number")
+  }
+  canonical_only <- if ("canonical_only" %in% names(parameters)) parameters$canonical_only else scorer$canonical_only
+  if (!is.logical(canonical_only) || length(canonical_only) != 1L || is.na(canonical_only)) {
+    stop("canonical_only must be true or false")
+  }
+  profiles <- if ("profiles" %in% names(parameters)) parameters$profiles else NULL
+  if (is.null(profiles)) {
+    profiles <- IRNA_SPECIES[[species]]$profiles
+  } else {
+    if (!is.list(profiles) || !is.null(names(profiles)) || length(profiles) == 0L || any(!vapply(profiles, function(value) is.character(value) && length(value) == 1L && !is.na(value), logical(1L)))) {
+      stop("profiles must be a non-empty list of profile names or null")
+    }
+    profiles <- vapply(profiles, identity, character(1L))
+    if (anyDuplicated(profiles) || any(!profiles %in% IRNA_SPECIES[[species]]$profiles)) {
+      stop("profiles must contain unique names from the selected species")
+    }
+  }
+  # Cache only loaded species assets; every request builds its own settings view.
+  effective <- scorer
+  if (!identical(species, scorer$species) || !identical(profile_path, scorer$panel_path) || !identical(profile_md5, scorer$profile_md5)) {
+    cache_key <- paste(species, profile_path, profile_md5, sep = "|")
+    if (!exists(cache_key, envir = scorer$asset_cache, inherits = FALSE)) {
+      loaded <- load_irna_scorer(
+        species = species, panel_root = scorer$panel_root,
+        workers = scorer$workers, max_log_kd = scorer$max_log_kd,
+        orf_max_log_kd = scorer$orf_max_log_kd,
+        panel_path = profile_path, source_root = scorer$source_root
+      )
+      assign(cache_key, loaded, envir = scorer$asset_cache)
+    }
+    effective <- get(cache_key, envir = scorer$asset_cache, inherits = FALSE)
+  }
+  effective$profiles <- profiles
+  effective$expression_weights <- effective$expression_weights[, profiles, drop = FALSE]
+  effective$max_log_kd <- as.numeric(max_log_kd)
+  effective$min_site_distance <- min_site_distance
+  effective$canonical_only <- canonical_only
+  if (workers != effective$workers) {
+    effective$bp <- if (workers == 1L) SerialParam(progressbar = FALSE) else MulticoreParam(workers, progressbar = FALSE)
+    effective$workers <- workers
+  }
+  list(
+    scorer = effective,
+    parameters = list(
+      profile_path = profile_path, profile_md5 = profile_md5,
+      species = species, profiles = unname(as.list(profiles)),
+      max_log_kd = as.numeric(max_log_kd), min_site_distance = min_site_distance,
+      canonical_only = canonical_only, workers = workers
+    )
   )
 }

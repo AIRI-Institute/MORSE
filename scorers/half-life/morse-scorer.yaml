@@ -49,9 +49,13 @@ portable_parameters:
     type: int
     default: 2
     min: 1
-    max: 64
-    env: ORTHRUS_BATCH_SIZE
     description: Maximum number of candidates in one portable inference batch.
+  max_tokens:
+    type: int
+    nullable: true
+    default: null
+    min: 1
+    description: Padded nucleotide budget per batch; null disables the limit without truncating sequences.
 scope:
   configurable: false
   allowed_parts: [five_prime_utr, start_codon, cds, stop_codon, three_prime_utr]
@@ -103,22 +107,15 @@ parameters:
     description: CUDA device selection for inference inside the container.
   batch_size:
     type: int
-    configurable_by: backend
-    backend_env: HALF_LIFE_BATCH_SIZE
-    default: 4
+    default: 12
     min: 1
-    max: 1024
-    env: ORTHRUS_BATCH_SIZE
     description: Maximum number of candidates in one inference batch.
   max_tokens:
     type: int
-    configurable_by: backend
-    backend_env: HALF_LIFE_MAX_TOKENS
-    default: 18000
+    nullable: true
+    default: 36000
     min: 1
-    max: 1000000
-    env: ORTHRUS_MAX_TOKENS
-    description: Maximum number of padded nucleotide tokens in one batch.
+    description: Padded nucleotide budget per batch; null disables the limit without truncating sequences.
 self_test:
   sequence: GGGACCAUGGCCGCCGCCGCCGCCGCCGCCUAACUGG
   sequence_context:

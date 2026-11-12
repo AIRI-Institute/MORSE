@@ -57,10 +57,11 @@ JSON response with matching `request_id` and ordered `outputs`. A local script,
 contract. MORSE does not prepare or manage external services and containers.
 See `docs/researcher-guide.md` for complete examples.
 
-`parameters` is a mapping of calculation settings passed in the JSON request.
+The optional `parameters` mapping holds calculation settings.
 Values can be JSON scalars, lists or objects; the adapter validates its supported
-names and ranges. Existing adapters that do not accept this field can still be
-used without `parameters`.
+names and ranges. Missing settings retain the prepared scorer's defaults,
+including existing environment settings. See the [parameter reference](scorer-parameters.md) for all scorers,
+human/mouse profile files and using updated adapters with existing images.
 
 ## Native Python scorers
 
@@ -81,8 +82,10 @@ The installed modules work from any directory:
 | Sequence feasibility | `python -m manufacturability_scorer.feasibility_server` |
 
 In YAML, use `"${MORSE_PYTHON}"` in place of `python` to select MORSE's environment.
-CAI and CSI include their default profiles. Custom profiles are selected with
-`CAI_PROFILE` and `CSI_PROFILE`. See the [MFE YAML example](../scorers/viennarna/README.md#native-cpu-setup).
+CAI and CSI include human and mouse profiles in their `profiles/` directories.
+Select one through `parameters.profile_path`; human is the default. scanMiR bundles
+both species' panels under `panels/2026-08-21/` and also accepts `profile_path`.
+See the [CPU example](../examples/scorer-parameters/experiment.yaml).
 When caching or resuming, list the adapter and selected profile files in
 `provenance_paths`.
 GPU scorer runtimes keep their separate dependencies and containers.

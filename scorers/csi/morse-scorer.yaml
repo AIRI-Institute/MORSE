@@ -73,23 +73,15 @@ parameters:
   profile_path:
     type: path
     default: profiles/homo_sapiens_consensus_wu2019_v1.json
-    env: CSI_PROFILE
-    description: >-
-      Human, mouse, tissue, cell-state, or custom schema-1 CSI profile. Relative
-      paths are resolved from the installed scorer source directory.
+    description: Bundled profile basename or custom profile path in the scorer environment.
   window_codons:
     type: int
     default: 15
     min: 1
-    max: 200
-    env: CSI_WINDOW_CODONS
     description: Sliding-window width used by the local CSI diagnostics.
   destabilizing_threshold:
     type: float
     default: 0.0
-    min: -1.0
-    max: 1.0
-    env: CSI_DESTABILIZING_THRESHOLD
     description: CSC value below which a codon is counted as destabilizing.
 self_test:
   sequence: ATGTTCTTT

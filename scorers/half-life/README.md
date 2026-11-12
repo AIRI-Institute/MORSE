@@ -34,6 +34,9 @@ validation.
 ```yaml
 - name: half_life
   command: 'docker exec -i morse-half-life python /app/server.py'
+  parameters:
+    batch_size: 12
+    max_tokens: 36000
   timeout_seconds: 1800
   scope: [five_prime_utr, cds, three_prime_utr]
   metrics:
@@ -45,15 +48,22 @@ This example assumes a prepared container named `morse-half-life`, built from
 backbone are included at their default paths; model mounts are unnecessary.
 See the [scorer guide](../../docs/scorers.md) for runtime setup.
 
-Runtime settings: `ORTHRUS_CHECKPOINT`, `ORTHRUS_MODEL_SOURCE`,
-`ORTHRUS_DEVICE`, `ORTHRUS_BATCH_SIZE`, and `ORTHRUS_MAX_TOKENS`.
+Set `batch_size` and `max_tokens` in YAML `parameters`. The token budget limits
+padded tokens per batch without truncating sequences; `null` removes the budget.
+Missing values retain the prepared runtime defaults. Existing `ORTHRUS_*`
+environment settings remain supported. Device and model paths remain runtime
+setup options. See the [parameter reference](../../docs/scorer-parameters.md).
+
+The YAML uses the current source adapter; see [container setup](../../docs/scorer-parameters.md#using-this-checkout-with-containers)
+when preparing an existing registry image.
 
 For Google-hosted Colab and local CPU/GPU environments, the manifest exposes a
 portable venv profile. It loads the same deployment checkpoint with a
 state-dict-compatible, pure-PyTorch Mamba selective scan and requires no Docker,
 CUDA extension, Transformers, or backend server. `ORTHRUS_DEVICE=auto` selects
 CUDA when available. This reference path is reproducible but slower than the
-optimized server container.
+optimized server container. Portable defaults are `batch_size: 2` and
+`max_tokens: null`.
 
 ## Ready inference assets
 

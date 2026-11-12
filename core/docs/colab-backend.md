@@ -1,9 +1,8 @@
-# Colab and the optional jobs backend
+# Optional jobs backend
 
-Colab is a graphical interface for the same schema-4 YAML used by the CLI. It
-edits the construct, optimizer, scorer commands and metric roles; exports YAML;
-launches and follows jobs; and displays their plots and artifacts. Local mode
-uses the same job manager as the optional remote backend.
+The jobs backend provides an HTTP queue for schema-4 experiment configurations.
+The [graphical notebook](../notebooks/MORSE_Server_Colab.ipynb) runs directly
+through the [Python API](../../docs/python-api.md) in its kernel.
 
 Scorer scripts, containers and services must already be prepared. Neither the
 notebook nor the backend clones scorer repositories, installs packages, builds
@@ -41,7 +40,7 @@ verified automatically; declared `provenance_paths` record local dependencies.
 
 ## Submit the complete experiment
 
-The notebook uses the same body for preflight and submission:
+A Python client uses the same body for preflight and submission:
 
 ```python
 from morse.notebook_tools import MorseBackendClient, read_configuration

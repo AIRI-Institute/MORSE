@@ -11,7 +11,7 @@ import subprocess
 import time
 
 from morse.scorers import PersistentProcessScorer
-from morse.config import parse_scorer_parameters
+from morse.config import scorer_parameters_from_mapping
 
 MAX_BYTES = 64 * 1024 * 1024
 
@@ -116,13 +116,15 @@ def serve(command, port, timeout_seconds=1800):
                 sequences = request["sequences"]
                 if not isinstance(sequences, list) or not all(isinstance(x, str) for x in sequences):
                     raise ValueError("sequences must be a list of strings")
-                parameters = parse_scorer_parameters(request.get("parameters", {}))
+                parameters = scorer_parameters_from_mapping(request)
             except (ValueError, KeyError, TypeError) as error:
                 return self.reply(400, {"request_id": request_id, "error": str(error)[:2000]})
             try:
                 outputs = backend.score_with_context(sequences, request.get("sequence_contexts"),
                                                      parameters=parameters)
                 response = {"request_id": request_id, "outputs": outputs}
+                if backend.resolved_parameters is not None:
+                    response["parameters"] = backend.resolved_parameters
                 json.dumps(response, allow_nan=False)
                 self.reply(200, response)
             except (OSError, RuntimeError, TimeoutError, ValueError) as error:

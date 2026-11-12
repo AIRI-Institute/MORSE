@@ -9,7 +9,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from model import EXPECTED_TASK, OUTPUT_KEY, MORSEHead, prepare_candidate, verify_checkpoint
+from model import EXPECTED_TASK, OUTPUT_KEY, MORSEHead, prepare_candidate, verify_checkpoint, _token_batches
 
 
 class PortableMamba(nn.Module):
@@ -213,6 +213,8 @@ class PortableOrthrusPredictor:
             or "continuous_cds_mask"
         )
         self.max_batch_size = _positive_int("ORTHRUS_BATCH_SIZE", 2)
+        # Preserve the portable runtime's historical lack of a token budget.
+        self.max_tokens = None
         self.model_id = str(checkpoint.get("model", {}).get("model_id", "orthrus"))
 
     def predict(
@@ -236,8 +238,9 @@ class PortableOrthrusPredictor:
         predictions = [0.0] * len(prepared)
         indexed = sorted(enumerate(prepared), key=lambda item: item[1].length)
         with torch.inference_mode():
-            for start in range(0, len(indexed), self.max_batch_size):
-                batch = indexed[start : start + self.max_batch_size]
+            for batch in _token_batches(
+                indexed, max_batch_size=self.max_batch_size, max_tokens=self.max_tokens
+            ):
                 row_indices, candidates = zip(*batch, strict=True)
                 lengths = torch.tensor(
                     [candidate.length for candidate in candidates],

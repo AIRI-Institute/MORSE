@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import math
 import os
 import re
 from collections.abc import Mapping
@@ -23,7 +24,7 @@ SCORER_ID_PATTERN = re.compile(r"^[a-z][a-z0-9_-]{1,63}$")
 OUTPUT_NAME_PATTERN = re.compile(r"^[A-Za-z][A-Za-z0-9_.-]{0,127}$")
 BUILD_CONTEXT_NAME_PATTERN = re.compile(r"^[A-Za-z][A-Za-z0-9_.-]{0,63}$")
 SUPPORTED_OUTPUT_TYPES = {"float", "int", "bool", "string", "structure"}
-SUPPORTED_PARAMETER_TYPES = {"float", "int", "bool", "string", "path"}
+SUPPORTED_PARAMETER_TYPES = {"float", "int", "bool", "string", "path", "array", "list", "object"}
 SUPPORTED_PARAMETER_OWNERS = {"experiment", "backend"}
 ENVIRONMENT_NAME_PATTERN = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
 
@@ -400,6 +401,7 @@ def _validate_parameters(raw: Any) -> dict[str, dict[str, Any]]:
                 "mount",
                 "configurable_by",
                 "backend_env",
+                "nullable",
             }
         )
         if unknown_fields:
@@ -421,6 +423,10 @@ def _validate_parameters(raw: Any) -> dict[str, dict[str, Any]]:
             "description": description,
             "required": bool(spec.get("required", False)),
         }
+        if "nullable" in spec:
+            if type(spec["nullable"]) is not bool:
+                raise ValueError(f"parameters.{name}.nullable must be boolean")
+            normalized["nullable"] = spec["nullable"]
         configurable_by = str(
             spec.get("configurable_by", "experiment")
         ).strip().lower()
@@ -500,6 +506,11 @@ def _resolve_parameter_values(
         else:
             continue
         parameter_type = spec["type"]
+        if raw_value is None:
+            if not spec.get("nullable", False):
+                raise ValueError(f"Parameter {name} must not be null")
+            values[str(name)] = None
+            continue
         if parameter_type == "path":
             raw_value = _expand_asset_path(str(raw_value))
         if parameter_type == "int":
@@ -510,6 +521,8 @@ def _resolve_parameter_values(
             if isinstance(raw_value, bool):
                 raise ValueError(f"Parameter {name} must be numeric")
             value = float(raw_value)
+            if not math.isfinite(value):
+                raise ValueError(f"Parameter {name} must be finite")
         elif parameter_type == "bool":
             if isinstance(raw_value, bool):
                 value = raw_value
@@ -519,6 +532,12 @@ def _resolve_parameter_values(
                 value = False
             else:
                 raise ValueError(f"Parameter {name} must be boolean")
+        elif parameter_type in {"array", "list", "object"}:
+            expected = dict if parameter_type == "object" else list
+            if not isinstance(raw_value, expected):
+                raise ValueError(f"Parameter {name} must be a {parameter_type}")
+            from morse.config import parse_scorer_parameters
+            value = parse_scorer_parameters({"value": raw_value})["value"]
         else:
             value = str(raw_value)
         if spec.get("min") is not None and value < spec["min"]:

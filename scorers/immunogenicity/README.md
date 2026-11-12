@@ -29,9 +29,11 @@ to a full vaccine construct has not yet been experimentally validated.
 ## Interface
 
 Input: sequence-batch JSONL request `{"request_id": ..., "sequences": [...]}`.
-Core resolves the scope before invoking the runtime. `RINALMO_CHECKPOINT`,
-`RINALMO_DEVICE`, `RINALMO_WINDOW_SIZE` (27), `RINALMO_WINDOW_STRIDE` (3),
-`RINALMO_WINDOW_OFFSETS`, and `RINALMO_BATCH_SIZE` are fixed once at startup.
+Core resolves the scope before invoking the runtime. YAML `parameters` supports
+`window_size: 27`, `window_stride: 3`, `window_offsets: []`, and `batch_size: 256`.
+Sizes and offsets are in nucleotides. Missing values retain the prepared runtime
+settings, including existing `RINALMO_*` overrides. Checkpoint and device remain
+runtime setup options. See the [parameter reference](../../docs/scorer-parameters.md).
 The default scope is `full_sequence`; the manifest allows any parts,
 part-relative slices, and windows with explicit upstream/downstream context.
 The runtime always receives only the sequence already resolved by Core.
@@ -41,12 +43,18 @@ Outputs: `rinalmo_window_logit_mean`, `rinalmo_window_logit_median`,
 `rinalmo_window_probability_mean`, `rinalmo_window_probability_max`,
 `rinalmo_window_probability_p95`, and `rinalmo_window_count`.
 
-For a prepared container named `morse-immunogenicity`, add this schema-4 section:
+For a prepared container named `morse-immunogenicity` with the current source
+adapter ([container setup](../../docs/scorer-parameters.md#using-this-checkout-with-containers)), add:
 
 ```yaml
 scorers:
   - name: immunogenicity
     command: 'docker exec -i morse-immunogenicity python /app/server.py'
+    parameters:
+      window_size: 27
+      window_stride: 3
+      window_offsets: []
+      batch_size: 256
     timeout_seconds: 1800
     scope: full_sequence
     metrics:

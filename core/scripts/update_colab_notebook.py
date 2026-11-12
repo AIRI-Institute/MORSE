@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the small YAML-first Colab frontend deterministically."""
+"""Build the graphical Colab frontend for the MORSE Python API."""
 from __future__ import annotations
 
 import argparse
@@ -26,25 +26,25 @@ def build_notebook() -> dict[str, Any]:
             # MORSE
 
             Design an mRNA construct, choose prepared scorer commands and generate
-            one complete experiment YAML. The same YAML runs through Core locally
-            or through your authenticated server backend. This notebook shows
-            optimizer progress and the plots produced by Core.
-
-            Scorer scripts, services, containers and checkpoints must already be
-            prepared in the execution environment. The notebook does not install
-            models. Start with the built-in CPU sequence metrics to check the flow.
+            one complete experiment YAML. Run it with the MORSE Python API in this
+            notebook's kernel, follow live progress and inspect saved results.
+            Start with the bundled CPU sequence metrics, or connect scorers
+            prepared in the kernel's environment.
             """),
         _cell("markdown", "environment_help", """
             ## Environment
 
             Use the complete MORSE checkout. A fresh VM can clone the configured
             repository's `main` branch, or an exact release commit when supplied.
-            For this private repository, use an authenticated Git environment or
-            provide an existing checkout through `MONOREPO_ROOT`. Keep credentials
-            out of notebook fields. Locally install the optional
-            widgets with `uv sync --all-packages --extra paper --extra mfe --extra notebook --frozen`.
-            The optional installer prepares MORSE, notebook widgets and native
-            CPU scorers from this checkout.
+            Set `MONOREPO_ROOT` to use an existing checkout. Locally install the
+            notebook environment with
+            `uv sync --all-packages --extra paper --extra mfe --extra notebook --frozen`
+            and select it as the kernel. The optional setup cell uses Git and pip
+            only to install MORSE. Optimization uses Python calls directly.
+
+            In Colab, mount Google Drive to keep configurations and results after
+            the session ends. To use a compute server, open this notebook with a
+            Jupyter kernel on that server.
             """),
         _cell("code", "bootstrap_environment", """
             # @title Locate or install this MORSE revision
@@ -77,7 +77,7 @@ def build_notebook() -> dict[str, Any]:
                 try:
                     subprocess.run(["git", "clone", "--filter=blob:none", "--", MONOREPO_REPOSITORY_URL.strip(), str(ROOT)], check=True)
                 except subprocess.CalledProcessError as error:
-                    raise RuntimeError("Clone failed. Use an authenticated Git environment for the private repository, or provide an existing checkout through MONOREPO_ROOT.") from error
+                    raise RuntimeError("Clone failed. Check repository access or provide an existing checkout through MONOREPO_ROOT.") from error
                 subprocess.run(["git", "checkout", "--detach", revision], cwd=ROOT, check=True)
                 CLONED_CHECKOUT = True
                 INSTALL_NOTEBOOK_DEPENDENCIES = True
@@ -118,16 +118,17 @@ def build_notebook() -> dict[str, Any]:
             loaded = sys.modules.get("morse")
             if loaded is not None and Path(loaded.__file__).resolve().parent != (ROOT / "core/morse").resolve():
                 raise RuntimeError("Another MORSE checkout is already imported; restart this kernel")
+            import morse
+            required_api = ("load_config", "validate", "score", "optimize", "load_run", "resume")
+            if not all(callable(getattr(morse, name, None)) for name in required_api):
+                raise RuntimeError("This MORSE revision has no Python API. Install the current checkout and restart the kernel.")
             import morse.notebook_tools as notebook_tools
             notebook_tools = importlib.reload(notebook_tools)
             from morse.notebook_tools import (
-                ExperimentEditor, LocalMorseClient, MorseBackendClient,
-                colab_secret_or_prompt, require_backend_compatibility,
-                read_configuration, render_generated_scope_preview, monitor_job,
-                export_configuration_bundle,
-                extract_artifacts, display_result_artifacts, download_file_to_browser,
+                ExperimentEditor, render_generated_scope_preview,
+                export_configuration_bundle, download_file_to_browser,
             )
-            print("Frontend loaded. Scorers are inspected as metadata; no model is loaded.")
+            print("MORSE Python API loaded:", morse.__version__)
             """),
         _cell("markdown", "editor_help", """
             ## 1–3. Design, scorers and search
@@ -139,6 +140,8 @@ def build_notebook() -> dict[str, Any]:
             Bash command prepared on the machine that will execute the run.
             Enter calculation settings in **Parameters** as a YAML mapping, for
             example `max_bp_span: 300` and `compute_ensemble: false` for native MFE.
+            Leave it blank to keep the scorer's startup settings. Select a human
+            or mouse profile with `profile_path`; bundled defaults are human.
 
             For each metric choose `optimize` with `min`/`max`, `threshold` with
             bounds or `equals`, or `log`. A command reads one JSON batch from stdin
@@ -176,82 +179,125 @@ def build_notebook() -> dict[str, Any]:
             # Download YAML and FASTA together: download_file_to_browser(CONFIG_BUNDLE)
             """),
         _cell("markdown", "run_help", """
-            ## 4. Run and results
+            ## 4. Run with Python
 
-            Local mode uses the existing Core job manager and runs `python -m morse
-            run --config ... --output-dir ...`. Server mode sends the complete YAML
-            mapping and its small sequence/library inputs to backend API 6. Scorer commands resolve on the execution
-            host, so use explicit paths or installed commands for remote services.
-            The backend token authorizes execution of your configured Bash commands.
-            Keep it in a Colab secret or the hidden prompt, never in a saved cell.
+            Save the YAML before running. Validation, scoring and optimization
+            read that saved configuration. Scorers execute in this kernel's
+            environment using their configured commands.
+
+            The optimization cell remains active and shows progress. Use the
+            notebook's **Interrupt** button to stop it. The last completed
+            generation can be continued with **Resume** below.
             """),
-        _cell("code", "connect_executor", """
-            # @title Connect to the execution environment
-            EXECUTION_MODE = "Local"  # @param ["Local", "Server backend"]
-            BACKEND_URL = "http://127.0.0.1:8765"  # @param {type:"string"}
-            if EXECUTION_MODE == "Server backend":
-                CLIENT = MorseBackendClient(BACKEND_URL, colab_secret_or_prompt())
-            else:
-                # Reusing the manager keeps existing local jobs running when this
-                # cell is rerun, or after switching back from a remote executor.
-                if "LOCAL_CLIENT" not in globals():
-                    LOCAL_CLIENT = LocalMorseClient(ROOT / "core", STATE_ROOT)
-                CLIENT = LOCAL_CLIENT
-            require_backend_compatibility(CLIENT.health())
-            print("Connected:", EXECUTION_MODE)
+        _cell("code", "run_settings", """
+            # @title Choose live output
+            VERBOSE = 2  # @param [0, 1, 2]
+            SHOW_METRICS = True  # @param {type:"boolean"}
+            SHOW_HYPERVOLUME = True  # @param {type:"boolean"}
+            SHOW_UTRS = True  # @param {type:"boolean"}
+            PLOTS = [name for name, enabled in (
+                ("metrics", SHOW_METRICS), ("hypervolume", SHOW_HYPERVOLUME),
+                ("utrs", SHOW_UTRS),
+            ) if enabled]
+            # verbose: 0 quiet, 1 progress, 2 progress and plots.
             """),
         _cell("code", "preflight", """
-            # @title Preflight the saved YAML on the execution host
-            CONFIGURATION = read_configuration(CONFIG_PATH)
-            PREFLIGHT = CLIENT.preflight_job(configuration=CONFIGURATION)
-            print({key: PREFLIGHT.get(key) for key in (
-                "valid", "run_name", "algorithm", "population_size", "generations",
-                "objective_count", "threshold_count", "configuration_fingerprint")})
-            display(SVG(PREFLIGHT["sequence_scope_svg"]))
+            # @title Validate the saved configuration
+            PARAMS = morse.load_config(CONFIG_PATH)
+            CHECK = morse.validate(params=PARAMS)
+            display(CHECK)
+            """),
+        _cell("code", "score_reference", """
+            # @title Optionally score the starting construct
+            SCORE_START = False  # @param {type:"boolean"}
+            START_SCORES = None
+            if SCORE_START:
+                PARAMS = morse.load_config(CONFIG_PATH)
+                START_SCORES = morse.score(params=PARAMS)
+                display(START_SCORES)
             """),
         _cell("code", "launch", """
-            # @title Launch the saved YAML
-            # Read the saved snapshot again, so unsaved form changes cannot alter it.
-            CONFIGURATION = read_configuration(CONFIG_PATH)
-            PREFLIGHT = CLIENT.preflight_job(configuration=CONFIGURATION)
-            JOB = CLIENT.submit_job(configuration=CONFIGURATION)
-            JOB_ID = JOB["id"]
-            print("Job:", JOB_ID, "·", JOB["status"])
+            # @title Optimize the saved configuration
+            from datetime import datetime, timezone
+
+            PARAMS = morse.load_config(CONFIG_PATH)
+            stamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S_%f")
+            RUN_DIR = STATE_ROOT / "runs" / f"{PARAMS['name']}_{stamp}"
+            RESULT = None
+            CANDIDATE = None
+            print("Results:", RUN_DIR)
+            RESULT = morse.optimize(
+                params=PARAMS, output_dir=RUN_DIR, verbose=VERBOSE, plots=PLOTS,
+            )
             """),
-        _cell("code", "progress", """
-            # @title Track progress, a live curve and recent logs
-            WATCH_SECONDS = 300  # @param {type:"integer"}
-            POLL_SECONDS = 3  # @param {type:"number"}
-            JOB = monitor_job(CLIENT, JOB_ID, poll_seconds=POLL_SECONDS, max_seconds=WATCH_SECONDS)
-            print("Job:", JOB_ID, "·", JOB["status"])
-            # Rerun this cell to keep watching. Interrupting it only stops observation.
-            """),
-        _cell("code", "job_controls", """
-            # @title Reconnect, cancel, or resume an existing job
-            ACTION = "List jobs"  # @param ["List jobs", "Reconnect", "Cancel", "Resume"]
-            EXISTING_JOB_ID = ""  # @param {type:"string"}
-            if ACTION == "List jobs":
-                display(CLIENT.jobs())
-            else:
-                chosen = EXISTING_JOB_ID.strip() or globals().get("JOB_ID", "")
+        _cell("code", "resume", """
+            # @title Continue an interrupted run
+            RESUME_RUN = False  # @param {type:"boolean"}
+            RESUME_DIRECTORY = ""  # @param {type:"string"}
+            if RESUME_RUN:
+                chosen = RESUME_DIRECTORY.strip() or globals().get("RUN_DIR")
                 if not chosen:
-                    raise ValueError("Set an existing job ID")
-                JOB_ID = chosen
-                if ACTION == "Cancel":
-                    display(CLIENT.cancel(JOB_ID))
-                elif ACTION == "Resume":
-                    display(CLIENT.resume_job(JOB_ID))
-                else:
-                    display(CLIENT.job(JOB_ID))
+                    raise ValueError("Set the folder of the run to resume")
+                RUN_DIR = Path(chosen).expanduser().resolve()
+                RESULT = None
+                CANDIDATE = None
+                RESULT = morse.resume(RUN_DIR, verbose=VERBOSE, plots=PLOTS)
+            """),
+        _cell("markdown", "results_help", """
+            ## 5. Results
+
+            Reopen a saved run by entering its folder below. Loading and plotting
+            use recorded results; they do not rerun scoring. Completed runs have
+            a report, Pareto candidates and full RNA sequences.
+            """),
+        _cell("code", "load_results", """
+            # @title Open the current run or a saved results folder
+            EXISTING_RUN_DIR = ""  # @param {type:"string"}
+            RESULT = None
+            CANDIDATE = None
+            chosen = EXISTING_RUN_DIR.strip() or globals().get("RUN_DIR")
+            if not chosen:
+                raise ValueError("Run an experiment or enter its results folder")
+            RUN_DIR = Path(chosen).expanduser().resolve()
+            RESULT = morse.load_run(RUN_DIR)
+            print("Status:", RESULT.summary["status"], "· results:", RESULT.output_dir)
             """),
         _cell("code", "results", """
-            # @title Show Core plots and report, and download results
-            RESULT_ROOT = STATE_ROOT / "downloads" / JOB_ID
-            RESULT_ZIP = CLIENT.download_artifacts(JOB_ID, RESULT_ROOT.with_suffix(".zip"))
-            ARTIFACTS = extract_artifacts(RESULT_ZIP, RESULT_ROOT)
-            display_result_artifacts(ARTIFACTS)
+            # @title Show the saved report and figures
+            if (RESULT.output_dir / "report.md").is_file():
+                REPORT = RESULT.report()
+            else:
+                print("This run has no completed report yet. Its saved history is available below.")
+            """),
+        _cell("code", "plot_results", """
+            # @title Plot recorded history
+            SHOW_HISTORY_PLOT = False  # @param {type:"boolean"}
+            PLOT_KIND = "metrics"  # @param ["metrics", "hypervolume", "utrs"]
+            if SHOW_HISTORY_PLOT:
+                import matplotlib.pyplot as plt
+                figure = RESULT.plot(PLOT_KIND)
+                display(figure)
+                plt.close(figure)
+            # Tables for further analysis: RESULT.pareto, RESULT.history.
+            """),
+        _cell("code", "select_candidate", """
+            # @title Select a Pareto candidate by hypervolume contribution
+            CANDIDATE = None
+            if RESULT.pareto:
+                CANDIDATE = RESULT.select("hvc")
+                print("Selected:", CANDIDATE.id, "· RNA:", len(CANDIDATE.sequence), "nt")
+                display(CANDIDATE.metrics)
+                # Inspect the RNA and its parts: CANDIDATE.sequence, CANDIDATE.parts.
+            else:
+                print("No feasible Pareto candidate is available in this run.")
+            """),
+        _cell("code", "export_results", """
+            # @title Download the saved results
+            import shutil
+
+            RESULT_ZIP = Path(shutil.make_archive(str(RUN_DIR), "zip", root_dir=RUN_DIR))
             display(FileLink(str(RESULT_ZIP)))
-            # For a browser download, run: download_file_to_browser(RESULT_ZIP)
+            # For a browser download: download_file_to_browser(RESULT_ZIP)
             """),
     ]
     return {"cells": cells, "metadata": {

@@ -246,7 +246,7 @@ def _token_batches(
     indexed: list[tuple[int, PreparedCandidate]],
     *,
     max_batch_size: int,
-    max_tokens: int,
+    max_tokens: int | None,
 ) -> list[list[tuple[int, PreparedCandidate]]]:
     batches: list[list[tuple[int, PreparedCandidate]]] = []
     current: list[tuple[int, PreparedCandidate]] = []
@@ -256,7 +256,7 @@ def _token_batches(
         candidate_size = len(current) + 1
         if current and (
             candidate_size > max_batch_size
-            or candidate_max * candidate_size > max_tokens
+            or (max_tokens is not None and candidate_max * candidate_size > max_tokens)
         ):
             batches.append(current)
             current = []

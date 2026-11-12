@@ -50,6 +50,15 @@ outputs:
     value_range: dot-bracket string with input length
     description: Minimum-free-energy secondary structure in dot-bracket notation.
     default_policy: {role: log}
+  ensemble_free_energy:
+    type: float
+    unit: kcal/mol
+    description: Ensemble free energy; returned when compute_ensemble is true.
+    default_policy: {role: log}
+  ensemble_diversity:
+    type: float
+    description: Mean base-pair distance in the ensemble; returned when compute_ensemble is true.
+    default_policy: {role: log}
 parameters:
   max_bp_span:
     type: int
@@ -61,6 +70,23 @@ parameters:
     type: bool
     default: false
     description: Calculate ensemble free energy and diversity in addition to MFE.
+  temperature:
+    type: float
+    default: 37.0
+    description: Folding temperature in Celsius; must be greater than -273.15.
+  dangles:
+    type: int
+    default: 2
+    choices:
+    - 0
+    - 1
+    - 2
+    - 3
+    description: Dangling-end model; ensemble calculations support 0 or 2.
+  no_lonely_pairs:
+    type: bool
+    default: false
+    description: Exclude isolated base pairs from folding.
 self_test:
   sequence: AUGGCCGCCGCCGCCGCCUAA
   sequence_context:

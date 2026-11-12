@@ -64,16 +64,12 @@ parameters:
   profile_path:
     type: path
     default: profiles/homo_sapiens_kazusa_93487_cds.json
-    env: CAI_PROFILE
-    description: >-
-      Human, mouse, or custom schema-1 codon-frequency profile. Relative paths
-      are resolved from the installed scorer source directory.
+    description: Bundled profile basename or custom profile path in the scorer environment.
   low_weight_threshold:
     type: float
     default: 0.1
-    min: 0.000001
+    min: 1.0e-06
     max: 1.0
-    env: CAI_LOW_WEIGHT_THRESHOLD
     description: Weight below which a codon contributes to cai_low_weight_fraction.
 self_test:
   sequence: ATGTTCTTT

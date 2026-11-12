@@ -29,11 +29,12 @@ performed a separate biological validation of this adapter.
 
 Core sends only a batch of already extracted coding sequences, each assembled
 as `start_codon + cds_body` without a terminal stop. Each coding sequence must
-be at most 4,500 nt long and divisible by three. `RIBODECODE_ENV` is `HEK293T`,
-`A549`, or `HeLa`. A custom environment is supplied through
-`RIBODECODE_ENV_CSV`: exactly 10,552 Gene IDs in the order of the official
-template and one column of nonnegative RPKM values. Environment parameters and
-`RIBODECODE_BATCH_SIZE` are fixed at startup.
+be at most 4,500 nt long and divisible by three. YAML `parameters.cell_context`
+selects `HEK293T` (default), `A549`, or `HeLa`. Set `context_file` to use a custom
+CSV: exactly 10,552 Gene IDs in the official template order and one column of
+nonnegative RPKM values. `context_file: null` selects the built-in context.
+`batch_size` defaults to `256`. Missing values retain the prepared runtime
+settings, including existing `RIBODECODE_*` overrides. See the [parameter reference](../../docs/scorer-parameters.md).
 
 Alternative start codons can be routed, but non-AUG starts may be outside the
 training distribution and require independent validation.
@@ -41,12 +42,17 @@ training distribution and require independent validation.
 Outputs: `ribodecode_translation_log` is the direct model output;
 `ribodecode_translation` is the inverse transformation `(exp(log) - 1) / 5`.
 
-For a prepared container named `morse-ribodecode`, use:
+For a prepared container named `morse-ribodecode` with the current source adapter
+([container setup](../../docs/scorer-parameters.md#using-this-checkout-with-containers)), use:
 
 ```yaml
 scorers:
   - name: ribodecode
     command: 'docker exec -i morse-ribodecode python3.8 /app/server.py'
+    parameters:
+      cell_context: HEK293T
+      context_file: null
+      batch_size: 256
     timeout_seconds: 1800
     scope: [start_codon, cds_body]
     metrics:

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import copy
 import hashlib
 import os
 import sys
@@ -122,8 +123,10 @@ class RinalmoWindowScorer:
         )
 
     def handle_request(self, request: dict[str, Any]) -> dict[str, Any]:
+        if not isinstance(request, dict):
+            raise ValueError("Request must be a JSON object")
         unknown = sorted(
-            set(request) - {"request_id", "sequences", "sequence_contexts"}
+            set(request) - {"request_id", "sequences", "sequence_contexts", "parameters", "params"}
         )
         if unknown:
             raise ValueError("Unknown request fields: " + ", ".join(unknown))
@@ -133,12 +136,19 @@ class RinalmoWindowScorer:
         ):
             raise ValueError("request.sequences must be a list of strings")
 
+        parameters = self.resolve_parameters(_request_parameters(request))
+        scorer = copy.copy(self)
+        scorer.window_size = parameters["window_size"]
+        scorer.stride = parameters["window_stride"]
+        scorer.offsets = parameters["window_offsets"]
+        scorer.batch_size = parameters["batch_size"]
+
         unique_windows: list[str] = []
         window_indices: dict[str, int] = {}
         candidate_indices: list[np.ndarray] = []
         for raw_sequence in sequences:
-            sequence = self.normalize_rna(raw_sequence)
-            windows = self._windows(sequence)
+            sequence = scorer.normalize_rna(raw_sequence)
+            windows = scorer._windows(sequence)
             indices = []
             for window in windows:
                 index = window_indices.get(window)
@@ -149,7 +159,7 @@ class RinalmoWindowScorer:
                 indices.append(index)
             candidate_indices.append(np.asarray(indices, dtype=np.int64))
 
-        unique_logits = self._score_sequences(unique_windows)
+        unique_logits = scorer._score_sequences(unique_windows)
         unique_probs = 1.0 / (1.0 + np.exp(-np.clip(unique_logits, -60, 60)))
 
         outputs = []
@@ -160,7 +170,31 @@ class RinalmoWindowScorer:
                 _aggregate_outputs(candidate_logits, candidate_probs)
             )
 
-        return {"request_id": request.get("request_id"), "outputs": outputs}
+        return {"request_id": request.get("request_id"), "outputs": outputs, "parameters": parameters}
+
+    def resolve_parameters(self, parameters: dict[str, Any]) -> dict[str, Any]:
+        unknown = set(parameters) - {"window_size", "window_stride", "window_offsets", "batch_size"}
+        if unknown:
+            raise ValueError("Unknown RiNALMo parameters: " + ", ".join(sorted(unknown)))
+        settings = {
+            "window_size": self.window_size,
+            "window_stride": self.stride,
+            "window_offsets": list(self.offsets),
+            "batch_size": self.batch_size,
+        }
+        settings.update(parameters)
+        for name in ("window_size", "window_stride", "batch_size"):
+            value = settings[name]
+            if type(value) is not int or value < 1:
+                raise ValueError(f"{name} must be a positive integer")
+            maximum = 65536 if name == "batch_size" else 10000
+            if name in parameters and value > maximum:
+                raise ValueError(f"{name} must be <= {maximum}")
+        offsets = settings["window_offsets"]
+        if not isinstance(offsets, list) or any(type(value) is not int or value < 0 for value in offsets):
+            raise ValueError("window_offsets must be a list of non-negative integers")
+        settings["window_offsets"] = list(offsets)
+        return settings
 
     def _windows(self, sequence: str) -> list[str]:
         return _sliding_windows(sequence, self.window_size, self.stride, self.offsets)
@@ -203,6 +237,15 @@ def _aggregate_outputs(logits: np.ndarray, probs: np.ndarray) -> dict[str, float
         "rinalmo_window_probability_max": float(np.max(probs)),
         "rinalmo_window_probability_p95": float(np.percentile(probs, 95)),
     }
+
+
+def _request_parameters(request: dict[str, Any]) -> dict[str, Any]:
+    if "parameters" in request and "params" in request:
+        raise ValueError("Use only one of parameters and params")
+    parameters = request.get("parameters", request.get("params", {}))
+    if not isinstance(parameters, dict) or any(not isinstance(key, str) for key in parameters):
+        raise ValueError("parameters must be a mapping with string keys")
+    return parameters
 
 
 def _parse_offsets(raw: str) -> list[int]:

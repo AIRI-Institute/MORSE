@@ -340,10 +340,11 @@ class ScorerEditor:
         from morse.schema4 import scope_expression
         self.name = w.Text(value=str(scorer["name"]), description="Name")
         self.command = w.Textarea(value=str(scorer["command"]), description="Bash", layout=w.Layout(width="100%", height="70px"))
-        parameters = scorer.get("parameters", {})
+        from morse.config import scorer_parameters_from_mapping
+        parameters = scorer_parameters_from_mapping(scorer)
         self.parameters = w.Textarea(
             value=yaml.safe_dump(parameters, sort_keys=False, allow_unicode=True) if parameters else "",
-            description="Parameters", placeholder="parameter_name: value",
+            description="Parameters", placeholder="parameter_name: value (optional)",
             layout=w.Layout(width="100%", height="80px"),
         )
         scope = scorer["scope"]

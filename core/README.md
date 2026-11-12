@@ -124,16 +124,14 @@ section for your prepared client. Custom interfaces use `--manifest PATH`.
 Learned predictors need ready weights;
 see [assets](../assets) and [scorers](../scorers).
 
-`notebooks/MORSE_Server_Colab.ipynb` is an optional interface to the same CLI.
-It generates and exports schema-4 YAML, launches and tracks jobs, and displays
-their plots and artifacts. Scorer commands use an already prepared environment;
-the notebook does not install scorer runtimes or start model services. The
-notebook builder is `scripts/update_colab_notebook.py`; edit the builder and
-regenerate the notebook. Your own backend is optional; see
-[jobs backend](docs/colab-backend.md).
+`notebooks/MORSE_Server_Colab.ipynb` generates and exports schema-4 YAML, then
+calls `morse.validate`, `morse.score` and `morse.optimize` in the notebook's
+Python kernel. The launch cell displays progress and plots; saved results can
+be reopened or resumed through the API. Scorer commands use the prepared
+environment. The notebook builder is `scripts/update_colab_notebook.py`.
 
-Local mode uses the same job manager as the optional remote jobs API. Remote
-mode submits the complete YAML configuration with a trusted execution token.
+See the [Python API guide](../docs/python-api.md) or the separate optional
+[jobs backend](docs/colab-backend.md).
 
 ## Tests
 

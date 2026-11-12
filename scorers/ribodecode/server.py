@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import contextlib
+import copy
 import json
 import os
 import sys
@@ -31,6 +32,12 @@ class RiboDecodeScorer:
         self.base_dir = Path(base_dir)
         self.output_prefix = os.environ.get("RIBODECODE_OUTPUT_PREFIX", "ribodecode")
         self.batch_size = int(os.environ.get("RIBODECODE_BATCH_SIZE", "256"))
+        self.cell_context = os.environ.get("RIBODECODE_ENV", "HEK293T")
+        csv_path = os.environ.get("RIBODECODE_ENV_CSV")
+        self.context_file = str(Path(csv_path).resolve()) if csv_path else None
+        if self.context_file is None:
+            self.cell_context = _validate_cell_context(self.cell_context)
+        self._condition_cache: dict[tuple[Any, ...], np.ndarray] = {}
         model_config = os.environ.get(
             "RIBODECODE_MODEL_CONFIG", str(self.base_dir / "model_config.json")
         )
@@ -44,6 +51,7 @@ class RiboDecodeScorer:
 
         self.model.predictorModel.eval()
         self.condition_array = self._load_condition_array(condition_path)
+        self._condition_cache[self._condition_key(self.cell_context, self.context_file)] = self.condition_array
         self.mrna_count = np.array([[4.5]], dtype=np.float32)
         print(
             "RiboDecode scorer ready "
@@ -51,6 +59,53 @@ class RiboDecodeScorer:
             file=sys.stderr,
             flush=True,
         )
+
+    def handle_request(self, request: dict[str, Any]) -> dict[str, Any]:
+        if not isinstance(request, dict):
+            raise ValueError("Request must be a JSON object")
+        unknown = set(request) - {"request_id", "sequences", "sequence_contexts", "parameters", "params"}
+        if unknown:
+            raise ValueError("Unknown request fields: " + ", ".join(sorted(unknown)))
+        sequences = request.get("sequences")
+        if not isinstance(sequences, list) or not all(isinstance(sequence, str) for sequence in sequences):
+            raise ValueError("Request must define a list of sequences")
+        overrides = _request_parameters(request)
+        parameters = self.resolve_parameters(overrides)
+        scorer = copy.copy(self)
+        scorer.batch_size = parameters["batch_size"]
+        scorer.cell_context = parameters.get("cell_context")
+        scorer.context_file = parameters["context_file"]
+        if "cell_context" in overrides or "context_file" in overrides:
+            key = self._condition_key(scorer.cell_context, scorer.context_file)
+            if key not in self._condition_cache:
+                self._condition_cache[key] = self._load_condition_array(scorer._condition_path())
+            scorer.condition_array = self._condition_cache[key]
+        return {"request_id": request.get("request_id"), "outputs": scorer.score(sequences), "parameters": parameters}
+
+    def resolve_parameters(self, parameters: dict[str, Any]) -> dict[str, Any]:
+        unknown = set(parameters) - {"cell_context", "context_file", "batch_size"}
+        if unknown:
+            raise ValueError("Unknown RiboDecode parameters: " + ", ".join(sorted(unknown)))
+        # An explicit built-in context takes precedence over a startup CSV.
+        context_file = parameters.get("context_file", None if "cell_context" in parameters else self.context_file)
+        if context_file is not None:
+            if not isinstance(context_file, str) or not context_file.strip():
+                raise ValueError("context_file must be a non-empty path or null")
+            context_file = str(Path(context_file).resolve())
+        batch_size = parameters.get("batch_size", self.batch_size)
+        if type(batch_size) is not int or batch_size < 1:
+            raise ValueError("batch_size must be a positive integer")
+        settings = {"context_file": context_file, "batch_size": batch_size}
+        if context_file is None:
+            settings["cell_context"] = _validate_cell_context(parameters.get("cell_context", self.cell_context))
+        return settings
+
+    @staticmethod
+    def _condition_key(cell_context: str | None, context_file: str | None) -> tuple[Any, ...]:
+        if context_file is None:
+            return ("builtin", cell_context)
+        stat = Path(context_file).stat()
+        return ("csv", context_file, stat.st_mtime_ns, stat.st_size)
 
     def score(self, raw_sequences: list[str]) -> list[dict[str, Any]]:
         sequences = [
@@ -92,15 +147,9 @@ class RiboDecodeScorer:
         return scores
 
     def _condition_path(self) -> Path:
-        csv_path = os.environ.get("RIBODECODE_ENV_CSV")
-        if csv_path:
-            return _condition_npz_from_csv(Path(csv_path))
-
-        env = os.environ.get("RIBODECODE_ENV", "HEK293T")
-        if env not in ENV_TO_CONDITION_FILE:
-            choices = ", ".join(sorted(ENV_TO_CONDITION_FILE))
-            raise ValueError(f"Unsupported RIBODECODE_ENV={env!r}; expected one of {choices}")
-        return self.base_dir / "conditions" / ENV_TO_CONDITION_FILE[env]
+        if self.context_file:
+            return _condition_npz_from_csv(Path(self.context_file))
+        return self.base_dir / "conditions" / ENV_TO_CONDITION_FILE[self.cell_context]
 
     def _load_condition_array(self, condition_path: Path) -> np.ndarray:
         npzfile = np.load(condition_path, allow_pickle=True)
@@ -121,25 +170,27 @@ def main() -> int:
             continue
         try:
             request = json.loads(line)
-            unknown = sorted(
-                set(request) - {"request_id", "sequences", "sequence_contexts"}
-            )
-            if unknown:
-                raise ValueError("Unknown request fields: " + ", ".join(unknown))
-            sequences = request.get("sequences")
-            if not isinstance(sequences, list) or not all(
-                isinstance(sequence, str) for sequence in sequences
-            ):
-                raise ValueError("Request must define a list of sequences")
-            response = {
-                "request_id": request.get("request_id"),
-                "outputs": scorer.score(sequences),
-            }
+            response = scorer.handle_request(request)
         except Exception as exc:
             traceback.print_exc(file=sys.stderr)
             response = {"request_id": _request_id_from_line(line), "error": str(exc)}
         print(json.dumps(response, separators=(",", ":")), flush=True)
     return 0
+
+
+def _validate_cell_context(value: Any) -> str:
+    if not isinstance(value, str) or value not in ENV_TO_CONDITION_FILE:
+        raise ValueError("cell_context must be one of: HEK293T, A549, HeLa")
+    return "HeLa" if value == "Hela" else value
+
+
+def _request_parameters(request: dict[str, Any]) -> dict[str, Any]:
+    if "parameters" in request and "params" in request:
+        raise ValueError("Use only one of parameters and params")
+    parameters = request.get("parameters", request.get("params", {}))
+    if not isinstance(parameters, dict) or any(not isinstance(key, str) for key in parameters):
+        raise ValueError("parameters must be a mapping with string keys")
+    return parameters
 
 
 def _normalize_coding_sequence(sequence: str) -> str:

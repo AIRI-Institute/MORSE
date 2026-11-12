@@ -221,176 +221,144 @@ parameters:
     choices:
     - sequence_feasibility_v1
     - manufacturing_strategy_v1
-    env: SEQUENCE_FEASIBILITY_PRESET
-    description: Immutable versioned engineering preset; all overrides are recorded
-      and hashed.
+    description: Immutable versioned engineering preset; all overrides are recorded and hashed.
   enabled_checks:
-    type: string
-    default: preset
-    env: SEQUENCE_FEASIBILITY_ENABLED_CHECKS
-    description: preset inherits the selected preset; otherwise a JSON list of enabled
-      checks. Empty list records metrics without filtering.
+    type: array
+    description: Enabled check names; omitted inherits the selected preset. Empty list logs without
+      filtering.
   global_gc_min:
     type: float
     default: 0.4
-    env: SEQUENCE_FEASIBILITY_GLOBAL_GC_MIN
     description: Inclusive lower global GC fraction.
     min: 0.0
     max: 1.0
   global_gc_max:
     type: float
     default: 0.6
-    env: SEQUENCE_FEASIBILITY_GLOBAL_GC_MAX
     description: Inclusive upper global GC fraction.
     min: 0.0
     max: 1.0
   local_gc_min:
     type: float
     default: 0.3
-    env: SEQUENCE_FEASIBILITY_LOCAL_GC_MIN
     description: Inclusive lower local GC bound.
     min: 0.0
     max: 1.0
   local_gc_max:
     type: float
     default: 0.7
-    env: SEQUENCE_FEASIBILITY_LOCAL_GC_MAX
     description: Inclusive upper local GC bound.
     min: 0.0
     max: 1.0
   local_gc_window:
     type: int
     default: 50
-    env: SEQUENCE_FEASIBILITY_LOCAL_GC_WINDOW
     description: Local GC window length in nt; shorter sequences use their full length.
     min: 1
     max: 100000
   local_gc_stride:
     type: int
     default: 1
-    env: SEQUENCE_FEASIBILITY_LOCAL_GC_STRIDE
     description: Local GC window stride in nt; the final window is always included.
     min: 1
     max: 100000
   homopolymer_max_a:
     type: int
     default: 9
-    env: SEQUENCE_FEASIBILITY_HOMOPOLYMER_MAX_A
     description: Maximum permitted A homopolymer length; longer runs fail.
     min: 1
     max: 100000
   homopolymer_max_u:
     type: int
     default: 9
-    env: SEQUENCE_FEASIBILITY_HOMOPOLYMER_MAX_U
     description: Maximum permitted U homopolymer length; longer runs fail.
     min: 1
     max: 100000
   homopolymer_max_g:
     type: int
     default: 5
-    env: SEQUENCE_FEASIBILITY_HOMOPOLYMER_MAX_G
     description: Maximum permitted G homopolymer length; longer runs fail.
     min: 1
     max: 100000
   homopolymer_max_c:
     type: int
     default: 5
-    env: SEQUENCE_FEASIBILITY_HOMOPOLYMER_MAX_C
     description: Maximum permitted C homopolymer length; longer runs fail.
     min: 1
     max: 100000
   direct_repeat_length:
     type: int
     default: 21
-    env: SEQUENCE_FEASIBILITY_DIRECT_REPEAT_LENGTH
     description: Exact repeated k-mer length in nt.
     min: 1
     max: 100000
   direct_repeat_min_copies:
     type: int
     default: 2
-    env: SEQUENCE_FEASIBILITY_DIRECT_REPEAT_MIN_COPIES
     description: Minimum number of pairwise nonoverlapping exact k-mer copies.
     min: 2
     max: 100000
   tandem_min_period:
     type: int
     default: 2
-    env: SEQUENCE_FEASIBILITY_TANDEM_MIN_PERIOD
     description: Smallest primitive tandem period in nt; at least 2.
     min: 2
     max: 100000
   tandem_max_period:
     type: int
     default: 6
-    env: SEQUENCE_FEASIBILITY_TANDEM_MAX_PERIOD
     description: Largest primitive tandem period in nt.
     min: 2
     max: 100000
   tandem_min_length:
     type: int
     default: 18
-    env: SEQUENCE_FEASIBILITY_TANDEM_MIN_LENGTH
-    description: Minimum tandem tract length in nt, including an incomplete trailing
-      copy.
+    description: Minimum tandem tract length in nt, including an incomplete trailing copy.
     min: 1
     max: 100000
   tandem_min_copies:
     type: int
     default: 3
-    env: SEQUENCE_FEASIBILITY_TANDEM_MIN_COPIES
     description: Minimum number of complete tandem copies.
     min: 2
     max: 100000
   forbidden_motifs:
-    type: string
-    default: '[]'
-    env: SEQUENCE_FEASIBILITY_FORBIDDEN_MOTIFS
-    description: JSON list of unique exact uppercase RNA motifs; supply both orientations
-      when required.
+    type: array
+    default: []
+    description: Exact uppercase RNA motifs to flag.
   exempt_regions:
-    type: string
-    default: '[]'
-    env: SEQUENCE_FEASIBILITY_EXEMPT_REGIONS
-    description: JSON list of {start,end,checks,reason}; zero-based half-open routed
-      coordinates. Every event span must be fully covered. Global GC cannot be exempted.
+    type: array
+    default: []
+    description: Regions {start,end,checks,reason} in zero-based half-open scorer-scope coordinates.
   restriction_enzymes:
-    type: string
-    default: preset
-    env: SEQUENCE_FEASIBILITY_RESTRICTION_ENZYMES
-    description: preset inherits the profile; otherwise JSON list of BsaI/BsmBI names.
-      Both orientations are checked. Custom exact sites can use forbidden_motifs.
+    type: array
+    description: BsaI/BsmBI names; omitted inherits the selected preset. Both orientations are checked.
   capping_method:
     type: string
-    default: preset
-    env: SEQUENCE_FEASIBILITY_CAPPING_METHOD
-    description: preset inherits the profile; otherwise none, cleancap_ag, or custom.
-      Requires a scope beginning at transcript nucleotide +1.
+    description: Omitted inherits the selected preset; otherwise none, cleancap_ag, or custom. Requires
+      a scope beginning at transcript nucleotide +1.
+    choices:
+    - none
+    - cleancap_ag
+    - custom
   custom_5prime_prefix:
     type: string
-    default: preset
-    env: SEQUENCE_FEASIBILITY_CUSTOM_5PRIME_PREFIX
-    description: preset inherits the profile; otherwise exact uppercase RNA prefix
-      for capping_method=custom.
+    description: Omitted inherits the selected preset; otherwise exact uppercase RNA prefix for capping_method=custom.
   inverted_repeat_stem:
-    type: string
-    default: preset
-    env: SEQUENCE_FEASIBILITY_INVERTED_REPEAT_STEM
-    description: preset inherits the profile; otherwise positive arm length in nt,
-      exact Watson-Crick complement only.
+    type: int
+    description: Omitted inherits the selected preset; otherwise positive arm length in nt, exact
+      Watson-Crick complement only.
+    min: 1
   inverted_repeat_window:
-    type: string
-    default: preset
-    env: SEQUENCE_FEASIBILITY_INVERTED_REPEAT_WINDOW
-    description: preset inherits the profile; otherwise maximum total span of both
-      arms and intervening bases in nt.
+    type: int
+    description: Omitted inherits the selected preset; otherwise maximum total span of both arms
+      and intervening bases in nt.
+    min: 1
   inverted_repeat_min_gap:
-    type: string
-    default: preset
-    env: SEQUENCE_FEASIBILITY_INVERTED_REPEAT_MIN_GAP
-    description: preset inherits the profile; otherwise nonnegative minimum gap between
+    type: int
+    description: Omitted inherits the selected preset; otherwise nonnegative minimum gap between
       nonoverlapping arms. Zero includes palindromes.
+    min: 0
 self_test:
   sequence: GGGACCAUGGCCGCCGCCGCCGCCGCCGCCUAACUGGCUAGCUAGCUAGCUAGCUAGCUAGC
   sequence_context:

@@ -28,6 +28,31 @@ aware min–max scaling over the final Pareto set and initial sequence.
 morse report outputs/quickstart
 ```
 
+## Python and notebooks
+
+The Python API accepts the same YAML configuration as the CLI:
+
+```python
+import morse
+
+params = morse.load_config("experiment.yaml")
+morse.validate(params=params)
+scores = morse.score(params=params)
+result = morse.optimize(params=params, verbose=2)
+```
+
+To supply RNA directly, pass it as the first argument to `validate`, `score` or
+`optimize`; the configuration still defines the part coordinates. `verbose=1`
+shows progress, and `verbose=2` also updates plots inside the notebook.
+Results are saved in the configured output directory.
+
+See the [Python API guide](python-api.md) and the
+[self-contained CPU notebook](../core/notebooks/MORSE_Python_API.ipynb).
+The [graphical notebook](../core/notebooks/MORSE_Server_Colab.ipynb) builds the
+YAML in forms and uses the same Python API to validate, score and optimize it
+in the active kernel. Interrupt the launch cell to stop; use its Resume cell
+to continue from the saved generation.
+
 ## A complete RNA or CDS-only input
 
 Provide a single-record RNA or DNA FASTA and define part coordinates in the YAML:
@@ -165,14 +190,19 @@ input sequence, in the same order:
 {"request_id":1,"outputs":[{"cpg_per_kb":111.11111111111111,"gc_fraction":0.5555555555555556,"gc_distance":0.05555555555555558}]}
 ```
 
-MORSE routes the requested sequence scope before invoking the command. Optional
-`parameters` comes from the scorer's YAML section and holds JSON-compatible
-calculation settings. The adapter validates its supported names, types and ranges.
+MORSE routes the requested sequence scope before invoking the command. The
+optional `parameters` mapping holds JSON-compatible calculation settings. The adapter validates its supported names, types and ranges.
 An omitted or empty mapping sends no `parameters` field. The request can also
 contain `sequence_contexts` with physical-part ranges; forward both fields intact
 when calling a model that uses them. Send logs to stderr. An error
 object such as `{"request_id":1,"error":"message"}`, a nonzero exit, an invalid
 response or a timeout stops scoring.
+
+Only explicitly supplied values override the scorer's startup settings;
+omitted values retain the selected runtime's defaults. The adapters return their
+effective settings in the response's optional `parameters` object; MORSE saves
+them to `scorer_parameters.json` during optimization.
+See the [parameter reference](scorer-parameters.md) for supported settings and profiles.
 
 A local script, relative to the configuration directory:
 

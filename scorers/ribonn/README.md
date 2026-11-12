@@ -44,14 +44,21 @@ optional.
 
 Requests: `{"request_id":"...","sequences":["..."],"sequence_contexts":[{"part_ranges":[...]}]}`.
 Responses: `{"request_id":"...","outputs":[{"ribonn_mean_te":0.1,"ribonn_model_sd":0.02,"ribonn_model_count":50}]}`.
-Runtime parameters: `RIBONN_MODEL_DIR`, `RIBONN_DEVICE`, `RIBONN_BATCH_SIZE`.
+Set `batch_size` (default `16`) and `cpu_threads` (default `2`) in YAML
+`parameters`. Missing values retain the prepared runtime settings. `RIBONN_MODEL_DIR`
+and `RIBONN_DEVICE` remain setup options; existing batch/thread environment
+overrides are supported. See the [parameter reference](../../docs/scorer-parameters.md).
 
-For a prepared container named `morse-ribonn`, use:
+For a prepared container named `morse-ribonn` with the current source adapter
+([container setup](../../docs/scorer-parameters.md#using-this-checkout-with-containers)), use:
 
 ```yaml
 scorers:
   - name: ribonn
     command: 'docker exec -i morse-ribonn python /app/server.py'
+    parameters:
+      batch_size: 16
+      cpu_threads: 2
     timeout_seconds: 1800
     scope: [five_prime_utr, cds, three_prime_utr]
     metrics:

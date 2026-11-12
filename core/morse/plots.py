@@ -3,6 +3,7 @@ from __future__ import annotations
 import csv
 import json
 import os
+import sys
 import tempfile
 import textwrap
 from collections import Counter, defaultdict
@@ -16,7 +17,10 @@ os.environ.setdefault("MPLCONFIGDIR", str(Path(tempfile.gettempdir()) / "morse-m
 
 import matplotlib
 
-matplotlib.use("Agg")
+_ipython = sys.modules.get("IPython")
+_shell = getattr(_ipython, "get_ipython", lambda: None)()
+if "matplotlib.pyplot" not in sys.modules and getattr(_shell, "kernel", None) is None:
+    matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.patches import Rectangle

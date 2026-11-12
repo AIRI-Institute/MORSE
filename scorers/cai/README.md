@@ -7,7 +7,7 @@ start-codon-plus-CDS-body sequences using the standard genetic code. The
 project has no Python dependencies and supports the MORSE sequence-batch
 JSONL contract.
 
-`morse-scorer.yaml` documents the scope, outputs, startup parameters and
+`morse-scorer.yaml` documents the scope, outputs, calculation parameters and
 self-test. Inspect it with `morse scorers describe cai`. Prepare the runtime
 before starting an experiment, then put its Bash command in the experiment YAML.
 CAI runs with MORSE's Python interpreter and needs no additional packages.
@@ -42,8 +42,8 @@ The profile is labeled `genome_wide_cds`: it is a general human profile, not a
 classic highly expressed gene set or a tissue-specific profile.
 
 It also includes `mus_musculus_kazusa_53036_cds`, a mouse genome-wide CDS
-profile for mouse experiments. Select either schema-1 JSON through `CAI_PROFILE`;
-the same profiles can be used directly by LinearDesign:
+profile for mouse experiments. Select a file through `parameters.profile_path`;
+human is the default. The same profiles can be used directly by LinearDesign:
 
 - `profiles/homo_sapiens_kazusa_93487_cds.json`
 - `profiles/mus_musculus_kazusa_53036_cds.json`
@@ -63,9 +63,10 @@ python -m scorers.cai.build_profile reference_cds.fasta \
   --source-url "https://example.org/dataset"
 ```
 
-`CAI_PROFILE` accepts a path to a JSON profile. Without that variable, the
-built-in genome-wide human profile is used. Every result includes the SHA-256
-digest of the file that was actually loaded.
+`profile_path` accepts a bundled filename or a path accessible to the scorer.
+Bundled `profiles/...` paths resolve inside the scorer directory. Every result
+includes the SHA-256 digest of the file actually loaded. Existing `CAI_PROFILE`
+settings remain the fallback when the config omits `profile_path`.
 
 ## Interface
 
@@ -80,13 +81,13 @@ Outputs:
 - `cai`: CAI in `(0, 1]`;
 - `cai_log`: natural logarithm of CAI;
 - `cai_min_weight`: minimum informative codon weight in the CDS body;
-- `cai_low_weight_fraction`: fraction of codons with `w < CAI_LOW_WEIGHT_THRESHOLD` (`0.1` by default);
+- `cai_low_weight_fraction`: fraction of codons with `w < low_weight_threshold` (`0.1` by default);
 - `cai_informative_codons`: number of codons in the mean after excluding the
   initiation codon, `ATG`, and `TGG`;
 - `cai_profile_id` and `cai_profile_sha256`: reference identifiers.
 
 Core resolves the schema-4 `start_codon + cds_body` scope before scoring. The runtime receives
-only a batch of sequences; profile parameters are fixed once at startup:
+a batch of sequences and optional JSON `parameters`:
 
 ```json
 {"request_id":1,"sequences":["ATGTTCTTT"]}
@@ -97,6 +98,9 @@ only a batch of sequences; profile parameters are fixed once at startup:
 ```yaml
 - name: cai_human
   command: '"${MORSE_PYTHON}" -m scorers.cai.server'
+  parameters:
+    profile_path: profiles/homo_sapiens_kazusa_93487_cds.json
+    low_weight_threshold: 0.1
   timeout_seconds: 120
   scope: [start_codon, cds_body]
   metrics:
@@ -116,25 +120,33 @@ request followed by EOF; the scorer returns one JSON response and exits.
 `cds_body` excludes the start and stop; schema-4 `cds` includes both. This scope
 sends the start codon and body without a terminal stop to the scorer.
 
-Choose a custom profile in the command:
+To use the mouse profile, change `profile_path` to
+`profiles/mus_musculus_kazusa_53036_cds.json`. For a custom file:
 
 ```yaml
-  command: 'CAI_PROFILE=/absolute/path/profile.json "${MORSE_PYTHON}" -m scorers.cai.server'
+parameters:
+  profile_path: /absolute/path/profile.json
 ```
+
+`low_weight_threshold` affects the diagnostic fraction, not the CAI score.
+Missing settings retain the prepared scorer defaults. See the
+[parameter reference](../../docs/scorer-parameters.md).
 
 For an already prepared container, use `docker exec -i CONTAINER python
 /app/server.py` as the command. Configure profile mounts when preparing that
-container, before `morse run`.
+container, before `morse run`. Existing registry images need the
+[updated adapter](../../docs/scorer-parameters.md#using-this-checkout-with-containers)
+to accept config parameters.
 
 ## Verification and reproducibility
 
 From the monorepo root, build the CPU runtime with its scorer-directory context:
 
 ```bash
-docker build --platform linux/amd64 -t ghcr.io/shpakb/morse-cai:2.2.0 scorers/cai
+docker build --platform linux/amd64 -t morse-cai:local scorers/cai
 printf '%s\n' '{"request_id":1,"sequences":["ATGTTCTTT"]}' \
-  | docker run --platform linux/amd64 --rm -i ghcr.io/shpakb/morse-cai:2.2.0
-python scorers/cai/prepare_assets.py --docker-image ghcr.io/shpakb/morse-cai:2.2.0
+  | docker run --platform linux/amd64 --rm -i morse-cai:local
+python scorers/cai/prepare_assets.py --docker-image morse-cai:local
 ```
 
 The image includes the adapter's MIT notice at `/app/LICENSE`.
