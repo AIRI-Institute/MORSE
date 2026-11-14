@@ -1,4 +1,4 @@
-"""Notebook forms and job clients for the same YAML-driven MORSE CLI.
+"""Notebook forms and input bundles for the MORSE Python API.
 
 Scorers are prepared independently. This module neither installs model runtimes
 nor compiles installation IDs into experiment configuration. Widgets are an
@@ -66,7 +66,8 @@ def export_configuration_bundle(path: str | Path) -> Path:
 
 
 def design_from_rna(sequence_text, coordinates, *, name, five_prime_utrs="", three_prime_utrs="",
-                    poly_a_lengths=(), mutable_parts=("cds",), allow_upstream_start_codons=False):
+                    poly_a_lengths=(), mutable_parts=("cds",), allow_upstream_start_codons=False,
+                    start_codons=("AUG",), stop_codons=("UAA",), schema_version=5):
     records = parse_fasta_text(sequence_text)
     if len(records) != 1:
         raise ValueError("Provide exactly one RNA sequence")
@@ -89,7 +90,11 @@ def design_from_rna(sequence_text, coordinates, *, name, five_prime_utrs="", thr
     if cursor != len(sequence) or set(chunks["poly_a"]) - {"A"}:
         raise ValueError("Coordinates must cover the RNA; poly_a must contain only A")
     lengths = list(poly_a_lengths) or [len(chunks["poly_a"])]
-    design = design_from_full_cds(chunks["cds"], name=name,
+    if schema_version not in {4, 5}:
+        raise ValueError("Notebook sequence forms support schema 4 or 5")
+    builder = design_from_cds_body if schema_version == 5 else design_from_full_cds
+    codons = {"start_codons": start_codons, "stop_codons": stop_codons} if schema_version == 5 else {}
+    design = builder(chunks["cds"], name=name, **codons,
         five_prime_utrs=five_prime_utrs or chunks["five_prime_utr"],
         three_prime_utrs=three_prime_utrs or chunks["three_prime_utr"],
         poly_a_lengths=lengths, mutable_parts=mutable_parts,
@@ -139,13 +144,38 @@ def design_from_full_cds(
         raise ValueError("Full CDS must start with ATG and contain at least two codons")
     stop = coding[-3:] if coding[-3:] in STOP_CODONS else ""
     body = coding[3:-3] if coding[-3:] in STOP_CODONS else coding[3:]
-    return build_design_payload(
+    design = build_design_payload(
         name=name, five_prime_utrs=parse_fasta_text(five_prime_utrs, prefix="five", allow_empty=True),
         start_codons=["ATG"], cds=body, stop_codons=[stop],
         three_prime_utrs=parse_fasta_text(three_prime_utrs, prefix="three", allow_empty=True),
         poly_a_lengths=poly_a_lengths, mutable_parts=mutable_parts,
         allow_upstream_start_codons=allow_upstream_start_codons,
     )
+    design["schema_version"] = 4
+    return design
+
+
+def design_from_cds_body(
+    cds_body: str, *, name: str, five_prime_utrs: str = "", three_prime_utrs: str = "",
+    start_codons: Sequence[str] = ("AUG",), stop_codons: Sequence[str] = ("UAA",),
+    poly_a_lengths: Sequence[int] = (0,), mutable_parts: Sequence[str] = ("cds",),
+    allow_upstream_start_codons: bool = False,
+) -> dict[str, Any]:
+    """Read one schema-5 CDS body, keeping its first codon intact."""
+    records = parse_fasta_text(cds_body, prefix="cds_body")
+    if len(records) != 1:
+        raise ValueError("Provide exactly one CDS body without start or stop codons")
+    design = build_design_payload(
+        name=name, five_prime_utrs=parse_fasta_text(five_prime_utrs, prefix="five", allow_empty=True),
+        start_codons=start_codons, cds=next(iter(records.values())), stop_codons=stop_codons,
+        three_prime_utrs=parse_fasta_text(three_prime_utrs, prefix="three", allow_empty=True),
+        poly_a_lengths=poly_a_lengths, mutable_parts=mutable_parts,
+        allow_upstream_start_codons=allow_upstream_start_codons,
+    )
+    if any(not value for value in design["stop_codons"]):
+        raise ValueError("Schema 5 requires a terminal stop codon")
+    design["schema_version"] = 5
+    return design
 
 
 def build_design_payload(
@@ -159,15 +189,15 @@ def build_design_payload(
         raise ValueError("CDS body must be in frame and contain no stop codons")
     starts = [normalize_dna(v) for v in start_codons]
     stops = [normalize_dna(v) for v in (stop_codons or ())]
-    if not starts or any(len(v) != 3 or v in STOP_CODONS for v in starts):
+    if not starts or len(starts) != len(set(starts)) or any(len(v) != 3 or v in STOP_CODONS for v in starts):
         raise ValueError("Provide non-stop start codons of length three")
-    if not stops or any(v not in STOP_CODONS | {""} for v in stops):
+    if not stops or len(stops) != len(set(stops)) or any(v not in STOP_CODONS | {""} for v in stops):
         raise ValueError("Provide TAA, TAG, TGA or an absent stop codon")
     lengths = [int(v) for v in poly_a_lengths]
     if not lengths or any(v < 0 for v in lengths):
         raise ValueError("poly(A) lengths must be nonnegative integers")
     mutable = list(mutable_parts)
-    if not mutable or set(mutable) - set(PART_ORDER) or len(set(mutable)) != len(mutable):
+    if set(mutable) - set(PART_ORDER) or len(set(mutable)) != len(mutable):
         raise ValueError("Choose distinct known mutable parts")
     return {
         "name": str(name), "five_prime_utrs": {str(k): normalize_dna(v) for k, v in five_prime_utrs.items()},
@@ -183,14 +213,18 @@ def build_notebook_run_configuration(
     scorers: Sequence[Mapping[str, Any]] | None = None,
     manufacturability: Mapping[str, Any] | None = None, initialization: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """Build a schema-4 YAML mapping and its small FASTA input bundle."""
-    if design["start_codons"][0] != "ATG":
+    """Build a YAML mapping and its small FASTA input bundle."""
+    version = design.get("schema_version", 5)
+    if version not in {4, 5}:
+        raise ValueError("Notebook sequence forms support schema 4 or 5")
+    if version == 4 and design["start_codons"][0] != "ATG":
         raise ValueError("The reference CDS must start with ATG")
     mutable = set(design["mutable_parts"])
     five, three = dict(design["five_prime_utrs"]), dict(design["three_prime_utrs"])
     chunks = {
         "five_prime_utr": next(iter(five.values())),
-        "cds": design["start_codons"][0] + design["cds"] + design["stop_codons"][0],
+        "cds": (design["cds"] if version == 5 else
+                design["start_codons"][0] + design["cds"] + design["stop_codons"][0]),
         "three_prime_utr": next(iter(three.values())),
         "poly_a": "A" * design["poly_a_lengths"][0],
     }
@@ -214,16 +248,22 @@ def build_notebook_run_configuration(
     if "poly_a" in mutable and any(design["poly_a_lengths"]):
         changes["poly_a"] = {"lengths": list(design["poly_a_lengths"])}
     for part, values in (("start_codon", design["start_codons"]), ("stop_codon", design["stop_codons"])):
-        if part in mutable and len(values) > 1:
+        if version == 4 and part in mutable and len(values) > 1:
             changes[part] = {"sequences": list(values)}
     optimizer = copy.deepcopy(dict(optimizer_config))
     optimizer["algorithm"] = optimizer.pop("type", optimizer.get("algorithm", "nsga2"))
     optimizer.pop("variables", None)
     configuration = {
-        "schema_version": 4, "name": str(run_name), "output_dir": "results/" + str(run_name),
+        "schema_version": version, "name": str(run_name), "output_dir": "results/" + str(run_name),
         "construct": {"fasta": "sequence.fasta", "coordinates": coordinates, "changes": changes},
         "optimizer": optimizer,
     }
+    if version == 5:
+        for part in ("start_codon", "stop_codon"):
+            values = list(design[part + "s"])
+            if part == "stop_codon" and any(not value for value in values):
+                raise ValueError("Schema 5 requires a terminal stop codon")
+            configuration["construct"][part] = [value.replace("T", "U") for value in values]
     if design.get("allow_upstream_start_codons", False):
         configuration["construct"]["allow_upstream_start_codons"] = True
     if scorers is not None:
@@ -278,8 +318,8 @@ def render_generated_scope_preview(path: str | Path) -> str:
 def read_configuration(path: str | Path) -> dict[str, Any]:
     path = Path(path).expanduser().resolve()
     raw = yaml.safe_load(path.read_text())
-    if not isinstance(raw, dict) or raw.get("schema_version") not in {3, 4}:
-        raise ValueError("Expected one complete schema_version: 3 or 4 YAML configuration")
+    if not isinstance(raw, dict) or raw.get("schema_version") not in {3, 4, 5}:
+        raise ValueError("Expected one complete schema_version: 3, 4 or 5 YAML configuration")
     files = {}
     for mapping, key in _input_references(raw):
         value = mapping[key]
@@ -407,16 +447,18 @@ class ExperimentEditor:
         import ipywidgets as w
         self.name = w.Text(value="morse_notebook_run", description="Run name")
         self.input_mode = w.Dropdown(options=["CDS", "RNA + coordinates"], value="CDS", description="Input")
-        self.cds = w.Textarea(value=">example\nATGGCTGCTGGTGCTGCTTAA", description="Full CDS", layout=w.Layout(width="100%", height="100px"))
+        self.cds = w.Textarea(value=">example\nGCUGCUGGUGCUGCU", description="CDS body", layout=w.Layout(width="100%", height="100px"))
         self.cds_upload = w.FileUpload(accept=".fa,.fasta,.fna,.txt", multiple=False, description="Upload FASTA")
-        self.coordinates = w.Textarea(value="cds: [0, 21]", description="Coordinates", layout=w.Layout(width="100%", height="95px"))
+        self.coordinates = w.Textarea(value="cds: [0, 15]", description="Coordinates", layout=w.Layout(width="100%", height="95px"))
         self.coordinates.layout.display = "none"
+        self.start_codons = w.Text(value="AUG", description="Start choices", placeholder="AUG, CUG")
+        self.stop_codons = w.Text(value="UAA", description="Stop choices", placeholder="UAA, UAG, UGA")
         self.input_mode.observe(self._input_mode_changed, names="value")
         self.five = w.Textarea(value="", description="5′UTR choices", layout=w.Layout(width="100%", height="80px"))
         self.three = w.Textarea(value="", description="3′UTR choices", layout=w.Layout(width="100%", height="80px"))
         self.poly_a = w.Text(value="", placeholder="Optional, e.g. 70, 100", description="poly(A) lengths")
         self.mutable = w.SelectMultiple(options=["five_prime_utr", "cds", "three_prime_utr", "poly_a"], value=("cds",), description="Change parts")
-        self.upstream_starts = w.Checkbox(value=False, description="Allow upstream start codons")
+        self.upstream_starts = w.Checkbox(value=False, description="Allow upstream AUG")
         self.algorithm = w.Dropdown(options=["ga", "nsga2", "nsga3"], value="nsga2", description="Algorithm")
         self.population = w.IntText(value=32, description="Population")
         self.generations = w.IntText(value=20, description="Generations")
@@ -436,8 +478,8 @@ class ExperimentEditor:
         generate.on_click(self._generate)
         self.cds_upload.observe(self._uploaded, names="value")
         panels = w.Tab(children=[
-            w.VBox([w.HTML("CDS includes ATG and optional stop. RNA coordinates use 0-based, end-exclusive ranges. UTR fields accept FASTA choices."),
-                self.name, self.input_mode, self.cds_upload, self.cds, self.coordinates, self.five, self.three, self.poly_a, self.mutable, self.upstream_starts]),
+            w.VBox([w.HTML("Input CDS excludes start and stop. Coordinates refer to input parts (0-based, end-exclusive). Codon choices: comma-separated; first is the reference. UTR fields accept FASTA choices."),
+                self.name, self.input_mode, self.cds_upload, self.cds, self.coordinates, self.start_codons, self.stop_codons, self.five, self.three, self.poly_a, self.mutable, self.upstream_starts]),
             w.VBox([w.HTML("Bash reads one JSON batch from stdin then EOF; diagnostics go to stderr."),
                 w.HBox([self.catalog_choice, add]), self.scorer_box]),
             w.VBox([w.HBox([self.algorithm, self.population, self.generations, self.seed]), self.output_dir,
@@ -456,7 +498,7 @@ class ExperimentEditor:
 
     def _input_mode_changed(self, change):
         whole = change["new"] == "RNA + coordinates"
-        self.cds.description = "RNA" if whole else "Full CDS"
+        self.cds.description = "RNA input" if whole else "CDS body"
         self.coordinates.layout.display = "" if whole else "none"
 
     def add_scorer(self, scorer: Mapping[str, Any]) -> ScorerEditor:
@@ -469,9 +511,11 @@ class ExperimentEditor:
         lengths = [int(s.strip()) for s in self.poly_a.value.split(",") if s.strip()]
         options = dict(name=self.name.value, five_prime_utrs=self.five.value, three_prime_utrs=self.three.value,
             poly_a_lengths=lengths or ([0] if self.input_mode.value == "CDS" else []),
-            mutable_parts=self.mutable.value, allow_upstream_start_codons=self.upstream_starts.value)
+            mutable_parts=self.mutable.value, allow_upstream_start_codons=self.upstream_starts.value,
+            start_codons=[value.strip() for value in self.start_codons.value.split(",") if value.strip()],
+            stop_codons=[value.strip() for value in self.stop_codons.value.split(",") if value.strip()])
         design = (design_from_rna(self.cds.value, yaml.safe_load(self.coordinates.value), **options)
-                  if self.input_mode.value == "RNA + coordinates" else design_from_full_cds(self.cds.value, **options))
+                  if self.input_mode.value == "RNA + coordinates" else design_from_cds_body(self.cds.value, **options))
         optimizer = {"type": self.algorithm.value, "population_size": self.population.value,
                      "generations": self.generations.value, "seed": self.seed.value}
         if self.algorithm.value == "nsga3":

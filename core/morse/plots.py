@@ -44,7 +44,7 @@ def _read_run_colors(output_dir: Path, summary: dict[str, Any] | None = None):
             config = yaml.safe_load(path.read_text())
             if isinstance(config, dict) and isinstance(config.get("scorers"), list):
                 scorers = config["scorers"]
-                if config.get("schema_version") == 4:
+                if config.get("schema_version") in {4, 5}:
                     scorers = [{**item, "namespace": item["name"]} for item in scorers]
                 break
     if scorers is None:

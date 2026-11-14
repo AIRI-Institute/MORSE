@@ -34,10 +34,11 @@ morse-core run --config experiments/my_antigen/experiment.yaml --output-dir runs
 morse-core report runs/my_antigen
 ```
 
-`init` accepts a full single-record CDS beginning with ATG, with an optional
-terminal stop. It writes schema-4 YAML, an RNA FASTA and a short README.
-Missing UTRs, stop and poly(A) are not added. The CLI also reads schema-3 configs
-with their original part and scope semantics.
+`init` accepts a single-record CDS body without initiation or terminal stop
+codons. It writes schema-5 YAML, an input FASTA and a short README. Explicit
+`start_codon: [AUG]` and `stop_codon: [UAA]` lists define the inserted codons; add
+entries to allow alternatives. UTRs and poly(A) are optional. Schemas 3/4 remain
+readable with their original input and scope semantics.
 
 ## Experiment configuration
 
@@ -45,8 +46,10 @@ YAML owns all scientific choices. Relative FASTA/profile/initial-population path
 and explicit scorer `workdir` resolve from its directory (or `--input-root`).
 Use the same configuration on a workstation, SLURM node or your own backend.
 `construct.fasta` and `construct.coordinates` define the input with 0-based,
-end-exclusive ranges. Only the full `cds` is required; UTRs and poly(A) are
-optional. `construct.changes` lists what may change; unlisted parts stay fixed.
+end-exclusive ranges before codon insertion. `coordinates.cds` selects the
+body without start and stop; UTRs and poly(A) are optional. Codon lists live
+directly under `construct`, with the first entry defining the reference.
+`construct.changes` lists other permitted changes; unlisted parts stay fixed.
 See the [commented template](../examples/experiment.template.yaml) and
 [researcher guide](../docs/researcher-guide.md).
 See `examples/quickstart/experiment.yaml` and the retained configs under
@@ -124,7 +127,7 @@ section for your prepared client. Custom interfaces use `--manifest PATH`.
 Learned predictors need ready weights;
 see [assets](../assets) and [scorers](../scorers).
 
-`notebooks/MORSE_Server_Colab.ipynb` generates and exports schema-4 YAML, then
+`notebooks/MORSE_Server_Colab.ipynb` generates and exports schema-5 YAML, then
 calls `morse.validate`, `morse.score` and `morse.optimize` in the notebook's
 Python kernel. The launch cell displays progress and plots; saved results can
 be reopened or resumed through the API. Scorer commands use the prepared

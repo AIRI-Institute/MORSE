@@ -82,13 +82,13 @@ def resolve_run_mapping(
     if not isinstance(raw, dict):
         raise ValueError(f"Run config must be a YAML mapping: {path}")
     schema_version = int(raw.get("schema_version", 0))
-    if schema_version not in {3, 4}:
+    if schema_version not in {3, 4, 5}:
         if schema_version == 2:
             raise ValueError(
                 "Run config schema_version 2 is no longer accepted: migrate "
                 "start_codon from a CDS annotation to a physical construct part"
             )
-        raise ValueError("Run config must define schema_version: 3 or 4")
+        raise ValueError("Run config must define schema_version: 3, 4 or 5")
     unknown_top_level = sorted(
         set(raw)
         - {
@@ -99,7 +99,7 @@ def resolve_run_mapping(
             "scorers",
             "manufacturability",
             "initialization",
-            *( {"output_dir"} if schema_version == 4 else set()),
+            *( {"output_dir"} if schema_version in {4, 5} else set()),
         }
     )
     if unknown_top_level:
@@ -111,8 +111,11 @@ def resolve_run_mapping(
     resolved["schema_version"] = schema_version
     name = str(resolved.get("name") or path.stem)
     resolved["name"] = name
-    if schema_version == 4:
-        from morse.schema4 import resolve_paths
+    if schema_version in {4, 5}:
+        if schema_version == 5:
+            from morse.schema5 import resolve_paths
+        else:
+            from morse.schema4 import resolve_paths
         resolve_paths(resolved, base_dir, output_base_dir=path.parent)
     else:
         _resolve_part_paths(resolved, base_dir)
@@ -153,8 +156,11 @@ def parse_run_spec(
     base_dir = input_root.expanduser().resolve() if input_root is not None else path.parent
     part_sources = _parse_part_sources(resolved, path)
 
-    if schema_version == 4:
-        from morse.schema4 import build_design, engine_config
+    if schema_version in {4, 5}:
+        if schema_version == 5:
+            from morse.schema5 import build_design, engine_config
+        else:
+            from morse.schema4 import build_design, engine_config
         design_space = build_design(name, _mapping(resolved.get("construct"), "construct"),
                                     base_dir, source_sequence=sequence)
         runtime_raw = engine_config(resolved)
@@ -171,7 +177,9 @@ def parse_run_spec(
         )
         runtime_raw = resolved
     if require_mutable and design_space.mutable_variable_count == 0:
-        key = "construct.changes" if schema_version == 4 else "optimizer.variables"
+        key = "construct.changes / codon choices" if schema_version == 5 else (
+            "construct.changes" if schema_version == 4 else "optimizer.variables"
+        )
         raise ValueError(f"{key} does not expose any mutable choices")
 
     run_config = parse_run_config(runtime_raw)
@@ -302,7 +310,7 @@ def _parse_part_sources(
     raw: dict[str, Any], config_path: Path
 ) -> tuple[PartSourceSpec, ...]:
     construct = _mapping(raw.get("construct"), "construct")
-    if raw.get("schema_version") == 4:
+    if raw.get("schema_version") in {4, 5}:
         changes = construct.get("changes", {})
         sources = []
         for part in PART_ORDER:

@@ -1,14 +1,15 @@
 # Start an independent experiment
 
-The included `input_cds.fasta` is the full MLANA coding sequence used as an input
-example. Run from the monorepo root:
+The included `input_cds.fasta` is the MLANA CDS body, without initiation and
+terminal stop codons. Run from the monorepo root:
 
 ```sh
 morse init --cds examples/custom_experiment/input_cds.fasta --output-dir experiments/my_antigen
 morse run --config experiments/my_antigen/experiment.yaml
 ```
 
-Replace the FASTA with your own single coding sequence. Add repeated
+Replace the FASTA with your own CDS body. The generated config inserts AUG and
+UAA; edit `construct.start_codon` and `construct.stop_codon` to allow alternatives. Add repeated
 `--five-prime-utr FILE` and `--three-prime-utr FILE` flags for UTR alternatives.
 See [the researcher guide](../../docs/researcher-guide.md) for real inference
 scorers, explicit scope/objective policies, provenance, multiple seeds and resume.

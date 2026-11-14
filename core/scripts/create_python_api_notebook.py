@@ -51,16 +51,17 @@ def build_notebook() -> dict:
             cell("markdown", "input-help", """
                 ## Input and configuration
 
-                This short synthetic RNA contains a 5′UTR, CDS, 3′UTR and poly(A).
-                Coordinates cover the RNA consecutively and use 0-based, end-exclusive
-                ranges. The UTR libraries provide two choices each.
+                The input contains a 5′UTR, CDS body, 3′UTR and poly(A), without
+                start or stop codons. Schema 5 adds these from separate lists.
+                Coordinates cover the input consecutively using 0-based,
+                end-exclusive ranges. The UTR libraries provide two choices each.
                 """),
             cell("code", "input-config", """
                 utr5 = "GGGAAACCC"
-                cds = "".join(["AUG", "ACU", "UGU", "GGU", "ACU", "AAG",
-                               "CUU", "GGU", "AGU", "GGU", "AGU", "UAA"])
+                cds_body = "".join(["ACU", "UGU", "GGU", "ACU", "AAG",
+                                    "CUU", "GGU", "AGU", "GGU", "AGU"])
                 utr3 = "GGAUCUCC"
-                rna_seq = utr5 + cds + utr3 + "A" * 12
+                rna_seq = utr5 + cds_body + utr3 + "A" * 12
 
                 (experiment / "sequence.fasta").write_text(f">demo_rna\\n{rna_seq}\\n")
                 (experiment / "utr5.fasta").write_text(
@@ -69,14 +70,16 @@ def build_notebook() -> dict:
                     ">trailer_a\\nGGAUCUCC\\n>trailer_b\\nCCUAAGGA\\n")
 
                 cds_start = len(utr5)
-                cds_end = cds_start + len(cds)
+                cds_end = cds_start + len(cds_body)
                 utr3_end = cds_end + len(utr3)
                 params = {
-                    "schema_version": 4,
+                    "schema_version": 5,
                     "name": "python_api_demo",
                     "output_dir": "run",
                     "construct": {
                         "fasta": "sequence.fasta",
+                        "start_codon": ["AUG"],
+                        "stop_codon": ["UAA"],
                         "coordinates": {
                             "five_prime_utr": [0, cds_start],
                             "cds": [cds_start, cds_end],
@@ -109,13 +112,15 @@ def build_notebook() -> dict:
 
                 # Resolve paths relative to the YAML; the result is an ordinary dict.
                 params = morse.load_config(config_path)
-                print(f"RNA: {len(rna_seq)} nt; configuration: {config_path}")
+                print(f"Input: {len(rna_seq)} nt; configuration: {config_path}")
                 """),
             cell("markdown", "score-help", """
                 ## Check the input and initial scores
 
                 Passing `rna_seq` uses this string instead of the configured FASTA.
-                The configuration still supplies coordinates and scorer settings.
+                The configuration supplies input coordinates, start/stop choices
+                and scorer settings. Scorer `scope: cds` receives the assembled CDS,
+                including the start and stop.
                 """),
             cell("code", "validate", """
                 check = morse.validate(rna_seq, params)

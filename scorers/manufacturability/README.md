@@ -102,7 +102,7 @@ scorers:
       feasibility_pass: {role: log, value_type: bool}
 ```
 
-The standard monorepo installation includes this package. In schema 4, `cds`
+The standard monorepo installation includes this package. In schemas 4/5, `cds`
 includes the start and stop codons; the scope above excludes the annotated poly(A). MORSE supplies
 `MORSE_PYTHON` and sends one JSON request followed by EOF per batch. Include the
 selected preset and scorer sources in `provenance_paths` when using caching or

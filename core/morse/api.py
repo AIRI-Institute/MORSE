@@ -47,6 +47,9 @@ def validate(rna_seq: str | None = None, params: Mapping[str, Any] | None = None
         "valid": validation.valid, "name": spec.name,
         "sequence_length": len(construct.sequence),
         "coordinates": construct.to_dict()["coordinates"],
+        "input_coordinates": copy.deepcopy(spec.resolved["construct"].get("coordinates")),
+        "cds_body_length_nt": len(construct.cds),
+        "cds_length_nt": len(construct.coding_sequence_with_stop),
         "mutable_parts": sorted(spec.design_space.mutable_parts),
         "structural_validation": validation.to_dict(),
     }
@@ -87,7 +90,8 @@ def optimize(
 ) -> OptimizationResult:
     """Run optimization synchronously, persisting inputs, progress and results.
 
-    ``rna_seq`` overrides ``construct.fasta`` and uses the configured coordinates.
+    ``rna_seq`` overrides ``construct.fasta`` and uses the input coordinates.
+    In schema 5 the CDS input excludes the separately configured start and stop.
     ``verbose`` is 0 (quiet), 1 (status), or 2 (status and live plots).
     Plain dict paths are relative to ``base_dir`` or the working directory.
     """
@@ -105,7 +109,7 @@ def optimize(
     if target.exists() and (not target.is_dir() or any(target.iterdir())):
         raise FileExistsError(f"Result directory is not empty: {target}; use a new directory or morse.resume()")
     resolved = spec.to_dict()
-    if resolved["schema_version"] == 4:
+    if resolved["schema_version"] in {4, 5}:
         resolved["output_dir"] = str(target)
     if rna_seq is not None:
         previous = Path(resolved["construct"]["fasta"])
@@ -117,7 +121,10 @@ def optimize(
     spec = replace(spec, path=target / "experiment.yaml", resolved=resolved)
     target.mkdir(parents=True, exist_ok=True)
     if rna_seq is not None:
-        write_fasta(fasta, [FastaRecord(spec.name, spec.design_space.source_construct.sequence.replace("T", "U"))])
+        from morse.codon import normalize_dna
+        # Persist the supplied input, not the assembled RNA: schema 5 inserts
+        # boundary codons after these coordinates have been read.
+        write_fasta(fasta, [FastaRecord(spec.name, normalize_dna(rna_seq).replace("T", "U"))])
     write_run_spec(spec.path, spec)
     display.start()
     try:

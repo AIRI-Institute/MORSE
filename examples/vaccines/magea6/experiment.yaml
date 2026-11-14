@@ -1,16 +1,19 @@
-schema_version: 4
+schema_version: 5
 name: magea6_example
 # Results folder.
 output_dir: ../../../outputs/magea6_example
 
 # Input RNA and parts.
 construct:
-  fasta: sequence.fasta
+  fasta: input.fasta
   coordinates:  # 0-based; end excluded.
     five_prime_utr: [0, 17]
-    cds: [17, 962]
-    three_prime_utr: [962, 1023]
-    poly_a: [1023, 1093]
+    cds: [17, 956]  # Body only.
+    three_prime_utr: [956, 1017]
+    poly_a: [1017, 1087]
+
+  start_codon: [AUG]
+  stop_codon: [UGA]
 
   # Unlisted parts stay fixed.
   changes:

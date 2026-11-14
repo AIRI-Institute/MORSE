@@ -119,6 +119,13 @@ def build_design(
     source_raw = {key: value for key, value in raw.items() if key != "changes"}
     design = construct_design_from_config(name, source_raw, base_dir, set(changes),
                                          source_sequence=source_sequence)
+    return _apply_changes(design, changes, base_dir)
+
+
+def _apply_changes(
+    design: ConstructDesignSpace, changes: dict[str, Any], base_dir: Path
+) -> ConstructDesignSpace:
+    """Apply the shared library/synonymous rules after parsing reference parts."""
     updates: dict[str, Any] = {}
     source = design.source_construct
     for part, choice in changes.items():
@@ -212,18 +219,19 @@ def _library(path: Path, part: str, rule: dict[str, Any]) -> list[SequenceVarian
 
 def engine_config(raw: dict[str, Any]) -> dict[str, Any]:
     result = copy.deepcopy(raw)
+    schema = result.get("schema_version", 4)
     optimizer = _mapping(result.get("optimizer"), "optimizer")
     if "type" in optimizer or "variables" in optimizer:
-        raise ValueError("Schema 4 uses optimizer.algorithm and construct.changes")
+        raise ValueError(f"Schema {schema} uses optimizer.algorithm and construct.changes")
     optimizer["type"] = optimizer.pop("algorithm", "nsga2")
     names = []
     for scorer in result.get("scorers", []):
         if not isinstance(scorer, dict):
             raise ValueError("Each scorer must be a mapping")
         if not isinstance(scorer.get("command"), str) or not scorer["command"].strip():
-            raise ValueError("Schema-4 scorers require a prepared Bash command string")
+            raise ValueError(f"Schema-{schema} scorers require a prepared Bash command string")
         if any(key in scorer for key in ("outputs", "mode", "image", "docker_args")):
-            raise ValueError("Schema 4 uses prepared command strings and metrics, not legacy scorer runtime fields")
+            raise ValueError(f"Schema {schema} uses prepared command strings and metrics, not legacy scorer runtime fields")
         name = scorer.get("name")
         if not isinstance(name, str) or not re.fullmatch(r"[A-Za-z][A-Za-z0-9_-]{0,63}", name):
             raise ValueError("Scorer names must start with a letter and use letters, numbers, underscore or hyphen")
@@ -231,9 +239,9 @@ def engine_config(raw: dict[str, Any]) -> dict[str, Any]:
             raise ValueError(f"Duplicate scorer name: {name}")
         names.append(name)
         if "output_prefix" in scorer:
-            raise ValueError("Schema 4 namespaces metrics automatically as scorer.metric")
+            raise ValueError(f"Schema {schema} namespaces metrics automatically as scorer.metric")
         if "namespace" in scorer:
-            raise ValueError("Schema 4 derives metric namespaces from scorer names")
+            raise ValueError(f"Schema {schema} derives metric namespaces from scorer names")
         scorer["namespace"] = name
         scorer["scope"] = scope_to_internal(scorer.get("scope"))
     return result

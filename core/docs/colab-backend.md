@@ -1,6 +1,7 @@
 # Optional jobs backend
 
-The jobs backend provides an HTTP queue for schema-4 experiment configurations.
+The jobs backend provides an HTTP queue for schema-5 experiment configurations.
+Saved schema-3/4 configurations retain their original input semantics.
 The [graphical notebook](../notebooks/MORSE_Server_Colab.ipynb) runs directly
 through the [Python API](../../docs/python-api.md) in its kernel.
 
@@ -51,7 +52,7 @@ client.preflight_job(configuration=configuration)
 client.submit_job(configuration=configuration)
 ```
 
-`configuration` is the complete schema-4 document, including `scorers` with Bash
+`configuration` is the complete schema-5 document, including `scorers` with Bash
 `command` strings, `scope` and `metrics`. There is no separate scorer selection,
 installation ID, parameter profile or configuration compiler. Saving the form
 writes the RNA FASTA and any UTR libraries beside the YAML. The download ZIP
@@ -103,9 +104,10 @@ an existing optimizer checkpoint and the usual Core compatibility checks.
 Cancellation stops the managed job and its local scorer clients. The backend
 does not stop an external model service or container.
 
-Schema 3 remains readable for saved experiments. New forms generate schema 4:
-`cds` is the complete CDS, `cds_body` omits its start and stop, and output names
-are qualified as `scorer.metric`.
+New forms generate schema 5: input `coordinates.cds` selects the body without
+initiation or stop codons. `construct.start_codon` and `construct.stop_codon` list
+the inserted choices. Scorer scope `cds` still selects start + body + stop;
+`cds_body` selects only the body. Outputs are qualified as `scorer.metric`.
 
 The former scorer-installation endpoints are absent in API 6. Use a matching
 notebook version; its compatibility check reads `/health` before launching work.

@@ -1,6 +1,6 @@
 # Research configuration examples
 
-These schema-4 examples declare prepared Bash scorer commands, calculation
+These schema-5 examples declare prepared Bash scorer commands, calculation
 `parameters` and `metrics`.
 They preserve the example objectives, thresholds, scopes, seeds and search
 settings. They are independent research templates, not the frozen paper runs.
@@ -46,6 +46,8 @@ morse scorers template cai --command 'docker exec -i morse-cai python3 /app/serv
 No `mode`, image lifecycle or command argument list is needed in an active run
 configuration. Scorer setup manifests retain their own installation metadata.
 
-Each config uses `construct.fasta` and `coordinates` for the reference RNA,
-`construct.changes` for permitted variants and `output_dir` for results.
+Each config uses `construct.fasta` and `coordinates` for the input before codon
+insertion. `input.fasta` omits the start and stop present in the reference
+`sequence.fasta`; the codon lists restore the same assembled reference RNA.
+`construct.changes` defines other permitted variants and `output_dir` sets results.
 Names such as `cds_body` in scorer scopes explicitly exclude start and stop.

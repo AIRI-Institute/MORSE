@@ -46,6 +46,7 @@ def generate_lineardesign_candidates(
     lineardesign_dir: str | Path,
     work_dir: str | Path,
     accept_license: bool,
+    preserve_start_codon: bool = False,
 ) -> list[GeneratedCandidate]:
     profile = load_profile(profile_path)
     binary = install_lineardesign(
@@ -77,7 +78,8 @@ def generate_lineardesign_candidates(
         source = design_space.source_construct
         construct = replace(
             source,
-            start_codon=coding_sequence[:3],
+            # Schema 5 configures initiation independently of the LD CDS body.
+            start_codon=source.start_codon if preserve_start_codon else coding_sequence[:3],
             cds=coding_sequence[3:],
         )
         vector = tuple(design_space.encode(construct))

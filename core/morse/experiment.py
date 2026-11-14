@@ -1,4 +1,4 @@
-"""Create a portable schema-4 experiment from a user's coding FASTA."""
+"""Create a portable schema-5 experiment from a CDS body FASTA."""
 from __future__ import annotations
 
 from pathlib import Path
@@ -20,17 +20,16 @@ def create_experiment(
     generations: int = 10,
     population_size: int = 16,
 ) -> Path:
-    """Copy a full CDS and any supplied UTRs without inventing missing parts."""
+    """Copy a CDS body and UTRs; configure AUG and UAA for assembly."""
     output_dir = output_dir.expanduser().resolve()
     if output_dir.exists():
         raise FileExistsError(f"Experiment directory already exists: {output_dir}")
     record = read_fasta(cds_path)
     coding = normalize_dna(record.sequence)
-    if not coding.startswith("ATG") or len(coding) % 3:
-        raise ValueError("Input CDS must start with ATG and have a length divisible by three")
-    without_stop = coding[:-3] if coding[-3:] in {"TAA", "TAG", "TGA"} else coding
-    if len(without_stop) < 6 or "*" in translate_dna(without_stop):
-        raise ValueError("Input CDS must encode at least two amino acids without internal stops")
+    if not coding or len(coding) % 3:
+        raise ValueError("Input CDS body must be non-empty and have a length divisible by three")
+    if "*" in translate_dna(coding):
+        raise ValueError("Input CDS body must not contain stop codons; supply it without start/stop codons")
     if population_size < 2 or generations < 1:
         raise ValueError("population_size must be >= 2 and generations must be >= 1")
 
@@ -54,10 +53,11 @@ def create_experiment(
         if len(records) > 1:
             changes[part] = {"library": f"{part}.fasta"}
     config = {
-        "schema_version": 4,
+        "schema_version": 5,
         "name": output_dir.name,
         "output_dir": "results",
-        "construct": {"fasta": "sequence.fasta", "coordinates": coordinates, "changes": changes},
+        "construct": {"fasta": "sequence.fasta", "coordinates": coordinates,
+                      "start_codon": ["AUG"], "stop_codon": ["UAA"], "changes": changes},
         "optimizer": {
             "algorithm": "nsga2", "population_size": population_size,
             "generations": generations, "seed": seed,
@@ -82,7 +82,8 @@ def create_experiment(
             if len(records) > 1:
                 write_fasta(stage / f"{part}.fasta", records)
         (stage / "README.md").write_text(
-            f"# {output_dir.name}\n\nRNA input and a CPU experiment with synonymous CDS changes.\n\n"
+            f"# {output_dir.name}\n\nRNA input contains the CDS body and any supplied UTRs. "
+            "AUG and UAA are added from the config.\n\n"
             "Run with `morse run --config experiment.yaml`.\n"
         )
         (stage / "experiment.yaml").write_text(yaml.safe_dump(config, sort_keys=False))

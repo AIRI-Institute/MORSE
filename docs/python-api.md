@@ -33,8 +33,9 @@ result = morse.optimize(
 )
 ```
 
-`params` is an ordinary dictionary using the experiment YAML schema. Schemas 3
-and 4 remain supported. `load_config()` resolves paths relative to the YAML.
+`params` is an ordinary dictionary using experiment schema 5. Schemas 3/4
+remain supported with their previous input semantics. `load_config()` resolves
+paths relative to the YAML.
 You can edit the returned dictionary before running:
 
 ```python
@@ -54,8 +55,14 @@ result = morse.optimize(
 ```
 
 The RNA replaces `construct.fasta`; coordinates and allowed changes stay in the
-configuration. Coordinates are 0-based, end exclusive. A CDS-only input uses
-`coordinates: {cds: [0, length]}`. Input can contain RNA U or DNA T.
+configuration. In schema 5, `coordinates.cds` selects the body without initiation
+or stop codons. A body-only input uses `coordinates: {cds: [0, length]}`. Set
+`construct.start_codon: [AUG]` and `construct.stop_codon: [UAA]`; multiple entries
+allow the optimizer to choose, with the first defining the reference.
+
+Coordinates are 0-based, end exclusive and refer to the supplied input. MORSE
+inserts the codons and recalculates coordinates for assembled candidates and
+scorers. Input can contain RNA U or DNA T.
 MORSE does not modify the supplied dictionary.
 
 A dictionary read with `yaml.safe_load()` also works. Set `base_dir` when its

@@ -1,6 +1,6 @@
 # MORSE ViennaRNA scorer
 
-Setup and schema-4 integration: [scorer guide](../../docs/scorers.md).
+Setup and MORSE integration: [scorer guide](../../docs/scorers.md).
 
 ## What it scores
 

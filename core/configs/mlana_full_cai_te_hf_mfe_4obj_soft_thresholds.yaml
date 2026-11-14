@@ -1,24 +1,25 @@
-schema_version: 4
+schema_version: 5
 name: mlana_full_cai_te_hf_mfe_4obj_soft_thresholds
 # Results folder.
 output_dir: ../../outputs/mlana_full_cai_te_hf_mfe_4obj_soft_thresholds
 
 # Input RNA and parts.
 construct:
-  fasta: inputs/mlana_full_cai_te_hf_mfe_4obj_soft_thresholds/sequence.fasta
+  fasta: inputs/mlana_full_cai_te_hf_mfe_4obj_soft_thresholds/input.fasta
   coordinates:  # 0-based; end excluded.
     five_prime_utr: [0, 50]
-    cds: [50, 407]
-    three_prime_utr: [407, 774]
-    poly_a: [774, 874]
+    cds: [50, 401]  # Body only.
+    three_prime_utr: [401, 768]
+    poly_a: [768, 868]
+
+  start_codon: [AUG]
+  stop_codon: [UAA, UAG, UGA]
 
   # Unlisted parts stay fixed.
   changes:
     five_prime_utr:
       library: inputs/mlana_full_cai_te_hf_mfe_4obj_soft_thresholds/five_prime_utr.fasta
     cds: synonymous
-    stop_codon:
-      sequences: [TAA, TAG, TGA]
     three_prime_utr:
       library: ../examples/parts/gencode_v50_mane_3utr_representatives.tsv
       set: gencode_v50_mane_3utr_30_500nt

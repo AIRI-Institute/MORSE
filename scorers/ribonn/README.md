@@ -1,6 +1,6 @@
 # RiboNN scorer for MORSE
 
-Setup and schema-4 integration: [scorer guide](../../docs/scorers.md).
+Setup and MORSE integration: [scorer guide](../../docs/scorers.md).
 
 JSONL adapter for the official **human RiboNN ensemble**. The maximized output
 `ribonn_mean_te` is the equal mean of predictions over 78 human cell types,

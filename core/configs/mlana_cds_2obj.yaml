@@ -1,16 +1,19 @@
-schema_version: 4
+schema_version: 5
 name: mlana_cds_2obj
 # Results folder.
 output_dir: ../../outputs/mlana_cds_2obj
 
 # Input RNA and parts.
 construct:
-  fasta: inputs/mlana_cds_2obj/sequence.fasta
+  fasta: inputs/mlana_cds_2obj/input.fasta
   coordinates:  # 0-based; end excluded.
     five_prime_utr: [0, 75]
-    cds: [75, 432]
-    three_prime_utr: [432, 470]
-    poly_a: [470, 590]
+    cds: [75, 426]  # Body only.
+    three_prime_utr: [426, 464]
+    poly_a: [464, 584]
+
+  start_codon: [AUG]
+  stop_codon: [UAA]
 
   # Unlisted parts stay fixed.
   changes:

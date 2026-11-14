@@ -1,6 +1,6 @@
 # MORSE Codon Stability Index scorer
 
-Setup and schema-4 integration: [scorer guide](../../docs/scorers.md).
+Setup and MORSE integration: [scorer guide](../../docs/scorers.md).
 
 This scorer calculates a profile-specific Codon Stability Index (CSI) for the
 CDS body. It expects MORSE to route `start_codon + cds_body`, excludes the first

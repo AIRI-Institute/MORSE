@@ -10,14 +10,12 @@ from typing import Any
 
 
 def _cell(kind: str, cell_id: str, text: str) -> dict[str, Any]:
-    metadata = {"id": cell_id}
+    source = (textwrap.dedent(text).strip() + "\n").splitlines(keepends=True)
     if kind == "code":
-        metadata["cellView"] = "form"
-    result = {"id": cell_id, "cell_type": kind, "metadata": metadata,
-              "source": (textwrap.dedent(text).strip() + "\n").splitlines(keepends=True)}
-    if kind == "code":
-        result.update(execution_count=None, outputs=[])
-    return result
+        return {"cell_type": kind, "execution_count": None, "id": cell_id,
+                "metadata": {"cellView": "form", "id": cell_id}, "outputs": [],
+                "source": source}
+    return {"cell_type": kind, "id": cell_id, "metadata": {"id": cell_id}, "source": source}
 
 
 def build_notebook() -> dict[str, Any]:
@@ -133,9 +131,12 @@ def build_notebook() -> dict[str, Any]:
         _cell("markdown", "editor_help", """
             ## 1–3. Design, scorers and search
 
-            Enter one full CDS including its ATG start and optional stop, or upload
-            a complete RNA and enter its part coordinates. UTR fields accept named
-            FASTA choices. Leave absent UTRs and poly(A) blank. Select changes and search
+            Enter one CDS body without start and stop codons, or upload consecutive
+            input parts and enter their coordinates. Set **Start choices** and
+            **Stop choices** separately (defaults AUG and UAA). One codon is fixed;
+            several comma-separated codons let MORSE choose. The first is used in
+            the reference construct. UTR fields accept named FASTA choices.
+            Leave absent UTRs and poly(A) blank. Select changes and search
             settings. Add scorer metadata from the local catalog, then enter the
             Bash command prepared on the machine that will execute the run.
             Enter calculation settings in **Parameters** as a YAML mapping, for
@@ -150,9 +151,11 @@ def build_notebook() -> dict[str, Any]:
             for a prepared HTTP service or `docker exec -i` for a running container.
 
             **Generate YAML** updates the editable full configuration below the
-            forms. Schema 4 stores the RNA in FASTA, part coordinates and permitted
-            changes in YAML, and scorer outputs as `scorer.metric`. Scorer `cds`
-            means the entire CDS; `cds_body` excludes its start and stop.
+            forms. Schema 5 coordinates describe the supplied input, whose `cds`
+            contains only the body. MORSE inserts start and stop when assembling
+            the RNA. Scorer `cds` means the assembled CDS including both codons;
+            `cds_body` selects the body. Existing schema 3/4 YAML keeps its original
+            meaning when saved or run from the editable YAML field.
             Edits to the YAML are used directly by Save/Validate and Launch.
             Advanced YAML supports initialization, including existing warm-start
             manifests, without a second configuration or optimizer implementation.

@@ -2289,6 +2289,8 @@ def _build_summary(
             "length_nt": len(design_space.source_construct.sequence),
             "start_codon_variants": len(design_space.start_codons),
             "cds_body_codons": design_space.codons.n_var,
+            "cds_body_length_nt": len(design_space.source_construct.cds),
+            "cds_length_nt": len(design_space.source_construct.coding_sequence_with_stop),
             "protein_amino_acids": len(design_space.amino_acids),
             "five_prime_utr_variants": len(design_space.five_prime_utrs),
             "three_prime_utr_variants": len(design_space.three_prime_utrs),

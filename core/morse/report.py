@@ -45,6 +45,9 @@ def write_report(
         f"- Reference length: {summary['input']['length_nt']} nt",
         f"- CDS body: {summary['input']['cds_body_codons']} codons; "
         f"encoded protein: {summary['input']['protein_amino_acids']} amino acids",
+        *([f"- CDS length: {summary['input']['cds_length_nt']} nt with configured boundary codons; "
+           f"body: {summary['input']['cds_body_length_nt']} nt"]
+          if "cds_length_nt" in summary["input"] else []),
         f"- Module variants: {variants}",
         "",
         "![Sequence and scope plan](sequence_scope.svg)",

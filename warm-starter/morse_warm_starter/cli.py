@@ -136,6 +136,7 @@ def cmd_generate(args: argparse.Namespace) -> int:
             lineardesign_dir=args.lineardesign_dir,
             work_dir=args.output.parent / "lineardesign-profile",
             accept_license=args.accept_lineardesign_license,
+            preserve_start_codon=spec.resolved["schema_version"] == 5,
         )
     manifest = generate_population(
         design_space=spec.design_space,

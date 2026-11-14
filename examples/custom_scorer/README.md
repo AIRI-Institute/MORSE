@@ -23,7 +23,7 @@ Optional `parameters` contains calculation settings from YAML. This example
 accepts `target_gc` from 0 to 1, defaulting to 0.5 when omitted. Validate the
 names, types and ranges your scorer supports.
 
-A schema-4 scorer section uses a command string and metrics:
+A schema-5 scorer section uses a command string and metrics:
 
 ```yaml
 scorers:

@@ -68,10 +68,14 @@ score tables and `report.md`.
 Start with the [commented configuration template](examples/experiment.template.yaml)
 or the [working MAGE-A1 example](examples/vaccines/magea1/experiment.yaml).
 The YAML defines the input sequence and part coordinates, allowed changes,
-scorer commands, parameters, metric roles and search settings. CDS is required; UTRs and
-poly(A) are optional.
+scorer commands, parameters, metric roles and search settings. In schema 5, supply
+the CDS body without its start and stop codons; set them separately in
+`construct.start_codon: [AUG]` and `construct.stop_codon: [UAA]`. Add list entries
+to let MORSE choose between them. UTRs and poly(A) are optional.
+Older schema-3/4 configurations, including the paper runs, retain their original
+input format.
 
-To create a configuration from your own CDS FASTA:
+To create a configuration from your own CDS-body FASTA:
 
 ```sh
 uv run morse init --cds antigen.fasta --output-dir experiments/my-run
@@ -129,8 +133,8 @@ result.pareto
 
 Pass an RNA string as the first argument to use it instead of the configured
 FASTA: `morse.optimize(rna_seq, params, verbose=2)`. The part coordinates remain
-in the configuration. Notebook progress can include metric, hypervolume and UTR
-frequency plots.
+in the configuration and refer to the supplied input before codon insertion.
+Notebook progress can include metric, hypervolume and UTR frequency plots.
 
 See the [Python guide](docs/python-api.md) and the
 [CPU example notebook](core/notebooks/MORSE_Python_API.ipynb) for scoring,

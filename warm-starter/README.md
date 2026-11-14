@@ -5,7 +5,7 @@ Standalone CLI for generating a scorer-guided first population for
 
 Core owns validation, thresholds and optimization. Warm Starter owns only anchor
 search and writes the versioned JSON manifest consumed by
-`optimizer.initial_population`. A schema-4 run can also declare `initialization`
+`optimizer.initial_population`. A schema-5 run can also declare `initialization`
 directly; `morse run` invokes this package before the first population, so the
 same YAML works from Colab, a workstation or a cluster CLI. See the commented
 [run template](../examples/experiment.template.yaml).

@@ -1,6 +1,6 @@
 # MORSE interfering-RNA scorer
 
-Setup and schema-4 integration: [scorer guide](../../docs/scorers.md).
+Setup and MORSE integration: [scorer guide](../../docs/scorers.md).
 
 This scorer identifies canonical miRNA binding sites that could reduce antigen
 production from a vaccine RNA. It uses `scanMiR 1.16.0` affinity models and

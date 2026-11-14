@@ -72,7 +72,7 @@ def execute_run(
     from morse.optimizer import run_optimization
     from morse.validators import validator_for_policy
 
-    if spec.resolved.get("schema_version") == 4:
+    if spec.resolved.get("schema_version") in {4, 5}:
         from dataclasses import replace
         spec = replace(spec, resolved={**spec.resolved, "output_dir": str(output_dir.resolve())})
 

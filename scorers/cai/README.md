@@ -1,6 +1,6 @@
 # MORSE CAI scorer
 
-Setup and schema-4 integration: [scorer guide](../../docs/scorers.md).
+Setup and MORSE integration: [scorer guide](../../docs/scorers.md).
 
 This is a deterministic Codon Adaptation Index (CAI) scorer for explicit
 start-codon-plus-CDS-body sequences using the standard genetic code. The
@@ -86,7 +86,7 @@ Outputs:
   initiation codon, `ATG`, and `TGG`;
 - `cai_profile_id` and `cai_profile_sha256`: reference identifiers.
 
-Core resolves the schema-4 `start_codon + cds_body` scope before scoring. The runtime receives
+Core resolves the `start_codon + cds_body` scope before scoring. The runtime receives
 a batch of sequences and optional JSON `parameters`:
 
 ```json
@@ -117,7 +117,7 @@ a batch of sequences and optional JSON `parameters`:
 with MORSE, so this command works from any directory. Each batch is one JSON
 request followed by EOF; the scorer returns one JSON response and exits.
 
-`cds_body` excludes the start and stop; schema-4 `cds` includes both. This scope
+`cds_body` excludes the start and stop; schema-5 `cds` includes both. This scope
 sends the start codon and body without a terminal stop to the scorer.
 
 To use the mouse profile, change `profile_path` to

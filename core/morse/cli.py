@@ -44,8 +44,9 @@ def build_parser() -> argparse.ArgumentParser:
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    init = subparsers.add_parser("init", help="Create a portable CPU experiment from a full coding FASTA.")
-    init.add_argument("--cds", type=Path, required=True)
+    init = subparsers.add_parser("init", help="Create a CPU experiment from a CDS body FASTA.")
+    init.add_argument("--cds", type=Path, required=True,
+                      help="CDS without initiation and terminal stop codons (schema 5).")
     init.add_argument("--output-dir", type=Path, required=True)
     init.add_argument("--five-prime-utr", type=Path, action="append", default=[])
     init.add_argument("--three-prime-utr", type=Path, action="append", default=[])
@@ -75,7 +76,7 @@ def build_parser() -> argparse.ArgumentParser:
     pilot.set_defaults(func=cmd_pilot)
 
     run = subparsers.add_parser(
-        "run", help="Execute one experiment; output_dir may be set in schema-4 YAML."
+        "run", help="Execute one experiment; output_dir may be set in the YAML."
     )
     add_config_arg(run)
     add_input_root_arg(run)
@@ -234,12 +235,17 @@ def cmd_validate(args: argparse.Namespace) -> int:
         sum(output.role == "objective" for output in spec.run_config.outputs),
         sum(output.role == "threshold" for output in spec.run_config.outputs),
     )
-    if spec.resolved.get("schema_version") == 4:
+    if spec.resolved.get("schema_version") in {4, 5}:
         from morse.schema4 import scope_expression
         construct = spec.resolved["construct"]
         coordinates = construct["coordinates"]
-        LOGGER.info("RNA: %d nt; parts: %s", len(spec.design_space.source_construct.sequence),
+        LOGGER.info("Assembled RNA: %d nt; input parts: %s", len(spec.design_space.source_construct.sequence),
                     ", ".join(f"{part}[{start}:{end}]" for part, (start, end) in coordinates.items()))
+        if spec.resolved["schema_version"] == 5:
+            source = spec.design_space.source_construct
+            LOGGER.info("CDS body: %d nt; complete CDS: %d nt; start: %s; stop: %s",
+                        len(source.cds), len(source.coding_sequence_with_stop),
+                        ", ".join(construct["start_codon"]), ", ".join(construct["stop_codon"]))
         LOGGER.info("Changes: %s", ", ".join(construct.get("changes", {})))
         for scorer in spec.resolved["scorers"]:
             policies = []

@@ -6,7 +6,8 @@ training is outside this repository.
 
 Use the [commented YAML template](../examples/experiment.template.yaml) or the
 [working MAGE-A1 config](../examples/vaccines/magea1/experiment.yaml).
-Schema 4 is the public run format; schema 3 remains readable for older studies.
+Schema 5 is the public run format; schemas 3/4 retain their original input
+semantics for older studies, including the paper runs.
 
 ## A CPU example
 
@@ -53,41 +54,44 @@ YAML in forms and uses the same Python API to validate, score and optimize it
 in the active kernel. Interrupt the launch cell to stop; use its Resume cell
 to continue from the saved generation.
 
-## A complete RNA or CDS-only input
+## Input sequence and assembly
 
-Provide a single-record RNA or DNA FASTA and define part coordinates in the YAML:
+Provide a single-record RNA or DNA FASTA containing the CDS body and any UTRs or
+poly(A). The CDS body excludes its initiation and terminal stop codons:
 
 ```yaml
+schema_version: 5
 construct:
-  fasta: sequence.fasta
-  coordinates:
-    five_prime_utr: [0, 17]
-    cds: [17, 947]
-    three_prime_utr: [947, 1011]
-    poly_a: [1011, 1081]
+  fasta: input.fasta
+  coordinates:  # 0-based; end excluded.
+    five_prime_utr: [0, 63]
+    cds: [63, 414]  # Body only.
+    three_prime_utr: [414, 452]
+    poly_a: [452, 552]
+  start_codon: [AUG]
+  stop_codon: [UAA]
   changes:
     cds: synonymous
 ```
 
-Coordinates are **0-based, end exclusive**: `[0, 17]` selects the first 17
-nucleotides. The file path is relative to the config. Only `cds` is required;
-omit other parts when they are absent. For a 930-nt CDS-only FASTA, use:
+Coordinates describe the supplied FASTA and must cover it consecutively, in
+biological order, without gaps or overlaps. Only `cds` is required. For a body-only
+FASTA of 351 nt, use `coordinates: {cds: [0, 351]}`. RNA U and DNA T are accepted.
+The body must have a length divisible by three and contain no in-frame stops.
+An initial AUG in the body is retained: it encodes a methionine after initiation.
+
+MORSE assembles `5′UTR + start + CDS body + stop + 3′UTR + poly(A)` and recalculates
+coordinates for each assembled candidate. The default codon lists are `[AUG]` and
+`[UAA]`. A single entry fixes the codon; multiple entries allow optimization, with
+the first entry defining the reference:
 
 ```yaml
-construct:
-  fasta: cds.fasta
-  coordinates:
-    cds: [0, 930]
-  changes:
-    cds: synonymous
+start_codon: [AUG, CUG, GUG]
+stop_codon: [UAA, UAG, UGA]
 ```
 
-The provided ranges must cover the FASTA consecutively, in biological order,
-without gaps or overlaps. `cds` here includes the ATG and an optional terminal
-stop; MORSE splits these internally. It does not add missing UTRs, a stop or
-poly(A). RNA U is accepted and normalized to T.
-
-`construct.changes` lists what may change. Unlisted parts stay fixed:
+Put these lists directly under `construct`; `changes` lists the other permitted
+changes. Unlisted parts stay fixed:
 
 ```yaml
 changes:
@@ -98,22 +102,24 @@ changes:
 ```
 
 UTR libraries accept multi-record FASTA or the existing parts TSV format.
-The input variant stays available as the reference. Coordinates describe that
-input; candidate coordinates are recalculated when UTR or tail lengths change.
+The input variant stays available as the reference. No UTR or poly(A) is added
+unless provided or configured.
 
-Scope `cds` selects the full CDS, including its start and optional stop.
-`cds_body` excludes both; `[start_codon, cds_body]` excludes only the stop.
-Use `full_sequence` for the whole input, including poly(A) if present.
+Scorer scope `cds` selects the assembled start + body + stop. `cds_body` selects
+only the body; `[start_codon, cds_body]` excludes the stop. `full_sequence` selects
+the assembled RNA, including poly(A) if present. Scorers receive assembled
+coordinates, rather than the input FASTA coordinates.
 
 See [the vaccine examples](../examples/vaccines/) for complete run configs.
-The old `construct.parts` format remains available through schema-3 configs.
+Schemas 3/4 keep their previous full-CDS interpretation; do not change only the
+version number of an existing configuration.
 
 ## Your antigen and UTR candidates
 
-Provide a single-record FASTA with the full coding sequence, beginning with ATG
-and optionally ending with TAA/TAG/TGA. RNA U is accepted and normalized to T.
-Internal stops, malformed frame and multiple FASTA records are rejected. The
-helper writes the RNA FASTA and a schema-4 config into a new experiment directory:
+Provide a single-record FASTA with the CDS body, without initiation or stop
+codons. If starting from a full annotated CDS, remove its first codon and terminal
+stop after checking the annotation. The helper writes the input FASTA and a
+schema-5 config with explicit `[AUG]` and `[UAA]` lists:
 
 ```sh
 morse init --cds antigen.fasta --output-dir experiments/antigen \
@@ -125,8 +131,8 @@ morse pilot --config experiments/antigen/experiment.yaml --samples 24 --output-d
 morse run --config experiments/antigen/experiment.yaml --output-dir runs/antigen_seed43
 ```
 
-Repeat UTR flags to supply alternatives. Omitted parts are not added. Edit the YAML
-to select permitted changes, poly(A) alternatives, scorer scopes and metrics. A
+Repeat UTR flags to supply alternatives. Start and stop are inserted during
+assembly. Edit the YAML to select permitted changes, poly(A) alternatives, scorer scopes and metrics. A
 metric's `role` is `optimize`, `threshold` or `log`. Optimization metrics specify
 `direction: min|max`; thresholds specify `min`, `max` or `equals`. Numeric float
 values are the default; other values can declare `value_type`.

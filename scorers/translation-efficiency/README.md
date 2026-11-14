@@ -20,7 +20,7 @@ poly(A) tail should not be sent to this scorer.
 
 ## Interface
 
-The scorer implements MORSE's sequence-batch JSONL protocol. Use schema-4 scope
+The scorer implements MORSE's sequence-batch JSONL protocol. Use schema-5 scope
 `[five_prime_utr, cds, three_prime_utr]`, excluding poly(A). The scorer uses
 protocol-v3 physical-part ranges to build its
 continuous coding track from the explicit start codon through the CDS body.

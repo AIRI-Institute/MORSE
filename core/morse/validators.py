@@ -96,7 +96,7 @@ class StructuralValidator:
         if not design_space.allow_upstream_start_codons:
             upstream_starts = [
                 start
-                for start in design_space.start_codons
+                for start in design_space.upstream_codon_choices
                 if start in construct.five_prime_utr.sequence
             ]
             if upstream_starts:

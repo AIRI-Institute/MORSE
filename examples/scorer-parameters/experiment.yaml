@@ -1,15 +1,18 @@
-schema_version: 4
+schema_version: 5
 name: scorer_parameters
 output_dir: ../../outputs/scorer-parameters
 
 # RNA and physical parts.
 construct:
-  fasta: ../quickstart/sequence.fasta
+  fasta: ../quickstart/input.fasta
   coordinates:
     five_prime_utr: [0, 63]
-    cds: [63, 420]
-    three_prime_utr: [420, 458]
-    poly_a: [458, 558]
+    cds: [63, 414]  # Body only.
+    three_prime_utr: [414, 452]
+    poly_a: [452, 552]
+  start_codon: [AUG]
+  stop_codon: [UAA]
+
   changes:
     cds: synonymous
 

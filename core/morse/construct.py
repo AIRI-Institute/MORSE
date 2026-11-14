@@ -144,6 +144,12 @@ class ConstructDesignSpace:
     poly_a_lengths: tuple[int, ...]
     allow_upstream_start_codons: bool = False
     mutable_parts: frozenset[str] = frozenset(PART_ORDER)
+    # None preserves the schema-3/4 policy: check every allowed start triplet.
+    upstream_start_codons: tuple[str, ...] | None = None
+
+    @property
+    def upstream_codon_choices(self) -> tuple[str, ...]:
+        return self.upstream_start_codons or self.start_codons
 
     @property
     def n_var(self) -> int:
@@ -290,7 +296,7 @@ class ConstructDesignSpace:
         return hashlib.sha256(_canonical_json(payload).encode()).hexdigest()
 
     def _fingerprint_payload(self) -> dict[str, Any]:
-        return {
+        payload = {
             "schema_version": 3,
             "name": self.name,
             "five_prime_utrs": [variant.__dict__ for variant in self.five_prime_utrs],
@@ -302,6 +308,10 @@ class ConstructDesignSpace:
             "allow_upstream_start_codons": self.allow_upstream_start_codons,
             "mutable_parts": sorted(self.mutable_parts),
         }
+        # Keep legacy fingerprints byte-for-byte compatible, including resumes.
+        if self.upstream_start_codons is not None:
+            payload["upstream_start_codons"] = self.upstream_start_codons
+        return payload
 
 def construct_design_from_config(
     name: str,
@@ -310,12 +320,17 @@ def construct_design_from_config(
     mutable_parts: frozenset[str] | set[str],
     *,
     source_sequence: str | None = None,
+    codon_choices: tuple[tuple[str, ...], tuple[str, ...]] | None = None,
 ) -> ConstructDesignSpace:
     if source_sequence is not None and ("coordinates" not in raw or "parts" in raw):
         raise ValueError("An explicit sequence requires construct.coordinates without construct.parts")
     from_coordinates = "fasta" in raw or "coordinates" in raw
+    if codon_choices is not None and not from_coordinates:
+        raise ValueError("Explicit codon choices require construct.fasta/coordinates")
     if from_coordinates:
-        raw = _parts_from_fasta_coordinates(raw, base_dir, source_sequence=source_sequence)
+        raw = _parts_from_fasta_coordinates(
+            raw, base_dir, source_sequence=source_sequence, codon_choices=codon_choices
+        )
     _reject_unknown_fields(
         raw,
         {"order", "allow_upstream_start_codons", "parts"},
@@ -378,10 +393,11 @@ def construct_design_from_config(
             "construct.allow_upstream_start_codons must be a boolean"
         )
     if not allow_upstream_start_codons:
+        upstream_starts = ("ATG",) if codon_choices is not None else starts
         invalid_utrs = [
             variant.name
             for variant in five
-            if any(start in variant.sequence for start in starts)
+            if any(start in variant.sequence for start in upstream_starts)
         ]
         if invalid_utrs:
             raise ValueError(
@@ -399,13 +415,15 @@ def construct_design_from_config(
         poly_a_lengths=poly_a_lengths,
         allow_upstream_start_codons=allow_upstream_start_codons,
         mutable_parts=selected_mutable,
+        upstream_start_codons=("ATG",) if codon_choices is not None else None,
     )
     design.validate(design.source_construct)
     return design
 
 
 def _parts_from_fasta_coordinates(
-    raw: dict[str, Any], base_dir: Path, *, source_sequence: str | None = None
+    raw: dict[str, Any], base_dir: Path, *, source_sequence: str | None = None,
+    codon_choices: tuple[tuple[str, ...], tuple[str, ...]] | None = None,
 ) -> dict[str, Any]:
     """Read one reference RNA and split it using explicit [start, end) ranges."""
     if "parts" in raw:
@@ -471,14 +489,23 @@ def _parts_from_fasta_coordinates(
         raise ValueError("construct.coordinates.poly_a must select only A nucleotides")
 
     coding = segments.pop("cds")
-    if not coding.startswith("ATG") or len(coding) % 3:
-        raise ValueError(
-            "construct.coordinates.cds must select a full CDS starting with "
-            "ATG/AUG and a length divisible by three"
-        )
-    stop = coding[-3:] if coding[-3:] in STOP_CODONS else ""
-    body = coding[3:-3] if stop else coding[3:]
-    segments.update(start_codon="ATG", cds=body, stop_codon=stop)
+    if codon_choices is None:
+        if not coding.startswith("ATG") or len(coding) % 3:
+            raise ValueError(
+                "construct.coordinates.cds must select a full CDS starting with "
+                "ATG/AUG and a length divisible by three"
+            )
+        stop = coding[-3:] if coding[-3:] in STOP_CODONS else ""
+        body = coding[3:-3] if stop else coding[3:]
+        segments.update(start_codon="ATG", cds=body, stop_codon=stop)
+    else:
+        if not coding or len(coding) % 3:
+            raise ValueError(
+                "construct.coordinates.cds must select a non-empty CDS body "
+                "with a length divisible by three"
+            )
+        segments.update(start_codon=codon_choices[0][0], cds=coding,
+                        stop_codon=codon_choices[1][0])
 
     parts = {
         part: {"source": {"type": "fixed", "sequence": segments[part]}}
@@ -492,6 +519,9 @@ def _parts_from_fasta_coordinates(
             "values": [len(segments["poly_a"])],
         }
     }
+    if codon_choices is not None:
+        for part, choices in zip(("start_codon", "stop_codon"), codon_choices, strict=True):
+            parts[part] = {"source": {"type": "inline", "sequences": list(choices)}}
     return {
         "order": raw.get("order", list(PART_ORDER)),
         "parts": parts,
