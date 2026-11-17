@@ -4,7 +4,7 @@ Use the environment installed from the repository's [README](../README.md#instal
 For notebook output, include the notebook extra:
 
 ```sh
-uv sync --all-packages --extra paper --extra mfe --extra notebook --frozen
+uv sync --python 3.13 --all-packages --extra mfe --extra notebook --frozen
 ```
 
 Select this environment as your notebook kernel. To register it after activating
@@ -25,9 +25,10 @@ forms for creating YAML and calls this API in its active Python kernel.
 ```python
 import morse
 
-params = morse.load_config("experiment.yaml")
+params = morse.load_config("examples/quickstart/experiment.yaml")
 result = morse.optimize(
     params=params,
+    output_dir="outputs/python_run",
     verbose=2,
     plots=["metrics", "hypervolume", "utrs"],
 )
@@ -75,17 +76,24 @@ result = morse.optimize(rna_seq, params, base_dir="experiments/my_run")
 Scorer commands and their `parameters` work as in the CLI. Prepare the scorer
 environment before starting the run; see [scorer setup](scorers.md).
 
-## Check and score
+## Check before optimizing
 
 ```python
-check = morse.validate(rna_seq, params)
-scores = morse.score(rna_seq, params)
-scores["outputs"]
+check = morse.validate(params=params)
+scores = morse.score(params=params)
+trial = morse.pilot(params=params, samples=24)
+print(trial["hard_feasible_fraction"], trial["warnings"])
 ```
 
 Validation checks configuration and construct structure. Scoring runs the
 configured scorers once and returns outputs, threshold checks and `feasible`.
-Omit the RNA argument to read the configured FASTA.
+The pilot scores the reference plus a random sample using the config seed;
+`samples` includes the reference (2–512, capped by the size of the search space).
+Inspect `trial["metrics"]` for score ranges and `trial["thresholds"]` for pass
+fractions. A pilot does not run generations or initialize the optimization.
+It returns a dictionary in memory; pass a separate, new or empty `output_dir`
+to also save `pilot.json` and `progress.json`. All three methods accept an
+optional RNA string as their first argument.
 
 ## Progress
 
@@ -137,6 +145,36 @@ candidate = result.select(metric="sequence_metrics.cpg_per_kb")
 ```
 
 The configured direction determines whether smaller or larger values win.
+You can also retrieve a candidate by its ID in the final Pareto table:
+
+```python
+selected = result.get_candidate(candidate.id)
+selected.to_fasta(result.output_dir / "selected.fasta")
+```
+
+## Compare with a baseline
+
+```python
+compromise = result.select("hvc")
+specialist = result.select(metric="sequence_metrics.cpg_per_kb")
+rows = result.compare([compromise, specialist], baseline=result.reference)
+```
+
+`result.reference` is the scored starting construct. Like a selected candidate,
+it has an ID, assembled RNA sequence, parts and recorded metrics. Older runs may
+have only partial annotations for the parts. No scorers are called when reading
+or comparing saved results.
+
+`compare` returns one dictionary per candidate and configured metric:
+`candidate_id`, `baseline_id`, `metric`, `direction`, `baseline`, `value`
+and `delta`. Use `pandas.DataFrame(rows)` if you want a table.
+`delta = value - baseline` for numeric measurements. Direction is `min` or
+`max` for objectives and `None` for logged values and thresholds.
+Pass `percent=True` to add `100 * delta / abs(baseline)`. Percent change from
+zero is `None`; nonnumeric and boolean values have no delta or percentage.
+These are signed changes in the recorded scores, not direction-adjusted gains.
+If you pass a baseline from another run, check that scorer settings, sequence
+scopes and units match.
 
 ## Reopen or continue
 

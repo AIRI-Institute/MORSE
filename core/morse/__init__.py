@@ -3,7 +3,7 @@
 __version__ = "0.4.0"
 
 __all__ = [
-    "load_config", "validate", "score", "optimize", "load_run", "resume",
+    "load_config", "validate", "score", "pilot", "optimize", "load_run", "resume",
     "OptimizationResult", "Candidate",
 ]
 

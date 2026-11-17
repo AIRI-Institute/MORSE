@@ -48,7 +48,9 @@ shows progress, and `verbose=2` also updates plots inside the notebook.
 Results are saved in the configured output directory.
 
 See the [Python API guide](python-api.md) and the
-[self-contained CPU notebook](../core/notebooks/MORSE_Python_API.ipynb).
+[CPU quickstart notebook](../core/notebooks/MORSE_Python_API.ipynb), which
+checks a small sample with `morse.pilot`, runs the search, compares candidates
+with the scored starting construct and saves a selected FASTA.
 The [graphical notebook](../core/notebooks/MORSE_Server_Colab.ipynb) builds the
 YAML in forms and uses the same Python API to validate, score and optimize it
 in the active kernel. Interrupt the launch cell to stop; use its Resume cell

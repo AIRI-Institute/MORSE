@@ -63,6 +63,28 @@ def score(rna_seq: str | None = None, params: Mapping[str, Any] | None = None,
     return score_reference(_prepare(rna_seq, params, base_dir))
 
 
+def pilot(
+    rna_seq: str | None = None,
+    params: Mapping[str, Any] | None = None,
+    *,
+    samples: int = 24,
+    output_dir: str | Path | None = None,
+    base_dir: str | Path | None = None,
+) -> dict[str, Any]:
+    """Score the reference and a seeded sample (2–512 total, capped by design size).
+
+    Returns metric ranges, feasibility, thresholds, warnings and a rough time estimate.
+    Supply a new or empty output_dir to also save pilot.json and progress.json.
+    """
+    from morse._pilot import execute_pilot
+
+    spec = _prepare(rna_seq, params, base_dir, require_mutable=True)
+    target = None if output_dir is None else Path(output_dir).expanduser().resolve()
+    if target is not None and target.exists() and (not target.is_dir() or any(target.iterdir())):
+        raise FileExistsError(f"Pilot directory is not empty: {target}; use a new directory")
+    return execute_pilot(spec, samples=samples, output_dir=target)
+
+
 def _observer(output_dir, verbose, plots, on_progress):
     from morse.monitor import ProgressDisplay
 

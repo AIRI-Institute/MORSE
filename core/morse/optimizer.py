@@ -2376,7 +2376,7 @@ def _build_summary(
             "scorer_timing_rows": len(chain_scorer_timing_rows),
             "initial_population_rows": len(chain_initial_population_rows),
         },
-        "original": _record_summary(original_record),
+        "original": {**_record_summary(original_record), "construct": original_record.construct.to_dict()},
         "pareto_count": len(pareto_records),
         "best_by_objective": {
             output: _record_summary(record) for output, record in best_by_objective.items()

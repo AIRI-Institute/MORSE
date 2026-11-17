@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the self-contained CPU example for the public Python API."""
+"""Build the CPU quickstart notebook for the public Python API."""
 from __future__ import annotations
 
 import json
@@ -23,169 +23,110 @@ def build_notebook() -> dict:
     return {
         "cells": [
             cell("markdown", "intro", """
-                # MORSE from Python
+                # Run your first MORSE experiment
 
-                Run a small CPU experiment, inspect its Pareto candidates and reopen
-                the saved results. The bundled scorer measures CpG content and GC
-                distance; these demonstration metrics do not predict expression.
+                Use the same CPU quickstart YAML as the command-line example.
+                The search preserves the protein and minimizes two sequence metrics:
+                CpG per kilobase and distance from the target GC fraction.
+                These metrics do not measure protein expression.
 
-                Install MORSE with the notebook extra following the repository README,
-                then select that environment as the notebook kernel. No additional
-                models or services are needed for this example.
+                Open this notebook inside your MORSE checkout and select the
+                environment installed with the notebook extra. No GPU, model
+                downloads or scorer services are required for this example.
                 """),
             cell("code", "imports", """
-                from datetime import datetime, timezone
                 from pathlib import Path
-                import shlex
-                import sys
-
-                import yaml
+                from tempfile import mkdtemp
+                from IPython.display import Markdown, display
                 import morse
 
-                # A new folder for each independent run.
-                stamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S_%f")
-                experiment = Path.cwd() / "results" / f"python_api_demo_{stamp}"
-                experiment.mkdir(parents=True, exist_ok=False)
-                print(experiment)
+                here = Path.cwd()
+                repo = next((folder for folder in (here, *here.parents)
+                             if (folder / "examples/quickstart/experiment.yaml").is_file()), None)
+                if repo is None:
+                    raise FileNotFoundError("Open this notebook from your MORSE checkout.")
+
+                config = repo / "examples/quickstart/experiment.yaml"
+                params = morse.load_config(config)
+                outputs = repo / "outputs"
+                outputs.mkdir(exist_ok=True)
+                experiment = Path(mkdtemp(prefix="python_quickstart_", dir=outputs))
+                print("Saving this experiment to:", experiment)
                 """),
-            cell("markdown", "input-help", """
-                ## Input and configuration
+            cell("markdown", "validate-help", """
+                ## Check the input
 
-                The input contains a 5′UTR, CDS body, 3′UTR and poly(A), without
-                start or stop codons. Schema 5 adds these from separate lists.
-                Coordinates cover the input consecutively using 0-based,
-                end-exclusive ranges. The UTR libraries provide two choices each.
-                """),
-            cell("code", "input-config", """
-                utr5 = "GGGAAACCC"
-                cds_body = "".join(["ACU", "UGU", "GGU", "ACU", "AAG",
-                                    "CUU", "GGU", "AGU", "GGU", "AGU"])
-                utr3 = "GGAUCUCC"
-                rna_seq = utr5 + cds_body + utr3 + "A" * 12
-
-                (experiment / "sequence.fasta").write_text(f">demo_rna\\n{rna_seq}\\n")
-                (experiment / "utr5.fasta").write_text(
-                    ">leader_a\\nGGGAAACCC\\n>leader_b\\nGGAACUCC\\n")
-                (experiment / "utr3.fasta").write_text(
-                    ">trailer_a\\nGGAUCUCC\\n>trailer_b\\nCCUAAGGA\\n")
-
-                cds_start = len(utr5)
-                cds_end = cds_start + len(cds_body)
-                utr3_end = cds_end + len(utr3)
-                params = {
-                    "schema_version": 5,
-                    "name": "python_api_demo",
-                    "output_dir": "run",
-                    "construct": {
-                        "fasta": "sequence.fasta",
-                        "start_codon": ["AUG"],
-                        "stop_codon": ["UAA"],
-                        "coordinates": {
-                            "five_prime_utr": [0, cds_start],
-                            "cds": [cds_start, cds_end],
-                            "three_prime_utr": [cds_end, utr3_end],
-                            "poly_a": [utr3_end, len(rna_seq)],
-                        },
-                        "changes": {
-                            "cds": "synonymous",
-                            "five_prime_utr": {"library": "utr5.fasta"},
-                            "three_prime_utr": {"library": "utr3.fasta"},
-                        },
-                    },
-                    "optimizer": {
-                        "algorithm": "nsga2", "population_size": 12,
-                        "generations": 3, "seed": 43,
-                    },
-                    "scorers": [{
-                        "name": "sequence_metrics",
-                        "command": f"{shlex.quote(sys.executable)} -m morse.resources.simple_scorer",
-                        "scope": "cds",
-                        "metrics": {
-                            "cpg_per_kb": {"role": "optimize", "direction": "min"},
-                            "gc_distance": {"role": "optimize", "direction": "min"},
-                            "gc_fraction": {"role": "log"},
-                        },
-                    }],
-                }
-                config_path = experiment / "experiment.yaml"
-                config_path.write_text(yaml.safe_dump(params, sort_keys=False))
-
-                # Resolve paths relative to the YAML; the result is an ordinary dict.
-                params = morse.load_config(config_path)
-                print(f"Input: {len(rna_seq)} nt; configuration: {config_path}")
-                """),
-            cell("markdown", "score-help", """
-                ## Check the input and initial scores
-
-                Passing `rna_seq` uses this string instead of the configured FASTA.
-                The configuration supplies input coordinates, start/stop choices
-                and scorer settings. Scorer `scope: cds` receives the assembled CDS,
-                including the start and stop.
+                `validate` checks the FASTA and coordinates without calling a scorer.
+                In this config the CDS interval contains the body only; MORSE adds
+                the configured start and stop codons during assembly.
                 """),
             cell("code", "validate", """
-                check = morse.validate(rna_seq, params)
-                check
+                check = morse.validate(params=params)
+                print("Assembled RNA:", check["sequence_length"], "nt")
+                print("Allowed changes:", check["mutable_parts"])
                 """),
-            cell("code", "score", """
-                scores = morse.score(rna_seq, params)
-                scores["outputs"]
+            cell("markdown", "pilot-help", """
+                ## Try the scorers before optimizing
+
+                `pilot` scores the starting construct and a small random sample.
+                Check that candidates can pass the constraints and that the objectives
+                vary. To score just the starting construct, use `morse.score(params=params)`.
+                """),
+            cell("code", "pilot", """
+                pilot = morse.pilot(params=params, samples=8, output_dir=experiment / "pilot")
+                print("Starting scores:", pilot["reference"]["outputs"])
+                print(f"Feasible fraction in pilot: {pilot['hard_feasible_fraction']:.0%}")
+                print("Warnings:", pilot["warnings"])
                 """),
             cell("markdown", "optimize-help", """
-                ## Optimize
+                ## Run the search
 
-                `verbose=2` updates progress and plots inside the cell. Use `1` for
-                progress only or `0` for a quiet run. Results remain in the experiment
-                folder after the notebook session ends.
+                This example runs eight generations. Use `verbose=2` for live plots,
+                `1` for progress only or `0` for a quiet run.
                 """),
             cell("code", "optimize", """
-                result = morse.optimize(
-                    rna_seq, params, verbose=2,
-                    plots=["metrics", "hypervolume", "utrs"],
-                )
-                print("Results:", result.output_dir)
+                result = morse.optimize(params=params, output_dir=experiment / "run",
+                                        verbose=2, plots=["metrics", "hypervolume"])
+                print("Pareto candidates:", len(result.pareto))
                 """),
             cell("markdown", "results-help", """
-                ## Inspect and select
+                ## Compare candidates with the starting construct
 
-                The Pareto set contains trade-offs between the objectives. Select one
-                candidate by exclusive hypervolume contribution, or by a named metric.
+                Select a candidate by its exclusive hypervolume contribution (HVC)
+                for a compromise between objectives, or a specialist by one metric.
+                The same candidate can win both selections. A negative change is
+                favourable for the two minimized objectives; GC fraction is only logged.
                 """),
-            cell("code", "pareto", """
-                print("Status:", result.summary["status"])
-                print("Pareto candidates:", len(result.pareto))
-                result.pareto[:3]
-                """),
-            cell("code", "select", """
-                candidate = result.select("hvc")
-                print(candidate.id)
-                print(candidate.sequence)
-                candidate.metrics
-                """),
-            cell("code", "history", """
-                # Lists of dictionaries can also be passed to pandas.DataFrame().
-                result.history[-1]
-                """),
-            cell("code", "utrs", """
-                import matplotlib.pyplot as plt
-                from IPython.display import display
+            cell("code", "compare", """
+                compromise = result.select("hvc")
+                specialist = result.select(metric="sequence_metrics.cpg_per_kb")
+                print("HVC:", compromise.id, "| CpG specialist:", specialist.id)
+                chosen = list({item.id: item for item in (compromise, specialist)}.values())
+                rows = result.compare(chosen, baseline=result.reference)
 
-                figure = result.plot("utrs")
-                display(figure)
-                plt.close(figure)
-                """),
-            cell("code", "report", """
-                result.report()
+                table = ["| Candidate | Metric | Start | Final | Change |",
+                         "|---|---|---:|---:|---:|"]
+                for row in rows:
+                    table.append(f"| {row['candidate_id']} | {row['metric']} | "
+                                 f"{row['baseline']:.3g} | {row['value']:.3g} | {row['delta']:+.3g} |")
+                display(Markdown("\\n".join(table)))
                 """),
             cell("markdown", "reopen-help", """
-                ## Reopen saved results
+                ## Reopen the report and save the selected RNA
 
-                Loading results does not rerun scorers. To continue an interrupted run,
-                use `morse.resume(result.output_dir, verbose=2)` in the same output folder.
+                Loading a completed run does not recalculate scores. Retrieve a
+                candidate by the ID shown in the report or Pareto table, then
+                export its complete assembled RNA to FASTA.
                 """),
-            cell("code", "reopen", """
+            cell("code", "report", """
                 reopened = morse.load_run(result.output_dir)
-                print(reopened.summary["status"])
-                reopened.pareto[:2]
+                reopened.report()
+                """),
+            cell("code", "export", """
+                selected = reopened.get_candidate(compromise.id)
+                fasta = experiment / "selected.fasta"
+                selected.to_fasta(fasta)
+                print(f"Saved {selected.id} ({len(selected.sequence)} nt):", fasta)
                 """),
         ],
         "metadata": {

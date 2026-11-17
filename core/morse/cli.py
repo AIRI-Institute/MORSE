@@ -9,14 +9,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from morse.config import RunConfig, ScorerConfig
+from morse.execution import _make_one_scorer as _make_one_scorer, make_scorer
 from morse.run_spec import RunSpec, load_run_spec, write_run_spec
-from morse.scorers import (
-    CompositeScorer,
-    ConstructCandidate,
-    ScorerBinding,
-    make_raw_scorer,
-)
 from morse.validators import StructuralValidator
 from morse.visualization import write_sequence_scope_svg
 
@@ -175,22 +169,10 @@ def cmd_score(args: argparse.Namespace) -> int:
 
 
 def cmd_pilot(args: argparse.Namespace) -> int:
-    from morse.pilot import run_pilot
+    from morse._pilot import execute_pilot
 
     spec = load_run_spec(args.config, input_root=args.input_root)
-    scorer = make_scorer(spec.run_config)
-    try:
-        result = run_pilot(
-            spec,
-            scorer,
-            sample_count=args.samples,
-            seed=spec.run_config.optimizer.seed,
-            output_dir=args.output_dir,
-        )
-    finally:
-        close = getattr(scorer, "close", None)
-        if callable(close):
-            close()
+    result = execute_pilot(spec, samples=args.samples, output_dir=args.output_dir, scorer_factory=make_scorer)
     print(json.dumps(result, sort_keys=True))
     return 0
 
@@ -309,24 +291,6 @@ def _run_optimize_and_report(
         spec, output_dir, run_name, resume_from, source_config_path,
         scorer_factory=make_scorer,
     )
-
-
-def make_scorer(run_config: RunConfig) -> Any:
-    bindings = [
-        ScorerBinding(
-            _make_one_scorer(scorer_config),
-            scorer_config.scope,
-            output_prefix=scorer_config.output_prefix,
-            namespace=scorer_config.namespace,
-        )
-        for scorer_config in run_config.scorers
-    ]
-    return CompositeScorer(bindings)
-
-
-def _make_one_scorer(scorer_config: ScorerConfig) -> Any:
-    """Compatibility entry point used by existing report and paper helpers."""
-    return make_raw_scorer(scorer_config, legacy_python=sys.executable)
 
 
 class _JsonLogFormatter(logging.Formatter):

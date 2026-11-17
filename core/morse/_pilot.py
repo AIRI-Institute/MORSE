@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import math
 import time
+from operator import index
 from pathlib import Path
 from typing import Any
 
@@ -13,20 +14,32 @@ from morse.run_spec import RunSpec
 from morse.validators import validator_for_policy
 
 
+def execute_pilot(spec: RunSpec, *, samples: int, output_dir: Path | None, scorer_factory=None) -> dict[str, Any]:
+    from morse.execution import make_scorer
+
+    scorer = (scorer_factory or make_scorer)(spec.run_config)
+    try:
+        return run_pilot(spec, scorer, sample_count=samples, seed=spec.run_config.optimizer.seed,
+                         output_dir=output_dir)
+    finally:
+        close = getattr(scorer, "close", None)
+        if callable(close):
+            close()
+
+
 def run_pilot(
     spec: RunSpec,
     scorer: Any,
     *,
     sample_count: int,
     seed: int,
-    output_dir: Path,
+    output_dir: Path | None,
 ) -> dict[str, Any]:
     """Score the reference and a reproducible random design-space sample."""
 
-    requested = int(sample_count)
+    requested = index(sample_count)
     if not 2 <= requested <= 512:
         raise ValueError("pilot sample_count must be between 2 and 512")
-    output_dir.mkdir(parents=True, exist_ok=True)
     design = spec.design_space
     design_space_size = math.prod(
         high - low + 1
@@ -39,22 +52,9 @@ def run_pilot(
     actual_count = min(requested, design_space_size)
     if actual_count < 2:
         raise ValueError("The design space needs at least two candidates for a pilot")
-    progress_path = output_dir / "progress.json"
-    progress_path.write_text(
-        json.dumps(
-            {
-                "schema_version": 1,
-                "kind": "pilot",
-                "stage": "sampling",
-                "evaluated_candidates": 0,
-                "total_candidates": actual_count,
-                "progress_fraction": 0.0,
-            },
-            indent=2,
-            sort_keys=True,
-        )
-        + "\n"
-    )
+    if output_dir is not None:
+        output_dir.mkdir(parents=True, exist_ok=True)
+        _write_progress(output_dir, "sampling", 0, actual_count)
 
     vectors = _sample_vectors(
         design.lower_bounds,
@@ -227,25 +227,16 @@ def run_pilot(
         "warnings": _pilot_warnings(metric_rows, threshold_rows, correlations),
         "blocking_issues": _pilot_blocking_issues(metric_rows, threshold_rows),
     }
-    (output_dir / "pilot.json").write_text(
-        json.dumps(result, indent=2, sort_keys=True) + "\n"
-    )
-    progress_path.write_text(
-        json.dumps(
-            {
-                "schema_version": 1,
-                "kind": "pilot",
-                "stage": "complete",
-                "evaluated_candidates": len(records),
-                "total_candidates": len(records),
-                "progress_fraction": 1.0,
-            },
-            indent=2,
-            sort_keys=True,
-        )
-        + "\n"
-    )
+    if output_dir is not None:
+        (output_dir / "pilot.json").write_text(json.dumps(result, indent=2, sort_keys=True) + "\n")
+        _write_progress(output_dir, "complete", len(records), len(records))
     return result
+
+
+def _write_progress(output_dir: Path, stage: str, evaluated: int, total: int) -> None:
+    progress = {"schema_version": 1, "kind": "pilot", "stage": stage, "evaluated_candidates": evaluated,
+                "total_candidates": total, "progress_fraction": evaluated / total}
+    (output_dir / "progress.json").write_text(json.dumps(progress, indent=2, sort_keys=True) + "\n")
 
 
 def _sample_vectors(

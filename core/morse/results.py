@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import copy
 import csv
+from collections.abc import Iterable
 from dataclasses import dataclass
 import gzip
 import json
@@ -26,6 +27,14 @@ class Candidate:
     def candidate_id(self) -> str:
         return self.id
 
+    def to_fasta(self, path: str | Path) -> Path:
+        """Write this complete assembled RNA as one FASTA record."""
+        from morse.fasta import FastaRecord, write_fasta
+
+        target = Path(path).expanduser()
+        write_fasta(target, [FastaRecord(self.id, self.sequence)])
+        return target
+
 
 def _read_json(path: Path, default=None):
     return json.loads(path.read_text()) if path.is_file() else copy.deepcopy(default)
@@ -48,6 +57,22 @@ def _finite(value) -> bool:
 
 def _rna(sequence: str) -> str:
     return sequence.upper().replace("T", "U")
+
+
+def _saved_candidate(identifier, sequence, parts, metrics) -> Candidate:
+    parts = copy.deepcopy(parts)
+    sequence = sequence or parts.get("sequence")
+    if not sequence:
+        raise ValueError(f"Candidate has no saved sequence: {identifier}")
+    if parts.get("sequence") and _rna(parts["sequence"]) != _rna(sequence):
+        raise ValueError(f"Saved candidate sequence disagrees with its parts: {identifier}")
+    for key in ("sequence", "start_codon", "cds", "stop_codon"):
+        if isinstance(parts.get(key), str):
+            parts[key] = _rna(parts[key])
+    for key in ("five_prime_utr", "three_prime_utr"):
+        if isinstance(parts.get(key), dict) and "sequence" in parts[key]:
+            parts[key]["sequence"] = _rna(parts[key]["sequence"])
+    return Candidate(identifier, _rna(sequence), parts, metrics)
 
 
 def _ensure_notebook_figure_formatter() -> None:
@@ -223,24 +248,77 @@ class OptimizationResult:
 
     def _candidate(self, row: dict[str, Any]) -> Candidate:
         identifier = str(row["candidate_id"])
-        entries = _read_json(self.output_dir / "pareto_constructs.json", [])
-        matching = [item for item in entries if item["candidate_id"] == identifier]
-        if len(matching) > 1:
-            raise ValueError(f"Duplicate construct record: {identifier}")
-        parts = copy.deepcopy(matching[0]["construct"]) if matching else {}
-        sequence = str(row.get("sequence") or parts.get("sequence") or "")
-        if not sequence:
-            raise ValueError(f"Candidate has no saved sequence: {identifier}")
-        if parts.get("sequence") and _rna(parts["sequence"]) != _rna(sequence):
-            raise ValueError(f"Saved candidate sequence disagrees with its parts: {identifier}")
-        for key in ("sequence", "start_codon", "cds", "stop_codon"):
-            if isinstance(parts.get(key), str):
-                parts[key] = _rna(parts[key])
-        for key in ("five_prime_utr", "three_prime_utr"):
-            if isinstance(parts.get(key), dict) and "sequence" in parts[key]:
-                parts[key]["sequence"] = _rna(parts[key]["sequence"])
+        parts = row.get("construct_json")
+        if not isinstance(parts, dict):
+            entries = _read_json(self.output_dir / "pareto_constructs.json", [])
+            matching = [item for item in entries if item["candidate_id"] == identifier]
+            if len(matching) > 1:
+                raise ValueError(f"Duplicate construct record: {identifier}")
+            parts = matching[0]["construct"] if matching else {}
         metrics = {key[7:]: value for key, value in row.items() if key.startswith("output_")}
-        return Candidate(identifier, _rna(sequence), parts, metrics)
+        return _saved_candidate(identifier, row.get("sequence"), parts, metrics)
+
+    @property
+    def reference(self) -> Candidate:
+        """The scored starting construct. Older runs may retain only partial parts."""
+        from morse.fasta import read_fasta
+
+        original = self.summary.get("original", {})
+        if not original.get("candidate_id") or not isinstance(original.get("outputs"), dict):
+            raise ValueError("Starting construct scores are not available in this run")
+        parts = original.get("construct")
+        if parts is None:
+            modules = original.get("modules", {})
+            parts = {key: ({"name": value} if key in ("five_prime_utr", "three_prime_utr") else value)
+                     for key, value in modules.items()}
+        path = self.output_dir / "reference.fasta"
+        sequence = read_fasta(path).sequence if path.is_file() else None
+        return _saved_candidate(original["candidate_id"], sequence, parts, original["outputs"])
+
+    def get_candidate(self, candidate_id: str) -> Candidate:
+        """Retrieve one candidate by ID from the saved final Pareto set."""
+        rows = [row for row in self.pareto if row["candidate_id"] == candidate_id]
+        if not rows:
+            raise KeyError(f"Candidate is not in the final Pareto set: {candidate_id}")
+        if len(rows) > 1:
+            raise ValueError(f"Duplicate Pareto candidate ID: {candidate_id}")
+        return self._candidate(rows[0])
+
+    def compare(self, candidates: Iterable[Candidate], *, baseline: Candidate,
+                percent: bool = False) -> list[dict[str, Any]]:
+        """Compare configured metrics to an explicit baseline without rescoring.
+
+        Delta is value minus baseline in native units. Optional percentages use
+        abs(baseline) as denominator. Undefined changes are returned as None.
+        For candidates from another run, use equivalent scorers, settings and units.
+        """
+        if not isinstance(baseline, Candidate):
+            raise TypeError("baseline must be a Candidate")
+        summary = self.summary
+        directions = {spec["output"]: spec["direction"]
+                      for spec in summary.get("optimizer", {}).get("objectives", [])}
+        policy = summary.get("output_policy", {})
+        for group in ("thresholds", "logs"):
+            for spec in policy.get(group, []):
+                directions.setdefault(spec["output"], None)
+        if not directions:
+            raise ValueError("No configured metrics are available in this run")
+        rows = []
+        for candidate in candidates:
+            if not isinstance(candidate, Candidate):
+                raise TypeError("candidates must contain Candidate objects")
+            for name, direction in directions.items():
+                if name not in baseline.metrics or name not in candidate.metrics:
+                    raise ValueError(f"Both candidates must have the configured metric: {name}")
+                before, after = baseline.metrics[name], candidate.metrics[name]
+                delta = after - before if _finite(before) and _finite(after) else None
+                row = {"candidate_id": candidate.id, "baseline_id": baseline.id,
+                       "metric": name, "direction": direction,
+                       "baseline": before, "value": after, "delta": delta}
+                if percent:
+                    row["percent"] = 100 * delta / abs(before) if delta is not None and before else None
+                rows.append(row)
+        return rows
 
     def select(self, method: str = "hvc", *, metric: str | None = None) -> Candidate:
         """Select from the final feasible Pareto set by HVC or one objective.

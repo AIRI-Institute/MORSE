@@ -2,45 +2,38 @@
 
 **Multi-Objective RNA Sequence Evolution**
 
-MORSE is a configurable multi-objective framework for joint search over synonymous
-coding variants and untranslated regions selected from defined libraries.
-Researchers specify scorer inputs and assign outputs as objectives, constraints
-or recorded measurements. Search retains feasible nondominated candidates for
-selection after optimization.
+MORSE optimizes mRNA constructs while preserving the encoded protein. It searches
+over synonymous CDS variants, UTRs selected from supplied libraries, start and
+stop codons, and poly(A) lengths.
 
-Use MORSE to refine existing mRNA designs, explore trade-offs between predictors
-and run experiments with your own sequences, scorer modules and constraints.
+Define the properties to optimize, set constraints, and connect the scorers needed
+for your experiment. MORSE returns candidate sequences, their scores, and an
+optimization report. With multiple objectives, the result is a Pareto set:
+alternatives representing different trade-offs between the objectives. Model scores
+are predictions; expression and RNA stability must be measured experimentally.
 
-[![MORSE workflow: assemble permitted sequence variants, score the selected regions, and retain feasible alternatives for researcher selection.](paper/reference/diagrams/Figure1_design_workflow.png)](paper/reference/Figure1_design_workflow.pdf)
+Run experiments from the command line, Python, or a graphical notebook using the
+same YAML configuration.
 
-## Install
+[![MORSE workflow](paper/reference/diagrams/Figure1_design_workflow.png)](paper/reference/Figure1_design_workflow.pdf)
 
-Install Git and [uv](https://docs.astral.sh/uv/getting-started/installation/),
-then clone MORSE and set up the Python environment:
+<a id="install"></a>
+
+## First run
+
+Clone the repository and install the locked environment with [uv](https://docs.astral.sh/uv/getting-started/installation/):
 
 ```sh
 git clone https://github.com/AIRI-Institute/MORSE.git
 cd MORSE
-uv sync --python 3.13 --all-packages --extra paper --frozen
-```
-
-`uv sync` creates a virtual environment in `.venv` and installs MORSE. Activate
-it to use the `morse` command directly:
-
-```sh
+uv sync --python 3.13 --all-packages --extra mfe --frozen
 source .venv/bin/activate
-morse run --config examples/quickstart/experiment.yaml
 ```
 
-For native MFE scoring on CPU, include the `mfe` extra:
+<details>
+<summary>Install with pip and venv instead (Python 3.10–3.13)</summary>
 
-```sh
-uv sync --python 3.13 --all-packages --extra paper --extra mfe --frozen
-```
-
-For notebook use, also include `--extra notebook` in this command.
-
-With Python 3.10–3.13, a pip alternative is:
+From the cloned repository:
 
 ```sh
 python3 -m venv .venv
@@ -48,135 +41,144 @@ source .venv/bin/activate
 python -m pip install ./core ./warm-starter ./scorers/manufacturability '.[mfe]'
 ```
 
-The pip command installs compatible dependencies; use the uv lock for reference
-reproduction. See the [MFE setup and YAML example](scorers/viennarna/README.md#native-cpu-setup).
+</details>
 
-## Quick start
-
-Run the bundled CPU example:
-
-```sh
-uv run morse validate --config examples/quickstart/experiment.yaml
-uv run morse run --config examples/quickstart/experiment.yaml
-```
-
-Results are saved in `outputs/quickstart/`: candidate sequences in FASTA,
-score tables and `report.md`.
-
-## Configure an experiment
-
-Start with the [commented configuration template](examples/experiment.template.yaml)
-or the [working MAGE-A1 example](examples/vaccines/magea1/experiment.yaml).
-The YAML defines the input sequence and part coordinates, allowed changes,
-scorer commands, parameters, metric roles and search settings. In schema 5, supply
-the CDS body without its start and stop codons; set them separately in
-`construct.start_codon: [AUG]` and `construct.stop_codon: [UAA]`. Add list entries
-to let MORSE choose between them. UTRs and poly(A) are optional.
-Older schema-3/4 configurations, including the paper runs, retain their original
-input format.
-
-To create a configuration from your own CDS-body FASTA:
+Run the [CPU example](examples/quickstart/experiment.yaml) from the repository root.
+It uses a bundled scorer to minimize CpG frequency and distance from 50% GC.
+No GPU, model download or scorer service is needed.
 
 ```sh
-uv run morse init --cds antigen.fasta --output-dir experiments/my-run
+morse run --config examples/quickstart/experiment.yaml
 ```
 
-Edit `experiments/my-run/experiment.yaml`, then check the configuration,
-score the starting construct and launch optimization:
-
-```sh
-uv run morse validate --config experiments/my-run/experiment.yaml
-uv run morse score --config experiments/my-run/experiment.yaml
-uv run morse run --config experiments/my-run/experiment.yaml
-```
-
-Use `optimize` metrics with `direction: min` or `max`, `threshold` metrics
-with bounds, and `log` metrics to record additional measurements.
-See the [researcher guide](docs/researcher-guide.md) for sequence assembly,
-UTR libraries and search options, and [examples/](examples/) for complete configs.
-
-## Connect scorers
-
-Each scorer is called through a Bash command in the YAML. The command can run
-a local program, a Docker container or a client for an existing service.
-Put calculation settings in the scorer's optional `parameters` mapping. Omitted
-settings keep the scorer's defaults.
-See the [parameter reference](docs/scorer-parameters.md) and a
-[CPU example](examples/scorer-parameters/experiment.yaml).
-
-List the available scorers, inspect an interface and generate its YAML section:
-
-```sh
-uv run morse scorers
-uv run morse scorers describe cai
-uv run morse scorers template cai \
-  --command '"${MORSE_PYTHON}" -m scorers.cai.server'
-```
-
-Replace the experiment's `scorers` section with the generated section and
-run `morse score` to check the connection. Add further scorers to the same list.
-
-The [scorer catalog and setup guide](docs/scorers.md) lists container images,
-runtime requirements and instructions for connecting your own scorer.
-
-## Python API
-
-Use the same experiment configuration from Python:
+Open `outputs/quickstart/report.md` for the scores and plots. To run the same
+example from Python instead:
 
 ```python
 import morse
 
-params = morse.load_config("experiment.yaml")
-result = morse.optimize(params=params, verbose=2)
-result.pareto
+params = morse.load_config("examples/quickstart/experiment.yaml")
+result = morse.optimize(params=params, output_dir="outputs/quickstart_python")
 ```
 
-Pass an RNA string as the first argument to use it instead of the configured
-FASTA: `morse.optimize(rna_seq, params, verbose=2)`. The part coordinates remain
-in the configuration and refer to the supplied input before codon insertion.
-Notebook progress can include metric, hypervolume and UTR frequency plots.
+For live plots in Jupyter, [install notebook support](docs/python-api.md) and set
+`verbose=2`. The [Python notebook](core/notebooks/MORSE_Python_API.ipynb)
+walks through the example. The [graphical notebook](core/notebooks/MORSE_Server_Colab.ipynb)
+lets you build a YAML configuration using forms.
 
-See the [Python guide](docs/python-api.md) and the
-[CPU example notebook](core/notebooks/MORSE_Python_API.ipynb) for scoring,
-optimization, candidate selection and continuation.
+## Run with your own sequence
 
-## Colab and Jupyter
-
-The [notebook](core/notebooks/MORSE_Server_Colab.ipynb) provides a graphical
-interface for editing experiment YAML, launching and monitoring runs, and
-viewing results through the Python API. Optimization runs in the notebook's
-active kernel; progress and plots update in the launch cell. To use server
-hardware, run the notebook with a kernel on that server.
-
-For local notebook use, install the notebook dependencies:
+**CDS only:** provide a single-record FASTA with the CDS body in DNA or RNA.
+In schema 5, the body excludes the initiation codon and the terminal stop codon.
+Generate an experiment directory with:
 
 ```sh
-uv sync --all-packages --extra paper --extra mfe --extra notebook --frozen
+morse init --cds cds_body.fasta --output-dir experiments/my_run
 ```
 
-## Reproduce the paper
+**CDS with UTRs:** add `--five-prime-utr utr5.fasta` or
+`--three-prime-utr utr3.fasta` to the same command. If the parts are already in
+one FASTA, use the [commented config template](examples/experiment.template.yaml)
+and set their coordinates directly. Coordinates start at zero, exclude the end,
+and cover the input without gaps. Only the CDS body is required.
 
-The [paper directory](paper/README.md) contains study configurations, results
-and figure-generation scripts. Recompute the analysis and figures from the
-provided data:
+```text
+Input FASTA:   [5′UTR]         CDS body          [3′UTR]  [poly(A)]
+Assembled RNA: [5′UTR]  start  CDS body   stop   [3′UTR]  [poly(A)]
+```
+
+## Configure an experiment
+
+Edit `experiments/my_run/experiment.yaml`. For a complete config with multiple
+scorers, see the [annotated working example](examples/scorer-parameters/experiment.yaml).
+
+| YAML section | What to set |
+|---|---|
+| `construct` | Input FASTA, part coordinates and allowed start/stop codons (default AUG/UAA; first entries define the reference). Under `changes`, enable synonymous CDS changes, UTR choices from libraries, or poly(A) length choices. Unlisted parts stay fixed unless the start/stop lists contain alternatives. |
+| `optimizer` | Search algorithm (`ga` for one objective; `nsga2` or `nsga3` for multiple), population size, generation limit and random seed. Optional: `n_offsprings` per generation and `early_stopping`. |
+| `scorers` | One entry for each scorer: a name, the command that calls it, the sequence region it receives, and the metrics to use. |
+| `output_dir` | A new directory for each independent run. Relative paths for the input, libraries and results are resolved from the YAML location. |
+
+For example, this entry calls the MFE scorer installed above:
+
+```yaml
+scorers:
+  - name: mfe
+    command: '"${MORSE_PYTHON}" -m scorers.viennarna.scorer'
+    scope: [five_prime_utr, cds, three_prime_utr]
+    parameters:
+      max_bp_span: 300  # nt
+    metrics:
+      mfe: {role: optimize, direction: min}
+      gc_fraction: {role: threshold, min: 0.35, max: 0.65}
+```
+
+- **`scope` selects what is scored.** Here the scorer receives the assembled transcript without poly(A). In a scorer scope, `cds` includes start and stop; `cds_body` excludes both. Use `full_sequence` for the whole construct.
+- **`parameters` sets how the score is calculated.** Here base pairs can span up to 300 nt. Omitted parameters keep the scorer's defaults.
+- **`metrics` sets how scores are used.** Use `optimize` with `direction: min|max`, `threshold` with `min`, `max` or `equals`, and `log` for values you only want to record.
+
+Each command must work in your environment before the run. It can call a local
+script, a container or a running service. Use `morse scorers` to list bundled
+scorers and `morse scorers describe viennarna` to inspect the MFE scorer. See the
+[scorer setup guide](docs/scorers.md) and [parameter reference](docs/scorer-parameters.md).
+
+## Check before a long run
+
+From the repository root:
 
 ```sh
-uv run morse paper analyze --output outputs/paper
-uv run morse paper figures --output outputs/paper
+config=experiments/my_run/experiment.yaml
+morse validate --config "$config"
+morse score --config "$config"
+morse pilot --config "$config" --samples 24 --output-dir outputs/my_pilot
+morse run --config "$config"
 ```
 
-To repeat an optimization, prepare its configured scorers and pass the study's
-YAML to MORSE:
+`validate` checks the configuration and sequence structure without invoking the
+scorers. `score` runs them on the starting construct. `pilot` scores the reference
+and a small sample of variants: inspect the feasible fraction, metric ranges and
+warnings before committing to the full run. A threshold that no sampled variant
+passes is a reason to inspect the setup, not proof that no solution exists.
 
-```sh
-uv run morse run --config paper/configs/f2_filtered_s7.yaml
+## Choose and export a candidate
+
+The final Pareto set contains feasible candidates with different trade-offs.
+Use HVC (exclusive hypervolume contribution) to pick a candidate that adds the
+most to the set's coverage. If one metric matters most, select its specialist
+instead. The two choices can return the same candidate.
+
+Inspect the completed CPU example without rerunning any scorers:
+
+```python
+import morse
+
+run = morse.load_run("outputs/quickstart")  # CLI example
+compromise = run.select("hvc")
+specialist = run.select(metric="sequence_metrics.cpg_per_kb")
+for row in run.compare([compromise, specialist], baseline=run.reference):
+    print(row["candidate_id"], row["metric"], row["baseline"], row["value"], row["delta"])
+
+compromise.to_fasta(run.output_dir / "selected.fasta")
 ```
 
-See [the study guide](paper/README.md) and
-[paper scorer settings](paper/SCORERS.md) for the full experiment list and setup.
+`run.reference` is the starting construct scored in this run. A delta is
+candidate minus baseline in the metric's own units; for a minimized metric,
+a negative delta is better. To export a candidate you chose in the report,
+pass its ID to `run.get_candidate(candidate_id)` and call `to_fasta(path)`.
 
-## License
+| In the run directory | Contents |
+|---|---|
+| `report.md` | Summary and plots |
+| `pareto.csv`, `pareto.fasta` | Final Pareto scores and assembled sequences, matched by candidate ID |
+| `summary.json`, `progress.json` | Starting scores, run summary and progress |
+| `resolved_run.yaml` | Resolved experiment configuration |
 
-MORSE code is distributed under the [MIT license](LICENSE).
-Third-party software, models and data retain their own licenses; see
-[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+To continue an interrupted run, use `morse run --config "$config" --resume` or
+`morse.resume(output_dir)` in the original environment.
+
+## Guides and citation
+
+- [Researcher guide](docs/researcher-guide.md) and [Python API](docs/python-api.md): input options, progress, analysis and continuation.
+- [Model cards](docs/model-cards.md) and [custom scorer example](examples/custom_scorer): interpret a predictor's outputs or connect your own tool.
+- [Reproduce the paper](paper/README.md): regenerate figures from saved data or rerun a published configuration.
+- [Cite MORSE](CITATION.cff). MORSE uses the [MIT license](LICENSE); see [third-party notices](THIRD_PARTY_NOTICES.md) for bundled components.
