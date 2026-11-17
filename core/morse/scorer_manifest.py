@@ -39,6 +39,35 @@ def request_parameter_specs(manifest: Mapping[str, Any]) -> dict[str, dict[str, 
     }
 
 
+def metric_policy(output: Mapping[str, Any]) -> dict[str, Any]:
+    """Translate a normalized manifest output policy into run YAML."""
+    policy = copy.deepcopy(output["default_policy"])
+    policy.pop("type", None)
+    if output["type"] != "float":
+        policy["value_type"] = output["type"]
+    if policy["role"] == "objective":
+        policy["role"] = "optimize"
+    return policy
+
+
+def scorer_section(manifest: Mapping[str, Any], command: str | None = None) -> dict[str, Any]:
+    """A run YAML entry with the metrics available at the declared defaults."""
+    from morse.schema4 import scope_from_internal
+
+    if command is not None and not command.strip():
+        raise ValueError("--command must be a non-empty Bash command")
+    parameters = {name: spec["default"] for name, spec in request_parameter_specs(manifest).items()
+                  if "default" in spec}
+    return {
+        "name": manifest["id"], "command": command or "REPLACE_WITH_YOUR_SCORER_COMMAND",
+        **({"parameters": parameters} if parameters else {}),
+        "timeout_seconds": manifest["runtime"]["timeout_seconds"],
+        "scope": scope_from_internal(manifest["scope"]["default"]),
+        "metrics": {name: metric_policy(output) for name, output in manifest["outputs"].items()
+                    if "requires_parameter" not in output or parameters.get(output["requires_parameter"]) is True},
+    }
+
+
 def load_scorer_manifest(path: str | Path) -> dict[str, Any]:
     manifest_path = Path(path)
     try:
@@ -97,8 +126,9 @@ def validate_scorer_manifest(raw: Mapping[str, Any]) -> dict[str, Any]:
         )
     )
     scope = _validate_scope_block(_mapping(raw.get("scope"), "scope"))
-    outputs = _validate_outputs(_mapping(raw.get("outputs"), "outputs"))
     parameters = _validate_parameters(raw.get("parameters", {}))
+    outputs = _validate_outputs(_mapping(raw.get("outputs"), "outputs"),
+                                request_parameter_specs({"parameters": parameters}))
     portable_parameters_raw = raw.get("portable_parameters")
     portable_parameters = (
         None
@@ -301,7 +331,7 @@ def _validate_selected_scope(
         raise ValueError(f"Window scope is disabled for scorer {scorer_id}")
 
 
-def _validate_outputs(raw: Mapping[str, Any]) -> dict[str, dict[str, Any]]:
+def _validate_outputs(raw: Mapping[str, Any], parameters: Mapping[str, Any]) -> dict[str, dict[str, Any]]:
     if not raw:
         raise ValueError("Scorer manifest outputs must not be empty")
     outputs: dict[str, dict[str, Any]] = {}
@@ -329,6 +359,11 @@ def _validate_outputs(raw: Mapping[str, Any]) -> dict[str, dict[str, Any]]:
             "description": description,
             "default_policy": default_policy,
         }
+        if "requires_parameter" in spec:
+            required = spec["requires_parameter"]
+            if not isinstance(required, str) or parameters.get(required, {}).get("type") != "bool":
+                raise ValueError(f"outputs.{output_name}.requires_parameter must name a boolean request parameter")
+            normalized["requires_parameter"] = required
         if spec.get("unit") is not None:
             normalized["unit"] = str(spec["unit"])
         if spec.get("value_range") is not None:

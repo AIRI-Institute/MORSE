@@ -1,152 +1,63 @@
-# MORSE interfering-RNA scorer
+# scanMiR: predicted miRNA repression
 
-Setup and MORSE integration: [scorer guide](../../docs/scorers.md).
+`irna_max_profile_risk` is the largest predicted repression index across the tissue and cell profiles in the selected panel. Lower values indicate less predicted repression. Use the index to compare sequences scored with the same scope and panel; it is not a calibrated fold change in protein output.
 
-This scorer identifies canonical miRNA binding sites that could reduce antigen
-production from a vaccine RNA. It uses `scanMiR 1.16.0` affinity models and
-expression-aware human and mouse panels built from `scanMiRData 1.16.0`,
-MirGeneDB 3.0, and miRNATissueAtlas 2025.
+**Input:** by default, the entire RNA including poly(A). scanMiR treats every routed base as UTR-like, even within the CDS. **Runtime:** Linux/amd64 CPU container with R, scanMiR, scanMiRData and both species panels included. Human is the default.
 
-## Score
+## Run with MORSE
 
-`scanMiR` predicts binding-site affinity and aggregates all retained sites for
-each miRNA into a predicted repression value. For candidate `m`, miRNA `g`, and
-biological profile `p`, this scorer defines:
-
-```text
-miRNA risk(m,g)   = max(0, -scanMiR repression(m,g))
-profile risk(m,p) = sum_g expression_fraction(g,p) * miRNA risk(m,g)
-final risk(m)     = max_p profile risk(m,p)
-```
-
-`irna_max_profile_risk` is minimized by MORSE. The maximum across profiles is
-deliberately conservative: a sequence should not acquire a strong site for a
-highly expressed miRNA in any target immune or injection-site compartment.
-
-The index is useful for ranking otherwise comparable vaccine candidates. It is
-not a calibrated absolute fold-change in antigen output because tissue-average
-RPMM is not a direct measurement of AGO-loaded miRNA concentration in the
-experimental system.
-
-## Default scan policy
-
-- `canonical_only: true`;
-- affinity cutoff `max_log_kd: -1.0`;
-- minimum same-miRNA site distance `min_site_distance: 7` nt;
-- match sequences and extended 3-prime alignment details are not retained;
-- full routed input is treated as UTR-like sequence by `scanMiR`, so the first
-  affinity cutoff applies throughout the current implementation;
-- 3-prime pairing still contributes through the standard `scanMiR`
-  aggregation model.
-
-The default scope is the full vaccine sequence. Core may route a configured
-part, slice, or window instead.
-
-## Panels
-
-The bundled `2026-08-21` snapshot contains:
-
-| Species | Models | Target profiles | Minimum covered total expression |
-|---|---:|---:|---:|
-| Human | 157 | PBMC, dendritic cells, macrophage, mononuclear cells, limb muscle | 96.8% |
-| Mouse | 170 | PBMC, macrophage, inflammatory monocyte, limb muscle, spleen, lymph node | 96.3% |
-
-Select the file in YAML `parameters.profile_path`; human is the default:
-
-- `panels/2026-08-21/human/core_975.tsv`
-- `panels/2026-08-21/mouse/core_975.tsv`
-
-The bundled path also selects the matching species models. Set `profiles` to a
-list of target profile names, or `null` for all profiles in that panel. The panel
-TSVs retain source identifiers, mature sequences, matching audit flags,
-per-profile RPMM, and normalized expression fractions. Exact source
-checksums are recorded in `panels/2026-08-21/sources.json`.
-
-## JSONL interface
-
-```json
-{"request_id":1,"sequences":["AAAATAAGCTAAAAAAACGTACGT"]}
-```
-
-The process returns one output object per input sequence and remains alive for
-subsequent batches. `U` is normalized to `T`; whitespace is ignored; other
-bases are rejected.
-
-## Build and verification
-
-```bash
-docker build -t morse/irna:1.0.0 .
-printf '%s\n' '{"request_id":1,"sequences":["AAAATAAGCTAAAAAAACGTACGT"]}' \
-  | docker run --rm -i morse/irna:1.0.0
-python prepare_assets.py --root /tmp/morse-irna-assets \
-  --docker-image morse/irna:1.0.0
-```
-
-The build context is restricted to the two R entry points, the bundled
-panels, the Dockerfile, and license notices. The default base image is pinned
-by digest; an existing compatible Bioconductor runtime can be selected with
-`--build-arg BASE_IMAGE=IMAGE`. The build installs from source and requires
-scanMiR and scanMiRData to resolve to exactly 1.16.0.
-
-The image includes the adapter's MIT license, the GPL-3 license for scanMiR
-and scanMiRData, the exact source archives used to install both packages,
-and dependency and source-checksum manifests in
-`/usr/share/licenses/morse-irna`. To retrieve these materials without
-starting the scorer:
+In an activated MORSE environment, leave the local scoring service running in one terminal:
 
 ```sh
-container=$(docker create morse/irna:1.0.0)
-docker cp "$container":/usr/share/licenses/morse-irna ./morse-irna-licenses
-docker rm "$container"
+morse scorers serve --port 8803 \
+  --command 'docker run --platform linux/amd64 --rm -i ghcr.io/shpakb/morse-irna:1.0.0'
 ```
 
-See [third-party notices](THIRD_PARTY_NOTICES.md) for package attribution
-and panel-source provenance. The complete panel snapshot, including its
-source checksums and coverage audit, remains in `/app/panels/2026-08-21`.
-
-## MORSE integration
-
-Select the human or mouse panel through `parameters.profile_path`. The other
-settings are `species: human`, `profiles: null`, `max_log_kd: -1.0`,
-`min_site_distance: 7`, `canonical_only: true`, and `workers: 4`. Missing values
-retain the prepared runtime settings, including existing `IRNA_*` overrides.
-See the [parameter reference](../../docs/scorer-parameters.md).
-
-A native CPU runtime needs R, scanMiR 1.16.0,
-scanMiRData 1.16.0, BiocParallel and jsonlite. The bundled panels contain
-expression weights; the affinity models come from scanMiRData's `hsa` and `mmu`
-collections.
-
-For example, prepare one native process in a separate terminal, replacing
-`/path/to/morse` with the checkout path:
-
-```sh
-morse scorers serve --command 'Rscript /path/to/morse/scorers/irna/server.R' --port 8803
-```
-
-The optional adapter keeps this R process and its models loaded across batches.
-For an already prepared container, use
-`docker exec -i CONTAINER Rscript /app/server.R`
-as the adapter's command instead. Prepare and start the container before the
-experiment, using the [container setup](../../docs/scorer-parameters.md#using-this-checkout-with-containers) for existing registry images.
-The optimizer only calls the endpoint:
+For **mouse** instead, add `-e IRNA_SPECIES=mouse` before the image name when starting the service. This selects the mouse panel and affinity models in the published image. In a second terminal on the same host, use this scorer section for either species:
 
 ```yaml
 scorers:
-  - name: irna_mouse
+  - name: irna
     command: 'curl -fsS -H "Content-Type: application/json" --data-binary @- http://127.0.0.1:8803/score'
-    parameters:
-      profile_path: panels/2026-08-21/mouse/core_975.tsv
-      profiles: null
-      workers: 1
-    timeout_seconds: 300
-    scope: {type: full_sequence}
+    scope: full_sequence
+    timeout_seconds: 1800
     metrics:
-      irna_max_profile_risk: {role: optimize, direction: min}
-      irna_mean_profile_risk: {role: log}
-      irna_site_count: {role: log, value_type: int}
+      irna_max_profile_risk: {role: log}
       irna_species: {role: log, value_type: string}
 ```
 
-Stop the adapter with Ctrl-C after the experiment. Record the R sources, selected
-panel, package versions and prepared runtime identity in experiment provenance.
+For a first check from the repository root, copy [the quickstart YAML](../../examples/quickstart/experiment.yaml) to `examples/quickstart/irna.yaml` beside its input FASTA. Append the list item above to its existing `scorers:` list. This records the scanMiR results without changing the example's objectives. Then run:
+
+```sh
+morse score --config examples/quickstart/irna.yaml
+```
+
+Check `irna.irna_species` and `irna.irna_max_profile_risk` under `outputs`. The service keeps the models loaded between requests. Stop it with Ctrl-C when finished.
+
+## Choose a panel
+
+| Panel | miRNA models | Tissue and cell profiles |
+|---|---:|---|
+| [Human](panels/2026-08-21/human/core_975.tsv) | 157 | PBMC, dendritic cells, macrophage, mononuclear cells, limb muscle |
+| [Mouse](panels/2026-08-21/mouse/core_975.tsv) | 170 | PBMC, macrophage, inflammatory monocyte, limb muscle, spleen, lymph node |
+
+To select a panel in YAML instead of at service startup, use the [current adapter](../../docs/scorer-parameters.md#using-this-checkout-with-containers). Add this under the scorer:
+
+```yaml
+parameters:
+  profile_path: panels/2026-08-21/mouse/core_975.tsv
+```
+
+The bundled path also selects the species. Set `profiles` to a subset of the panel's profile names, or omit it to use all. The defaults scan canonical sites, use `max_log_kd: -1.0` and a minimum same-miRNA site spacing of 7 nt. See `morse scorers describe irna` for all settings and outputs.
+
+## How to read the score
+
+scanMiR aggregates retained binding sites into a repression estimate per miRNA. Within each profile, the scorer weights each miRNA's nonnegative repression magnitude by its expression fraction and sums the contributions. The main score is the **maximum** of these profile sums. `irna_mean_profile_risk` reports their mean. Tissue expression is used as a proxy for the available miRNA pool.
+
+The frozen [panel snapshot](panels/2026-08-21/sources.json) records sources from scanMiRData 1.16.0, MirGeneDB 3.0 and miRNATissueAtlas 2025. The runtime uses scanMiR 1.16.0. See [third-party notices](THIRD_PARTY_NOTICES.md) for attribution. The published image includes the MIT adapter notice, GPL-3 notices and the scanMiR/scanMiRData source archives in `/usr/share/licenses/morse-irna`.
+
+For a native R installation with those packages, BiocParallel and jsonlite, the scorer command is `Rscript /absolute/path/to/scorers/irna/server.R`. To build a CPU image from the current checkout instead, run this from the repository root:
+
+```sh
+docker build --platform linux/amd64 -t morse-irna:local scorers/irna
+```

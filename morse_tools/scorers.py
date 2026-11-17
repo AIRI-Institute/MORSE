@@ -9,7 +9,7 @@ from typing import Any
 
 import yaml
 
-from morse.scorer_manifest import load_scorer_manifest, request_parameter_specs
+from morse.scorer_manifest import load_scorer_manifest, metric_policy, request_parameter_specs, scorer_section
 from morse.schema4 import scope_expression, scope_from_internal
 
 
@@ -29,40 +29,9 @@ def _catalog(root: Path) -> dict[str, tuple[Path, dict[str, Any]]]:
     return catalog
 
 
-def _metrics(manifest: dict[str, Any]) -> dict[str, dict[str, Any]]:
-    result = {}
-    for name, output in manifest["outputs"].items():
-        metric = {
-            key: copy.deepcopy(value)
-            for key, value in output["default_policy"].items()
-            if key in {"role", "direction", "min", "max", "equals"}
-        }
-        if metric["role"] == "objective":
-            metric["role"] = "optimize"
-        if output["type"] != "float":
-            metric["value_type"] = output["type"]
-        result[name] = metric
-    return result
-
-
 def scorer_template(manifest: dict[str, Any], command: str | None) -> dict[str, Any]:
     """Return a pasteable section using the scorer's declared default policies."""
-    if command is not None and not command.strip():
-        raise ValueError("--command must be a non-empty Bash command")
-    section = {
-        "name": manifest["id"],
-        "command": command if command is not None else "REPLACE_WITH_YOUR_SCORER_COMMAND",
-    }
-    defaults = {key: copy.deepcopy(spec["default"])
-                for key, spec in request_parameter_specs(manifest).items() if "default" in spec}
-    if defaults:
-        section["parameters"] = defaults
-    section.update({
-        "timeout_seconds": manifest["runtime"]["timeout_seconds"],
-        "scope": scope_from_internal(manifest["scope"]["default"]),
-        "metrics": _metrics(manifest),
-    })
-    return {"scorers": [section]}
+    return {"scorers": [scorer_section(manifest, command)]}
 
 
 def scorer_interface(manifest: dict[str, Any]) -> dict[str, Any]:
@@ -74,9 +43,9 @@ def scorer_interface(manifest: dict[str, Any]) -> dict[str, Any]:
         metrics[name] = {
             "value_type": output["type"],
             "description": output["description"],
-            "default": _metrics(manifest)[name],
+            "default": metric_policy(output),
         }
-        for field in ("unit", "value_range"):
+        for field in ("unit", "value_range", "requires_parameter"):
             if field in output:
                 metrics[name][field] = output[field]
     parameter_specs = request_parameter_specs(manifest)
@@ -158,6 +127,8 @@ def main(argv: list[str], *, root: Path) -> int:
                         label += " " + policy["direction"]
                     print(f"  {name} [{metric['value_type']}; {label}]")
                     print(f"    {metric['description']}")
+                    if "requires_parameter" in metric:
+                        print(f"    Requires parameters.{metric['requires_parameter']}: true")
                     if metric.get("value_range"):
                         print(f"    Range: {metric['value_range']}")
                 print("\nProtocol: JSON request on stdin, then EOF; JSON response on stdout.")

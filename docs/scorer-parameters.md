@@ -27,10 +27,11 @@ morse scorers describe cai
 morse scorers template cai --command '"${MORSE_PYTHON}" -m scorers.cai.server'
 ```
 
-Generated templates contain explicit defaults. Remove a setting to inherit it
-from your prepared runtime instead. Adapters report effective settings in the
-response's `parameters` field;
-optimization runs save them to `scorer_parameters.json`.
+Generated templates set the current adapter's defaults explicitly. Remove a
+setting to inherit it from your prepared runtime. After an optimization, check
+`scorer_parameters.json` in the run directory for the settings the adapters
+actually reported. For CAI and CSI the returned profile ID and digest also
+identify which profile produced the scores.
 
 ## Available settings
 
@@ -66,7 +67,9 @@ scanMiR's `profiles: null` uses all tissue/cell profiles in the selected panel;
 a list selects a subset.
 
 For MFE, `dangles` accepts `0`, `1`, `2` or `3`; with `compute_ensemble: true`,
-use `0` or `2`. Ensemble metrics are returned only when that calculation is enabled.
+use `0` or `2`. The default template omits ensemble metrics. To keep them in
+your run, set `compute_ensemble: true` and add `ensemble_free_energy` or
+`ensemble_diversity` under `metrics`, for example with `{role: log}`.
 
 ## Human and mouse profiles
 
@@ -134,17 +137,39 @@ unless explicitly enabled.
 
 ## Using this checkout with containers
 
-The request parameters above are implemented in this checkout. Existing registry
-images retain their bundled adapter version. To use the updated adapter with an
-existing image, mount the matching scorer source directory when preparing the
-container, for example on a CUDA host:
+The service examples on the scorer pages use the published images with their
+built-in settings. For per-run `parameters`, the scorer process must be running
+the adapter from this checkout. Native installations already use it. With a
+published image, bind the matching adapter files when starting the service;
+the weights and dependencies stay in the image.
+
+For example, to use YAML parameters with the full-fit Orthrus TE service,
+run this from the repository root **instead of** the startup command on the
+[TE page](../scorers/translation-efficiency/README.md). The YAML endpoint stays
+the same:
 
 ```sh
-docker run --rm -i --gpus all \
-  --mount type=bind,src="$PWD/scorers/translation-efficiency",dst=/app,readonly \
-  ghcr.io/shpakb/morse-translation-efficiency:2.2.1
+morse scorers serve --port 8811 --command 'docker run --rm -i --gpus all \
+  -v "$PWD/scorers/translation-efficiency/server.py:/app/server.py:ro" \
+  -v "$PWD/scorers/translation-efficiency/model.py:/app/model.py:ro" \
+  -v "$PWD/scorers/translation-efficiency/portable_orthrus.py:/app/portable_orthrus.py:ro" \
+  ghcr.io/shpakb/morse-translation-efficiency:2.2.1'
 ```
 
-Run this command from the repository root. The image still supplies its ready
-weights and dependencies. Once your runtime is prepared, use its ordinary Bash
-command in the run configuration.
+For another image, keep the service command, hardware options and port from
+its README. Add one read-only `-v` per item below **before the image name**.
+The source is under the scorer's directory in this checkout; the target is
+the same relative path under `/app`. Mount individual files or the listed
+subdirectories to keep the other contents of `/app` visible.
+
+| Scorer | Adapter files or directories to mount |
+|---|---|
+| CAI, CSI | `server.py`, `model.py`, `profiles/` |
+| ViennaRNA | `scorer.py` |
+| Sequence feasibility | `manufacturability_scorer/` |
+| scanMiR | `server.R`, `scorer.R` |
+| Orthrus full-fit TE, half-life | `server.py`, `model.py`, `portable_orthrus.py` from the corresponding scorer |
+| Orthrus held-out TE | The three TE files above plus `server_heldout.py`, `heldout_encoding.py`, from `scorers/translation-efficiency/` |
+| RiboNN | `server.py`, `model.py`, `encoding.py` |
+| RiboDecode | `server.py` |
+| RiNALMo | `server.py`, `runtime_model.py` |

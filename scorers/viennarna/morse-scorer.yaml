@@ -53,11 +53,13 @@ outputs:
   ensemble_free_energy:
     type: float
     unit: kcal/mol
-    description: Ensemble free energy; returned when compute_ensemble is true.
+    requires_parameter: compute_ensemble
+    description: Ensemble free energy.
     default_policy: {role: log}
   ensemble_diversity:
     type: float
-    description: Mean base-pair distance in the ensemble; returned when compute_ensemble is true.
+    requires_parameter: compute_ensemble
+    description: Mean base-pair distance in the ensemble.
     default_policy: {role: log}
 parameters:
   max_bp_span:

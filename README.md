@@ -120,7 +120,8 @@ scorers:
 Each command must work in your environment before the run. It can call a local
 script, a container or a running service. Use `morse scorers` to list bundled
 scorers and `morse scorers describe viennarna` to inspect the MFE scorer. See the
-[scorer setup guide](docs/scorers.md) and [parameter reference](docs/scorer-parameters.md).
+[scorer catalog](docs/scorers.md) to choose by property, input region and hardware,
+and the [parameter reference](docs/scorer-parameters.md) for calculation settings.
 
 ## Check before a long run
 

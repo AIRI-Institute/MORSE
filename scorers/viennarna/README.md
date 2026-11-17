@@ -1,114 +1,70 @@
-# MORSE ViennaRNA scorer
+# ViennaRNA: RNA folding energy
 
-Setup and MORSE integration: [scorer guide](../../docs/scorers.md).
+`mfe` is the predicted minimum free energy of the scored RNA (kcal/mol).
+More negative means a lower-energy predicted fold. Use `mfe` for the
+total energy of the region, or `mfe_per_nt` (kcal/mol per nucleotide) to
+compare energy per base when candidate lengths differ. At fixed length,
+minimizing either metric gives the same ranking.
 
-## What it scores
+**Input:** the RNA region selected by `scope`. The default, `full_sequence`,
+includes poly(A) if present. Runs on CPU with the `mfe` extra; no model weights
+are required.
 
-The scorer calculates thermodynamic and compositional RNA properties: minimum
-free energy (MFE), MFE per nucleotide, GC fraction, minimum-free-energy
-secondary structure, ensemble free energy, and ensemble diversity.
+## Use in MORSE
 
-## Method and validation
-
-This is a JSONL adapter around
-[ViennaRNA Package 2.7.2](https://github.com/ViennaRNA/ViennaRNA), not a trained
-model. It uses `RNA.fold_compound().mfe()` and, when requested, the partition
-function. Primary method publication:
-[Lorenz et al., Algorithms for Molecular Biology, 2011](https://doi.org/10.1186/1748-7188-6-26).
-
-There is no dataset, set of weights, or ML validation metric. Unit tests verify
-adapter formatting, normalization, and agreement with the installed library;
-physical accuracy is determined by the ViennaRNA model and its parameters.
-
-## Interface
-
-Input: sequence-batch JSONL request `{"request_id": ..., "sequences": [...]}`.
-Core resolves the scope before invoking the runtime. Optional request
-`parameters` contains calculation settings:
-
-- `max_bp_span`: maximum paired-base span in nucleotides; default 300, or 0 for unrestricted pairing.
-- `compute_ensemble`: calculate partition-function metrics; default `false`.
-- `temperature`: folding temperature in Celsius; default `37.0`.
-- `dangles`: dangling-end model `0/1/2/3`; default `2`. Ensemble calculations support `0` or `2`.
-- `no_lonely_pairs`: exclude isolated pairs; default `false`.
-
-Set these in YAML `parameters`. Missing values retain the prepared runtime defaults;
-legacy `VIENNARNA_*` settings remain supported. See the
-[parameter reference](../../docs/scorer-parameters.md).
-
-The default scope is `full_sequence`; the manifest allows any parts,
-part-relative slices, and windows with explicit upstream/downstream context.
-The runtime receives only the sequence already resolved by Core.
-
-Outputs: `mfe` (kcal/mol), `mfe_per_nt`, `gc_fraction`, `mfe_structure`,
-`ensemble_free_energy` (kcal/mol), and `ensemble_diversity`.
-
-## Native CPU setup
-
-From the monorepo root, install MORSE with the `mfe` extra. This includes
-`ViennaRNA==2.7.2`:
+From the repository root:
 
 ```sh
-uv sync --python 3.13 --all-packages --extra paper --extra mfe --frozen
+uv sync --python 3.13 --all-packages --extra mfe --frozen
+source .venv/bin/activate
 ```
 
-For a pip-based virtual environment, install the local packages together:
-
-```sh
-python -m pip install ./core ./warm-starter ./scorers/manufacturability '.[mfe]'
-```
-
-Use the installed module in the experiment YAML:
+For pip installation, see [Install MORSE](../../README.md#install).
+This example scores the transcript body without poly(A):
 
 ```yaml
 scorers:
-  - name: viennarna
+  - name: mfe
     command: '"${MORSE_PYTHON}" -m scorers.viennarna.scorer'
+    scope: [five_prime_utr, cds, three_prime_utr]
     parameters:
       max_bp_span: 300
-      temperature: 37.0
-      compute_ensemble: false
-    timeout_seconds: 1800
-    scope: full_sequence
     metrics:
       mfe: {role: optimize, direction: min}
       mfe_per_nt: {role: log}
-      gc_fraction: {role: log}
-      mfe_structure: {role: log, value_type: structure}
 ```
 
-`MORSE_PYTHON` defaults to MORSE's interpreter. MORSE sends one JSON request and
-EOF per batch; the adapter returns one JSON response. The command works outside
-the checkout as well. `morse-mfe` is the equivalent command in an activated
-environment. A direct check is:
+Try the [bundled four-scorer CPU example](../../examples/scorer-parameters/experiment.yaml):
 
 ```sh
-printf '%s\n' '{"request_id":1,"sequences":["AUGGCCGCCGCCGCCGCCUAA"],"parameters":{"max_bp_span":300,"compute_ensemble":false}}' \
-  | python -m scorers.viennarna.scorer
+morse score --config examples/scorer-parameters/experiment.yaml
 ```
 
-Set `max_bp_span: 0` for unrestricted pairing. Set `compute_ensemble: true`
-when requesting `ensemble_free_energy` or `ensemble_diversity`.
+Under `outputs`, `mfe.mfe` is the starting construct's energy for this scope.
 
-## Reproducibility
+## Choose folding settings
 
-The paper uses a pinned container. Native CPU execution uses the same ViennaRNA
-API; retain the configured version, span limit and ensemble setting.
-The published 2.2.0 image uses the older `VIENNARNA_MAX_BP_SPAN` and
-`VIENNARNA_ENABLE_PF` environment variables. Use the updated native adapter or
-a new source build for JSON `parameters`; frozen paper configs retain their
-original container commands.
-Container preparation and optional archiving are separate from optimization:
+- `max_bp_span` limits the distance between paired bases in nucleotides
+  (default 300; 0 allows unrestricted pairing).
+- `temperature` sets the folding temperature in °C (default 37).
+- Set `compute_ensemble: true` to obtain `ensemble_free_energy` and
+  `ensemble_diversity`. Their calculation requires `dangles: 0` or `2`
+  (default 2). Both outputs are absent when ensemble calculation is off.
 
-```bash
-# Run from the monorepo root.
-docker build --platform linux/amd64 -t morse-viennarna:local scorers/viennarna
-python scorers/viennarna/prepare_assets.py --docker-image morse-viennarna:local
-```
+Use the same scope, temperature and pairing settings when comparing scores.
+`morse scorers describe viennarna` lists the remaining settings and outputs,
+including the dot-bracket structure of the minimum-energy fold.
 
-The image preserves the adapter's MIT notice and ViennaRNA's exact upstream
-copyright notice under `/app/licenses/`.
+## Method and runtime
 
-The built image archive and its SHA-256 digest are stored in
-`${MORSE_ASSETS_DIR}/viennarna_files` (default `.cache/morse/assets/viennarna_files`).
-This scorer requires no external model weights or data files.
+The adapter uses the [ViennaRNA Package](https://github.com/ViennaRNA/ViennaRNA)
+(v2.7.2; [Lorenz et al., 2011](https://doi.org/10.1186/1748-7188-6-26)).
+It predicts folding under a thermodynamic model; the predicted energy is not
+a measurement of transcript half-life.
+
+The native command above accepts YAML `parameters`. The published 2.2.0
+container uses environment settings such as `VIENNARNA_MAX_BP_SPAN` and
+`VIENNARNA_ENABLE_PF`. See [using the current adapter with an existing image](../../docs/scorer-parameters.md#using-this-checkout-with-containers)
+for per-request parameters.
+
+[Adapter license](LICENSE) · [ViennaRNA license](ViennaRNA-COPYING.txt)

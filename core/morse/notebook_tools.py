@@ -27,7 +27,7 @@ from morse.codon import normalize_dna, translate_dna
 from morse.construct import PART_ORDER, STOP_CODONS
 from morse.input_bundle import input_references as _input_references, relative_input_name as _safe_input_name
 from morse.run_spec import load_run_spec
-from morse.scorer_manifest import load_scorer_manifest, request_parameter_specs
+from morse.scorer_manifest import load_scorer_manifest, scorer_section
 from morse.visualization import render_sequence_scope_svg
 
 EXPECTED_BACKEND_API_VERSION = 6
@@ -341,35 +341,13 @@ def default_cpu_scorer() -> dict[str, Any]:
 
 def load_manifest_catalog(root: str | Path) -> dict[str, dict[str, Any]]:
     """Inspect metadata only; no scorer module imports or model loading."""
-    from morse.schema4 import scope_from_internal
     path = Path(root)
     if path.name == "core":
         path = path.parent
     result = {}
     for manifest_path in sorted((path / "scorers").glob("*/morse-scorer*.yaml")):
         manifest = load_scorer_manifest(manifest_path)
-        metrics = {}
-        for name, output in manifest["outputs"].items():
-            policy = copy.deepcopy(output["default_policy"])
-            policy.pop("type", None)
-            if policy.get("role") == "objective":
-                policy["role"] = "optimize"
-            if output["type"] != "float":
-                policy["value_type"] = output["type"]
-            metrics[name] = policy
-        entry = {
-            "name": manifest["id"], "command": "REPLACE_WITH_YOUR_SCORER_COMMAND",
-            "timeout_seconds": manifest["runtime"]["timeout_seconds"],
-            "scope": scope_from_internal(manifest["scope"]["default"]), "metrics": metrics,
-        }
-        parameters = {
-            name: copy.deepcopy(spec["default"])
-            for name, spec in request_parameter_specs(manifest).items()
-            if "default" in spec
-        }
-        if parameters:
-            entry["parameters"] = parameters
-        result[manifest["id"]] = entry
+        result[manifest["id"]] = scorer_section(manifest)
     return result
 
 

@@ -21,8 +21,9 @@ construct.
   autocast; record the chosen implementation, precision and device.
 - Paper: objectives in Fig. 3a–c, Fig. 4b and Extended Data Fig. 2; full-fit TE
   axes in all Fig. 4 radars; additional recorded scores of selected candidates.
-- Availability: verified local ready-provider installation. Public distribution
-  of our checkpoint is not yet registered. The Orthrus backbone is pinned to
+- Availability: the [full-fit image](../scorers/translation-efficiency/README.md)
+  includes the task checkpoint and backbone. Native setup uses a matching
+  checkpoint file. The Orthrus backbone is pinned to
   `c17ac0db4611c95248001d6fb4bcd95e3293cec4`.
 
 ## Orthrus TE, common held-out
@@ -38,7 +39,8 @@ construct.
   and SHA-256 are checked before loading. Optimized CUDA uses BF16 autocast.
 - Paper: objective in Fig. 5; recorded in Fig. 3d and additional selected-candidate
   readouts; association analysis in Fig. 2.
-- Availability: local ready provider; uses the same separately pinned backbone.
+- Availability: the dedicated [held-out image](../scorers/translation-efficiency/README.md)
+  includes this checkpoint and the pinned backbone.
 
 ## Orthrus half-life
 
@@ -52,7 +54,8 @@ construct.
 - Runtime: optimized CUDA/Mamba or portable PyTorch. Record precision/device.
 - Paper: recorded in Fig. 3d and selected-candidate comparisons; association
   analysis in Fig. 2. It did not guide those searches.
-- Availability: local ready provider; checkpoint distribution terms pending.
+- Availability: the [half-life image](../scorers/half-life/README.md) includes
+  the checkpoint and backbone. Native setup uses a matching checkpoint file.
 
 ## RiboNN human ensemble
 
@@ -112,7 +115,8 @@ construct.
 - Limits: short-oligonucleotide classification applied across longer constructs;
   it is not a direct measurement of whole-mRNA innate sensing or immunogenicity.
 - License: MultiMolecule/converted backbone AGPL terms and derived-checkpoint
-  source/distribution obligations require review. Ready provider is local.
+  source/distribution obligations require review. The [published image](../scorers/immunogenicity/README.md)
+  includes the checkpoint, configuration and tokenizer.
 
 ## Profiles and sequence policies
 
