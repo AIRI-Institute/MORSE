@@ -2,9 +2,9 @@
 
 RiNALMo scores short RNA fragments against the immunomodulatory class in
 IMrnaDS. MORSE reports `rinalmo_window_logit_p95`: the 95th percentile of the
-classification scores (*logits*) of the windows in the selected region. It
-describes the upper end of the window scores; it is **not a probability of an
-immune response to the whole construct**.
+classification scores (*logits*) of the windows in the selected region.
+This score can rank synonymous RNA designs encoding the same protein
+by the immunomodulatory signal predicted for their RNA windows.
 
 **Input:** any routed RNA sequence. The manifest defaults to `full_sequence`,
 including poly(A). The example below uses the paper's scope, transcript body
