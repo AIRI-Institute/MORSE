@@ -626,11 +626,7 @@ def _generation_progress_snapshot(
         all(check.valid for check in record.threshold_results)
         for record in population_records
     )
-    hard_feasible_count = sum(
-        record.structural_validation.valid
-        and all(check.valid for check in record.threshold_results)
-        for record in population_records
-    )
+    hard_feasible_count = sum(record.valid for record in population_records)
 
     objectives = []
     for spec in problem.objectives:
@@ -890,7 +886,7 @@ class _ThresholdAwareEvolutionMixin:
         candidates.extend(
             copy.deepcopy(individual)
             for individual in population
-            if self._is_hard_feasible(individual)
+            if self.is_hard_feasible(individual)
         )
         if not candidates:
             return
@@ -918,7 +914,7 @@ class _ThresholdAwareEvolutionMixin:
             *(candidates[index] for index in keep)
         )
 
-    def _is_hard_feasible(self, individual: Any) -> bool:
+    def is_hard_feasible(self, individual: Any) -> bool:
         construct = self.problem.design_space.decode(
             np.rint(individual.X).astype(int)
         )
@@ -936,6 +932,45 @@ class ThresholdAwareNSGA2(_ThresholdAwareEvolutionMixin, NSGA2):
 
 class ThresholdAwareNSGA3(_ThresholdAwareEvolutionMixin, NSGA3):
     pass
+
+
+class HardFeasibleFractionTermination(Termination):
+    def __init__(self, max_generations: int, target: float) -> None:
+        super().__init__()
+        self.max_generations = max_generations
+        self.target = target
+        self.completed_generations = 0
+        self.feasible_count = 0
+        self.population_size = 0
+        self.stop_reason: str | None = None
+
+    def _update(self, algorithm: Any) -> float:
+        self.completed_generations = int(algorithm.n_gen)
+        self.population_size = len(algorithm.pop)
+        self.feasible_count = sum(algorithm.is_hard_feasible(member) for member in algorithm.pop)
+        if self.population_size and self.feasible_count / self.population_size >= self.target:
+            self.stop_reason = (
+                f"hard-feasible target {self.target:g} reached "
+                f"({self.feasible_count}/{self.population_size} selected candidates)"
+            )
+            return 1.0
+        if self.completed_generations >= self.max_generations:
+            self.stop_reason = f"reached max generations ({self.max_generations})"
+            return 1.0
+        return self.completed_generations / self.max_generations
+
+    def status(self) -> dict[str, Any]:
+        return {
+            "enabled": True,
+            "metric": "hard_feasible_fraction",
+            "target": self.target,
+            "hard_feasible_count": self.feasible_count,
+            "population_size": self.population_size,
+            "hard_feasible_fraction": _fraction(self.feasible_count, self.population_size),
+            "completed_generations": self.completed_generations,
+            "stopped_early": self.stop_reason is not None and self.completed_generations < self.max_generations,
+            "stop_reason": self.stop_reason,
+        }
 
 
 class HypervolumeEarlyStoppingTermination(Termination):
@@ -1287,6 +1322,8 @@ def _optimizer_checkpoint_fingerprint(
     output_specs: list[OutputSpec],
 ) -> str:
     optimizer_payload = asdict(optimizer)
+    # Keep fingerprints of older runs independent of newly supported stopping modes.
+    optimizer_payload["early_stopping"] = optimizer.early_stopping.to_dict()
     # The generated warm-start manifest is an input to generation zero only.
     # Its output-directory path is intentionally excluded so the canonical
     # config can resume the exact checkpoint after a process/runtime restart.
@@ -1542,7 +1579,10 @@ def run_optimization(
     termination: Any
     early_stopping = optimizer.early_stopping
     if early_stopping.enabled:
-        if early_stopping.metric == "best_feasible_objective":
+        if early_stopping.metric == "hard_feasible_fraction":
+            assert early_stopping.target is not None
+            termination = HardFeasibleFractionTermination(generations, early_stopping.target)
+        elif early_stopping.metric == "best_feasible_objective":
             termination = BestFeasibleObjectiveEarlyStoppingTermination(
                 generations, early_stopping
             )
@@ -1612,6 +1652,7 @@ def run_optimization(
     if isinstance(
         used_termination,
         (
+            HardFeasibleFractionTermination,
             HypervolumeEarlyStoppingTermination,
             BestFeasibleObjectiveEarlyStoppingTermination,
         ),

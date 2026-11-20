@@ -372,6 +372,12 @@ def _format_early_stopping(early_stopping: dict[str, Any]) -> list[str]:
     if not early_stopping or not early_stopping.get("enabled"):
         return ["- Early stopping: disabled"]
     reason = early_stopping.get("stop_reason") or "not triggered"
+    if early_stopping.get("metric") == "hard_feasible_fraction":
+        return [
+            f"- Hard-feasible population target: {early_stopping['target']:g} "
+            f"({early_stopping['hard_feasible_count']}/{early_stopping['population_size']} in the final population)",
+            f"- Stop reason: {reason}",
+        ]
     return [
         "- Early stopping: enabled "
         f"metric `{early_stopping.get('metric')}` "

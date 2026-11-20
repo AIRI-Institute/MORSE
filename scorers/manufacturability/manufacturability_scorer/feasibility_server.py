@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import copy
 import json
 import os
 import sys
@@ -53,21 +52,11 @@ def _for_request(
         raise ValueError("parameters must be a mapping")
     if not parameters:
         return baseline
-    parameters = copy.deepcopy(parameters)
+    parameters = dict(parameters)
     preset = parameters.pop("preset", baseline.profile_id)
     if not isinstance(preset, str):
         raise ValueError("preset must be a string")
-    if preset == baseline.profile_id:
-        defaults = baseline.parameters
-    else:
-        defaults = getattr(baseline, "_startup_overrides", None)
-        if defaults is None:
-            original = SequenceFeasibilityScorer(baseline.profile_id).parameters
-            defaults = {
-                key: value for key, value in baseline.parameters.items()
-                if key not in original or value != original[key]
-            }
-    return SequenceFeasibilityScorer(preset, **{**defaults, **parameters})
+    return baseline.with_overrides(preset, **parameters)
 
 
 def error_response(line: str, message: str) -> dict[str, Any]:
@@ -86,7 +75,7 @@ def from_environment(
     preset = env.get("SEQUENCE_FEASIBILITY_PRESET", DEFAULT_PRESET)
     defaults = SequenceFeasibilityScorer(preset).parameters
     overrides = {}
-    for key in {**STRATEGY_DEFAULTS, **defaults}:
+    for key in set(STRATEGY_DEFAULTS) | defaults.keys() | {"restriction_sites"}:
         name = "SEQUENCE_FEASIBILITY_" + key.upper()
         if name not in env:
             continue
@@ -102,9 +91,7 @@ def from_environment(
             )
         except (ValueError, TypeError) as exc:
             raise ValueError(f"Invalid startup parameter {name}") from exc
-    scorer = SequenceFeasibilityScorer(preset, **overrides)
-    scorer._startup_overrides = copy.deepcopy(overrides)
-    return scorer
+    return SequenceFeasibilityScorer(preset, **overrides)
 
 
 def main() -> int:

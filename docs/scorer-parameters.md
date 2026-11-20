@@ -121,6 +121,7 @@ parameters:
   tandem_min_length: 18
   tandem_min_copies: 3
   forbidden_motifs: []
+  # restriction_sites: [GCTCTTC]  # Optional recognition sequences, e.g. BspQI.
   exempt_regions: []
 ```
 
@@ -128,12 +129,20 @@ Lengths are in nucleotides; GC bounds are fractions. `exempt_regions` contains
 objects with `start`, `end`, `checks` and `reason`, using zero-based, end-excluded
 coordinates of the sequence passed to this scorer.
 
+`restriction_sites` accepts a list of exact recognition sequences (A, C, G,
+T/U). Each motif and its reverse complement are matched; overlapping positions
+count separately and a palindromic match counts once. By contrast,
+`forbidden_motifs` checks only the sequence as written. Providing sites enables
+the restriction-site check alongside the preset checks. If you explicitly set
+`enabled_checks`, include `restriction_sites` there to activate it. Omitting
+the new parameter leaves both presets unchanged.
+
 `manufacturing_strategy_v1` additionally enables restriction-site, capping-start
 and inverted-repeat checks. Its settings include `restriction_enzymes: [BsaI,
 BsmBI]`, `capping_method: cleancap_ag`, `custom_5prime_prefix: ""`,
 `inverted_repeat_stem: 20`, `inverted_repeat_window: 200` and
-`inverted_repeat_min_gap: 0`. These checks remain disabled in the ordinary preset
-unless explicitly enabled.
+`inverted_repeat_min_gap: 0`. Custom recognition sequences are checked alongside
+the named enzymes selected by `restriction_enzymes`.
 
 ## Using this checkout with containers
 

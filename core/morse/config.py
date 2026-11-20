@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import copy
-from dataclasses import dataclass, field, replace
+from dataclasses import asdict, dataclass, field, replace
 from math import cos, isfinite, pi
 import os
 import re
@@ -51,6 +51,22 @@ class EarlyStoppingConfig:
     patience: int = 0
     rel_tol: float = 0.0
     abs_tol: float = 0.0
+    target: float | None = None
+
+    def __post_init__(self) -> None:
+        if self.metric == "hard_feasible_fraction":
+            if (not isinstance(self.target, (int, float))
+                    or isinstance(self.target, bool) or not 0 < self.target <= 1):
+                raise ValueError("optimizer.early_stopping.target must be a fraction in (0, 1]")
+        elif self.target is not None:
+            raise ValueError("optimizer.early_stopping.target requires metric hard_feasible_fraction")
+
+    def to_dict(self) -> dict[str, Any]:
+        if self.metric == "hard_feasible_fraction":
+            return {"enabled": self.enabled, "metric": self.metric, "target": self.target}
+        values = asdict(self)
+        del values["target"]
+        return values
 
 
 @dataclass(frozen=True)
@@ -236,6 +252,7 @@ class OptimizerConfig:
             )
         if (
             self.early_stopping.enabled
+            and self.early_stopping.metric != "hard_feasible_fraction"
             and self.constraint_handling.method == "adaptive_epsilon"
             and self.early_stopping.min_generations
             < self.constraint_handling.relaxation_generations
@@ -441,14 +458,7 @@ class RunConfig:
                 "constraint_handling": _constraint_handling_to_dict(
                     self.optimizer.constraint_handling
                 ),
-                "early_stopping": {
-                    "enabled": self.optimizer.early_stopping.enabled,
-                    "metric": self.optimizer.early_stopping.metric,
-                    "min_generations": self.optimizer.early_stopping.min_generations,
-                    "patience": self.optimizer.early_stopping.patience,
-                    "rel_tol": self.optimizer.early_stopping.rel_tol,
-                    "abs_tol": self.optimizer.early_stopping.abs_tol,
-                },
+                "early_stopping": self.optimizer.early_stopping.to_dict(),
             },
         }
 
@@ -1048,17 +1058,20 @@ def _parse_early_stopping(raw: Any) -> EarlyStoppingConfig:
     if raw is None:
         return EarlyStoppingConfig(enabled=False)
     spec = _mapping(raw, "optimizer.early_stopping")
+    enabled = _parse_bool(spec.get("enabled", True))
+    metric = str(spec.get("metric", "hypervolume")).lower()
+    if metric == "hard_feasible_fraction":
+        _reject_unknown_fields(spec, {"enabled", "metric", "target"}, "optimizer.early_stopping")
+        return EarlyStoppingConfig(enabled=enabled, metric=metric, target=spec.get("target"))
     _reject_unknown_fields(
         spec,
         {"enabled", "metric", "min_generations", "patience", "rel_tol", "abs_tol"},
         "optimizer.early_stopping",
     )
-    enabled = _parse_bool(spec.get("enabled", True))
-    metric = str(spec.get("metric", "hypervolume")).lower()
     if metric not in {"hypervolume", "best_feasible_objective"}:
         raise ValueError(
-            "optimizer.early_stopping.metric must be hypervolume or "
-            "best_feasible_objective"
+            "optimizer.early_stopping.metric must be hypervolume, "
+            "best_feasible_objective or hard_feasible_fraction"
         )
 
     min_generations = int(spec.get("min_generations", 0))

@@ -333,6 +333,11 @@ parameters:
   restriction_enzymes:
     type: array
     description: BsaI/BsmBI names; omitted inherits the selected preset. Both orientations are checked.
+  restriction_sites:
+    type: array
+    description: >-
+      Exact recognition sequences (DNA or RNA) checked in both orientations alongside named enzymes.
+      A nonempty list enables this check unless an explicit enabled_checks list excludes it.
   capping_method:
     type: string
     description: Omitted inherits the selected preset; otherwise none, cleancap_ag, or custom. Requires

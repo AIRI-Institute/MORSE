@@ -34,6 +34,26 @@ morse score --config examples/scorer-parameters/experiment.yaml
 Look for `feasibility.feasibility_violation_count` under `outputs`. The bundled
 example logs the count; the YAML above also uses it to filter candidates.
 
+## Restriction sites
+
+Add recognition sequences under the scorer's `parameters`. For example, to
+include BspQI in the checks above:
+
+```yaml
+parameters:
+  restriction_sites: [GCTCTTC]
+```
+
+Give each site once, in either orientation. The scorer checks both the motif
+and its reverse complement across the selected `scope`. It counts overlapping
+matches at different positions and counts a palindromic site once per position.
+Use exact DNA or RNA sequences (T and U are equivalent).
+
+With the default preset, supplying sites adds this check to the existing
+checks. If you set `enabled_checks` explicitly, include `restriction_sites`
+in that list to count its violations. The count is available separately as
+`restriction_sites_violation_count` and contributes to `feasibility_violation_count`.
+
 ## Read a failure
 
 `feasibility_failed_checks_json` lists the check names. For event coordinates,

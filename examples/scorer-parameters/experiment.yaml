@@ -61,5 +61,6 @@ scorers:
       preset: sequence_feasibility_v1
       local_gc_window: 50
       forbidden_motifs: []
+      # restriction_sites: [GCTCTTC]  # BspQI, both orientations.
     metrics:
       feasibility_violation_count: {role: log, value_type: int}

@@ -30,7 +30,7 @@ PRESETS = {
     for name in (DEFAULT_PRESET, "manufacturing_strategy_v1")
 }
 JSON_PARAMETERS = frozenset(
-    {"enabled_checks", "forbidden_motifs", "exempt_regions", "restriction_enzymes"}
+    {"enabled_checks", "forbidden_motifs", "exempt_regions", "restriction_enzymes", "restriction_sites"}
 )
 STRING_PARAMETERS = frozenset({"capping_method", "custom_5prime_prefix"})
 RESTRICTION_SITES = {"BsaI": "GGUCUC", "BsmBI": "CGUCUC"}
@@ -52,6 +52,32 @@ def reverse_complement(sequence: str) -> str:
     return sequence.translate(RNA_COMPLEMENT)[::-1]
 
 
+def _recognition_sites(raw: Any) -> list[str]:
+    if not isinstance(raw, list):
+        raise ValueError("restriction_sites must be a list of recognition sequences")
+    sites = set()
+    for site in raw:
+        if not isinstance(site, str) or not site or any(base not in "ACGTUacgtu" for base in site):
+            raise ValueError("Each restriction_sites entry must be a nonempty exact A/C/G/T/U sequence")
+        sites.add(site.upper().replace("T", "U"))
+    representatives = []
+    for site in sorted(sites):
+        opposite = reverse_complement(site)
+        if opposite not in sites or site <= opposite:
+            representatives.append(site)
+    return representatives
+
+
+def _restriction_words(parameters: dict[str, Any]) -> dict[str, dict[str, str]]:
+    words = {}
+    sites = [(RESTRICTION_SITES[name], {"enzyme": name}) for name in parameters.get("restriction_enzymes", [])]
+    sites.extend((site, {"recognition_site": site}) for site in parameters.get("restriction_sites", []))
+    for site, label in sites:
+        for strand, word in (("+", site), ("-", reverse_complement(site))):
+            words.setdefault(word, {**label, "strand": strand, "motif": word})
+    return words
+
+
 def _json(value: Any) -> str:
     return json.dumps(value, sort_keys=True, separators=(",", ":"), allow_nan=False)
 
@@ -64,15 +90,18 @@ class SequenceFeasibilityScorer:
         profile = json.loads(payload)
         if profile["profile_id"] != preset or profile["schema_version"] != 1:
             raise ValueError("Invalid feasibility preset identity or schema")
+        self._overrides = copy.deepcopy(overrides)
+        sites = _recognition_sites(overrides.pop("restriction_sites", []))
         parameters = profile["parameters"]
         requested_checks = overrides.get("enabled_checks", [])
         if not isinstance(requested_checks, list):
             raise ValueError("enabled_checks must be a JSON list")
         # Preserve the released v1 configuration/hash unless strategy options
         # are explicitly requested. New profiles include these defaults in full.
-        if set(overrides) & set(STRATEGY_DEFAULTS) or any(
-            rule in requested_checks for rule in CHECKS[6:]
-        ):
+        strategy_checks = {"capping_start", "inverted_repeats"}
+        if not sites:
+            strategy_checks.add("restriction_sites")
+        if set(overrides) & set(STRATEGY_DEFAULTS) or any(rule in requested_checks for rule in strategy_checks):
             parameters = {**copy.deepcopy(STRATEGY_DEFAULTS), **parameters}
         unknown = set(overrides) - set(parameters)
         if unknown:
@@ -80,7 +109,12 @@ class SequenceFeasibilityScorer:
                 "Unknown feasibility parameters: " + ", ".join(sorted(unknown))
             )
         parameters.update(copy.deepcopy(overrides))
+        if sites:
+            parameters["restriction_sites"] = sites
+            if "enabled_checks" not in overrides and "restriction_sites" not in parameters["enabled_checks"]:
+                parameters["enabled_checks"].append("restriction_sites")
         self._validate(parameters)
+        self._restriction_words = _restriction_words(parameters)
         self._parameters = parameters
         self.profile_id = preset
         self.profile_sha256 = hashlib.sha256(payload).hexdigest()
@@ -98,6 +132,9 @@ class SequenceFeasibilityScorer:
     @property
     def parameters(self) -> dict[str, Any]:
         return copy.deepcopy(self._parameters)
+
+    def with_overrides(self, preset: str, **overrides: Any) -> SequenceFeasibilityScorer:
+        return SequenceFeasibilityScorer(preset, **{**self._overrides, **overrides})
 
     @staticmethod
     def _validate(p: dict[str, Any]) -> None:
@@ -297,17 +334,15 @@ class SequenceFeasibilityScorer:
                     }
                 )
                 start = sequence.find(motif, start + 1)
-        for enzyme in p.get("restriction_enzymes", []):
-            motif = RESTRICTION_SITES[enzyme]
-            for strand, word in (("+", motif), ("-", reverse_complement(motif))):
-                start = sequence.find(word)
-                while start >= 0:
-                    events.append({
-                        "check": "restriction_sites",
-                        "spans": [[start, start + len(word)]],
-                        "enzyme": enzyme, "strand": strand, "motif": word,
-                    })
-                    start = sequence.find(word, start + 1)
+        for word, annotation in self._restriction_words.items():
+            start = sequence.find(word)
+            while start >= 0:
+                events.append({
+                    "check": "restriction_sites",
+                    "spans": [[start, start + len(word)]],
+                    **annotation,
+                })
+                start = sequence.find(word, start + 1)
         method = p.get("capping_method", "none")
         required = ""
         if method == "cleancap_ag":
